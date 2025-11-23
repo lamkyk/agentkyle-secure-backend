@@ -1,0 +1,298 @@
+{
+  "qaDatabase": [
+    {
+      "id": "general-intro-1",
+      "category": "General Intro",
+      "keywords": ["tell me about yourself", "background", "introduction", "who are you", "experience"],
+      "question": "Tell me about yourself",
+      "answer": "My background is in autonomous systems validation, field operations, escalations, and training data programs. I've executed and analyzed over two thousand tests, led cross-functional investigations into high-priority safety issues, and delivered critical datasets that improved perception performance and expanded operating domains. My work sits between engineering and operations, where I turn vague technical issues into structured plans and deliver results grounded in real-world data."
+    },
+    {
+      "id": "general-intro-2",
+      "category": "General Intro",
+      "keywords": ["motivation", "motivates", "why", "drives you"],
+      "question": "What motivates you?",
+      "answer": "Solving challenging problems that directly impact real-world safety and system performance motivates me. I enjoy stepping into messy or ambiguous situations, organizing them quickly, and driving solutions that materially improve reliability."
+    },
+    {
+      "id": "general-intro-3",
+      "category": "General Intro",
+      "keywords": ["technical pm", "tpm", "program management", "why pm", "career change"],
+      "question": "Why do you want to move into a technical PM role?",
+      "answer": "Most of my work already mirrors technical program management. I've scoped problems, coordinated cross-functional teams, aligned requirements, driven field execution, analyzed results, and communicated them clearly. I want to take on broader ownership, influence direction earlier, and contribute across the full program lifecycle."
+    },
+    {
+      "id": "behavioral-1",
+      "category": "Behavioral",
+      "keywords": ["difficult problem", "challenging", "solved", "problem solving"],
+      "question": "Describe a difficult problem you solved",
+      "answer": "A pedestrian detection failure occurred in the field. I coordinated with perception and hardware engineers, isolated variables, executed targeted testing, sourced hundreds of low-reflectivity materials, built a reflectivity dataset, and identified calibration and modeling gaps that were later incorporated into production tuning."
+    },
+    {
+      "id": "behavioral-2",
+      "category": "Behavioral",
+      "keywords": ["accomplishment", "achievement", "proud", "major project"],
+      "question": "Tell me about a major accomplishment",
+      "answer": "A key operating domain was blocked because our vehicles struggled detecting pedestrians in dense steam. I mapped all vent locations, coordinated assets, developed safety and legal plans, recruited volunteers, executed field collections, and delivered the dataset needed to retrain models and unlock the city."
+    },
+    {
+      "id": "behavioral-3",
+      "category": "Behavioral",
+      "keywords": ["led project", "end-to-end", "ownership", "project management"],
+      "question": "A time you led a project end-to-end",
+      "answer": "For a large training data initiative involving children, I scoped requirements, coordinated with parents, legal, safety, perception engineering, and operations, planned all logistics, executed the field sessions, processed data, and delivered a clean dataset used in model improvements."
+    },
+    {
+      "id": "behavioral-4",
+      "category": "Behavioral",
+      "keywords": ["ambiguity", "unclear", "vague", "uncertainty"],
+      "question": "A time you dealt with ambiguity",
+      "answer": "During an escalated sensor issue, there was no clear reproduction or root cause. I broke the problem into testable hypotheses, designed controlled tests, gathered field data, and provided a structured narrative that engineering used to isolate the fix."
+    },
+    {
+      "id": "behavioral-5",
+      "category": "Behavioral",
+      "keywords": ["learn", "learning", "technical", "quickly", "fast learner"],
+      "question": "A time you had to quickly learn something technical",
+      "answer": "To diagnose a perception failure, I had to understand lidar calibration and reflectivity behavior in more depth. I learned the measurement tools, adapted the workflow, and built a reflectivity database that revealed hidden assumptions in the calibration process."
+    },
+    {
+      "id": "leadership-1",
+      "category": "Leadership",
+      "keywords": ["lead without authority", "influence", "no authority", "informal leadership"],
+      "question": "How do you lead without authority?",
+      "answer": "I create clarity — clear problem definitions, timelines, roles, and data-based priorities. Teams align naturally when the path is obvious and the work is organized."
+    },
+    {
+      "id": "leadership-2",
+      "category": "Leadership",
+      "keywords": ["work with engineers", "engineering", "technical teams"],
+      "question": "How do you work with engineers?",
+      "answer": "I give engineers clean data, clear reproduction steps, tight problem statements, and well-prioritized asks. I reduce noise, which accelerates technical decision-making."
+    },
+    {
+      "id": "leadership-3",
+      "category": "Leadership",
+      "keywords": ["conflict", "disagreement", "resolved", "resolution"],
+      "question": "Describe a conflict and how you resolved it",
+      "answer": "Operations wanted rapid testing while perception wanted tighter scenario controls. I aligned both by defining a staged approach: uncontrolled data for exploration, controlled experiments for verification. Both teams got what they needed."
+    },
+    {
+      "id": "leadership-4",
+      "category": "Leadership",
+      "keywords": ["alignment", "cross-functional", "teams", "coordination"],
+      "question": "How do you ensure alignment across teams?",
+      "answer": "I keep expectations explicit, document decisions, circulate short summaries, and verify alignment in follow-ups. I remove assumptions early."
+    },
+    {
+      "id": "leadership-5",
+      "category": "Leadership",
+      "keywords": ["pressure", "stress", "communicate", "high-stakes"],
+      "question": "How do you communicate under pressure?",
+      "answer": "I stay concrete: what happened, why it matters, what we know, what we don't know, and the next steps. This keeps teams coordinated during escalations."
+    },
+    {
+      "id": "pm-skills-1",
+      "category": "Program Management",
+      "keywords": ["run program", "manage program", "end-to-end", "program management"],
+      "question": "How do you run a program end-to-end?",
+      "answer": "I start by defining requirements, constraints, and success metrics. Then I build the execution plan, coordinate resources, run field operations, analyze results, and present findings with clear recommendations."
+    },
+    {
+      "id": "pm-skills-2",
+      "category": "Program Management",
+      "keywords": ["risk", "risks", "risk management", "mitigation"],
+      "question": "How do you manage risks?",
+      "answer": "I map risks early, define detection signals, build mitigation plans, and communicate tradeoffs so teams aren't surprised later."
+    },
+    {
+      "id": "pm-skills-3",
+      "category": "Program Management",
+      "keywords": ["prioritize", "prioritization", "priority", "competing priorities"],
+      "question": "How do you prioritize?",
+      "answer": "I prioritize by safety-criticality, impact on system performance, unblock potential, and alignment to strategic goals. I make tradeoffs explicit."
+    },
+    {
+      "id": "pm-skills-4",
+      "category": "Program Management",
+      "keywords": ["shifting requirements", "change", "changing priorities", "adaptability"],
+      "question": "How do you work with shifting requirements?",
+      "answer": "I isolate what changed, update the plan, communicate the deltas, and ensure teams realign around the new direction."
+    },
+    {
+      "id": "pm-skills-5",
+      "category": "Program Management",
+      "keywords": ["measure success", "metrics", "kpis", "performance"],
+      "question": "How do you measure success?",
+      "answer": "Clear metrics: data yield, accuracy improvements, cycle-time reduction, uptime, test throughput, and issue-resolution time."
+    },
+    {
+      "id": "autonomy-1",
+      "category": "Autonomy & Sensors",
+      "keywords": ["lidar", "sensor", "sensing"],
+      "question": "What is your experience with lidar?",
+      "answer": "I've validated lidar performance, investigated perception failures, measured reflectivity, refined calibration assumptions, and built datasets that informed model tuning."
+    },
+    {
+      "id": "autonomy-2",
+      "category": "Autonomy & Sensors",
+      "keywords": ["perception", "validation", "validate", "testing"],
+      "question": "How do you validate perception systems?",
+      "answer": "Through structured scenario design, field testing, log analysis, false-negative/false-positive review, and comparison against requirements and baselines."
+    },
+    {
+      "id": "autonomy-3",
+      "category": "Autonomy & Sensors",
+      "keywords": ["escalation", "escalations", "critical issue", "urgent"],
+      "question": "Experience with escalations?",
+      "answer": "I was often the point person for high-priority escalations. I reproduced issues, coordinated test assets, documented findings, and drove engineering alignment on fixes."
+    },
+    {
+      "id": "autonomy-4",
+      "category": "Autonomy & Sensors",
+      "keywords": ["data quality", "ml", "machine learning", "training data"],
+      "question": "How do you ensure data quality for ML teams?",
+      "answer": "By defining collection protocols, metadata requirements, QA checks, and rectifying anomalies early before they propagate."
+    },
+    {
+      "id": "autonomy-5",
+      "category": "Autonomy & Sensors",
+      "keywords": ["perception team", "perception teams", "ml engineers"],
+      "question": "How do you work with perception teams?",
+      "answer": "I provide compact datasets, scenario explanations, reproducible steps, and ensure the data collected matches model-training requirements."
+    },
+    {
+      "id": "operations-1",
+      "category": "Operations",
+      "keywords": ["field operations", "field work", "operations"],
+      "question": "Describe a field operations accomplishment",
+      "answer": "I organized multi-day field sessions involving volunteers, vehicles, safety reviews, data verification, and engineering coordination — all to generate rare training datasets."
+    },
+    {
+      "id": "operations-2",
+      "category": "Operations",
+      "keywords": ["on-the-ground", "field issues", "troubleshooting"],
+      "question": "How do you handle on-the-ground issues?",
+      "answer": "I diagnose quickly, isolate the failing component, test a workaround if safe, and document clean reproduction steps for engineering."
+    },
+    {
+      "id": "operations-3",
+      "category": "Operations",
+      "keywords": ["fleet", "fleets", "manage fleet", "vehicles"],
+      "question": "How do you manage fleets?",
+      "answer": "I coordinate schedules, allocate assets efficiently, maintain accurate reporting, and ensure each test maximizes data yield."
+    },
+    {
+      "id": "operations-4",
+      "category": "Operations",
+      "keywords": ["cross-functional", "throughput", "efficiency"],
+      "question": "How do you ensure smooth cross-functional throughput?",
+      "answer": "By eliminating bottlenecks early, aligning timelines, validating inputs, and making sure downstream teams have what they need."
+    },
+    {
+      "id": "strategic-1",
+      "category": "Strategic Mindset",
+      "keywords": ["long-term", "reliability", "system reliability"],
+      "question": "How do you think about long-term system reliability?",
+      "answer": "By identifying patterns in field issues, proposing structural fixes, improving test coverage, and feeding insights back into engineering."
+    },
+    {
+      "id": "strategic-2",
+      "category": "Strategic Mindset",
+      "keywords": ["scaling", "scale", "processes", "growth"],
+      "question": "How do you approach scaling processes?",
+      "answer": "I standardize procedures, automate checks where possible, and streamline workflows so scaling doesn't increase friction or error rates."
+    },
+    {
+      "id": "strategic-3",
+      "category": "Strategic Mindset",
+      "keywords": ["expectations", "manage expectations", "stakeholders"],
+      "question": "How do you manage expectations?",
+      "answer": "I stay realistic about timelines, communicate dependencies, and update stakeholders early if risks emerge."
+    },
+    {
+      "id": "values-1",
+      "category": "Values & Fit",
+      "keywords": ["teammates", "team", "coworkers", "colleagues"],
+      "question": "What do teammates say about you?",
+      "answer": "Consistent, dependable, and strong under pressure. They trust me to step into ambiguous situations and make progress quickly."
+    },
+    {
+      "id": "values-2",
+      "category": "Values & Fit",
+      "keywords": ["learning", "learn", "continuous learning"],
+      "question": "How do you approach learning?",
+      "answer": "I learn by breaking complex systems down, testing assumptions, and applying the knowledge immediately in field or analysis work."
+    },
+    {
+      "id": "values-3",
+      "category": "Values & Fit",
+      "keywords": ["working style", "work style", "how you work"],
+      "question": "Describe your working style",
+      "answer": "Organized, structured, and highly execution-focused. I move quickly but communicate in a way that keeps others aligned."
+    },
+    {
+      "id": "stakeholders-1",
+      "category": "Stakeholders",
+      "keywords": ["external stakeholders", "external", "partners", "communicate externally"],
+      "question": "How do you communicate with external stakeholders?",
+      "answer": "By keeping updates concise, data-driven, and focused on outcomes. I summarize key risks, next steps, and timelines without unnecessary detail."
+    },
+    {
+      "id": "stakeholders-2",
+      "category": "Stakeholders",
+      "keywords": ["present", "presentation", "technical findings", "demos"],
+      "question": "Have you presented technical findings externally?",
+      "answer": "I helped coordinate and conduct sensor-performance demos with OEM executives, providing clear explanations of system behavior and test objectives."
+    },
+    {
+      "id": "scenario-1",
+      "category": "Scenario Questions",
+      "keywords": ["high-severity", "critical issue", "late discovery", "urgent problem"],
+      "question": "How would you handle a high-severity issue discovered late?",
+      "answer": "I'd reproduce the issue, assess safety risk, notify engineering immediately, and activate a focused testing plan to isolate the cause. I'd keep stakeholders updated with clear status summaries."
+    },
+    {
+      "id": "scenario-2",
+      "category": "Scenario Questions",
+      "keywords": ["training dataset", "new dataset", "building dataset"],
+      "question": "How would you approach building a new training dataset?",
+      "answer": "Define model needs, map out required scenarios, secure assets, plan safe collection protocols, execute field operations, QA the data, and deliver clean structured output."
+    },
+    {
+      "id": "scenario-3",
+      "category": "Scenario Questions",
+      "keywords": ["changing priorities", "priority shift", "reprioritize"],
+      "question": "How would you manage changing priorities?",
+      "answer": "Re-evaluate impact, re-sequence work, update dependencies, and ensure all teams understand what shifts — and why."
+    },
+    {
+      "id": "growth-1",
+      "category": "Self-Awareness",
+      "keywords": ["weakness", "weaknesses", "improving", "areas for growth"],
+      "question": "What's a weakness you're improving?",
+      "answer": "I'm strengthening my scripting skills so I can automate more of my own data checks and reduce manual steps in my workflows."
+    },
+    {
+      "id": "growth-2",
+      "category": "Self-Awareness",
+      "keywords": ["need from team", "team support", "best work"],
+      "question": "What do you need from a team to do your best work?",
+      "answer": "Clear priorities, open communication, and shared accountability — the fundamentals that enable fast execution."
+    },
+    {
+      "id": "closing-1",
+      "category": "Closing Questions",
+      "keywords": ["why hire you", "why should we", "what makes you"],
+      "question": "Why should we hire you?",
+      "answer": "I bring hands-on experience solving real-world, safety-critical problems in autonomous systems. I've worked across engineering and operations, delivered high-value data, resolved escalations, improved sensor performance, and contributed to expanding operating domains. I execute fast, communicate clearly, and consistently raise system quality."
+    },
+    {
+      "id": "closing-2",
+      "category": "Closing Questions",
+      "keywords": ["looking for", "next role", "what are you looking"],
+      "question": "What are you looking for in your next role?",
+      "answer": "A technically challenging environment where I can own complex programs end-to-end, collaborate closely with engineering, and drive improvements in system performance and reliability."
+    }
+  ]
+}
