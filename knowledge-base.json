@@ -1409,7 +1409,7 @@
     "keywords": ["role performance"],
     "question": "How does Kyle perform in technical roles?",
     "answer": "Kyle performs strongly by combining analytical discipline with clear communication and consistent execution."
-  }
+  },
 {
   "id": "core-36",
   "category": "Core Strengths",
@@ -1417,7 +1417,6 @@
   "question": "What recognition has Kyle received for his work?",
   "answer": "Kyle was awarded an inaugural challenge coin for his contributions to vehicle-level verification and validation. The recognition highlighted his impact across cross-functional teams, his structured approach to resolving complex issues, and his consistent ability to improve signal clarity and execution predictability. The award reflected not only his technical depth but also the collaborative discipline and teamwork he brings to high-stakes validation cycles."
 }
-
-]
-
+    ]
+    }
 
