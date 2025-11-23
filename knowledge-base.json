@@ -293,9 +293,7 @@
       "keywords": ["looking for", "next role", "what are you looking"],
       "question": "What are you looking for in your next role?",
       "answer": "A technically challenging environment where I can own complex programs end-to-end, collaborate closely with engineering, and drive improvements in system performance and reliability."
-    }
-  ]
-}
+    },
 {
   "id": "program-1",
   "category": "Program Management",
@@ -436,3 +434,983 @@
   "question": "Why is Kyle effective in program environments?",
   "answer": "Kyle blends structured execution with strong interpersonal and technical communication. He reduces noise, enables clarity, and drives disciplined progress in environments that depend on precision."
 }
+    [
+  {
+    "id": "core-001",
+    "category": "Core Strengths",
+    "keywords": ["strengths", "overview", "capabilities"],
+    "question": "What are Kyle's core strengths?",
+    "answer": "Kyle is a highly capable technical professional known for structured systems thinking, reliable execution, and cross-functional clarity. He excels in environments where engineering, operations, and product teams must collaborate with precision."
+  },
+  {
+    "id": "core-002",
+    "category": "Core Strengths",
+    "keywords": ["background", "who is Kyle", "experience"],
+    "question": "Tell me about Kyle's background",
+    "answer": "Kyle has built a multidisciplinary background spanning autonomous systems testing, operational workflows, and enterprise customer success. He brings structured execution, technical reasoning, and the ability to communicate clearly across teams."
+  },
+  {
+    "id": "core-003",
+    "category": "Core Strengths",
+    "keywords": ["why hire", "candidate value"],
+    "question": "Why is Kyle a strong candidate?",
+    "answer": "Kyle delivers reliable execution, strong analytical thinking, and disciplined program alignment. He reduces ambiguity, strengthens cross-team workflows, and elevates predictability in technical environments."
+  },
+  {
+    "id": "core-004",
+    "category": "Core Strengths",
+    "keywords": ["motivation", "what motivates"],
+    "question": "What motivates Kyle?",
+    "answer": "Kyle is motivated by solving complex, system-level challenges where clarity, precision, and cross-functional collaboration matter."
+  },
+  {
+    "id": "core-005",
+    "category": "Core Strengths",
+    "keywords": ["coworkers", "describe", "team"],
+    "question": "How would coworkers describe Kyle?",
+    "answer": "Coworkers describe Kyle as dependable, analytical, and composed. He brings clarity to complexity, communicates thoughtfully, and executes with discipline."
+  },
+
+  {
+    "id": "core-006",
+    "category": "Core Strengths",
+    "keywords": ["work environment", "best environment"],
+    "question": "What type of environment does Kyle excel in?",
+    "answer": "Kyle thrives in environments that value clear communication, repeatable processes, and structured execution. He performs best where technical rigor and cross-functional alignment are essential."
+  },
+  {
+    "id": "core-007",
+    "category": "Core Strengths",
+    "keywords": ["ambiguity", "uncertainty"],
+    "question": "How does Kyle handle ambiguous situations?",
+    "answer": "Kyle handles ambiguity by breaking problems into structured components, defining what is known, mapping constraints, and creating clarity that others can act upon."
+  },
+  {
+    "id": "core-008",
+    "category": "Core Strengths",
+    "keywords": ["pressure", "stress"],
+    "question": "How does Kyle perform under pressure?",
+    "answer": "Kyle maintains stable execution, prioritizes effectively, and communicates clearly under pressure. His structured workflow helps stabilize teams in high-stress environments."
+  },
+  {
+    "id": "core-009",
+    "category": "Core Strengths",
+    "keywords": ["manager", "leadership style", "works best with"],
+    "question": "What type of manager does Kyle work best with?",
+    "answer": "Kyle works well with managers who value transparency, structured communication, and autonomy in execution."
+  },
+  {
+    "id": "core-010",
+    "category": "Core Strengths",
+    "keywords": ["work style", "how he works"],
+    "question": "What is Kyle's working style?",
+    "answer": "Kyle works in a structured, methodical way. He communicates context clearly, drives alignment, and executes with consistency."
+  },
+
+  {
+    "id": "core-011",
+    "category": "Core Strengths",
+    "keywords": ["collaboration", "cross-functional"],
+    "question": "How does Kyle collaborate across teams?",
+    "answer": "Kyle excels at bridging engineering and operations. He provides structured feedback, maintains tight alignment, and ensures information flows predictably."
+  },
+  {
+    "id": "core-012",
+    "category": "Core Strengths",
+    "keywords": ["leadership", "lead"],
+    "question": "Describe Kyle's leadership style",
+    "answer": "Kyle leads with clarity, structure, and context-driven guidance. He prioritizes alignment and ensures teams have actionable direction."
+  },
+  {
+    "id": "core-013",
+    "category": "Core Strengths",
+    "keywords": ["learning", "new tech"],
+    "question": "How does Kyle approach learning new technology?",
+    "answer": "Kyle breaks systems into layers, studies workflows and constraints, and builds mental models that allow him to learn quickly and apply new knowledge effectively."
+  },
+  {
+    "id": "core-014",
+    "category": "Core Strengths",
+    "keywords": ["technical environments", "effective"],
+    "question": "Why is Kyle effective in technical environments?",
+    "answer": "Kyle understands how technical systems interact, how workflows impact downstream components, and how to communicate signals in actionable ways for engineering teams."
+  },
+  {
+    "id": "core-015",
+    "category": "Core Strengths",
+    "keywords": ["independent work", "teamwork"],
+    "question": "Does Kyle work better independently or on teams?",
+    "answer": "Kyle can operate independently for deep execution tasks but collaborates strongly at integration points to keep teams aligned."
+  },
+
+  {
+    "id": "core-016",
+    "category": "Core Strengths",
+    "keywords": ["career goals"],
+    "question": "What are Kyle's long-term goals?",
+    "answer": "Kyle aims to contribute to technical organizations that value structured execution, systems thinking, and operational excellence."
+  },
+  {
+    "id": "core-017",
+    "category": "Core Strengths",
+    "keywords": ["values", "role"],
+    "question": "What does Kyle value in a role?",
+    "answer": "Kyle values clarity, meaningful work, analytical depth, and cross-functional collaboration."
+  },
+  {
+    "id": "core-018",
+    "category": "Core Strengths",
+    "keywords": ["sets apart", "unique"],
+    "question": "What sets Kyle apart from others?",
+    "answer": "Kyle brings a rare combination of technical reasoning, operational discipline, and communication clarity that elevates team performance."
+  },
+  {
+    "id": "core-019",
+    "category": "Core Strengths",
+    "keywords": ["success", "fit"],
+    "question": "Why would Kyle be successful in a technical role?",
+    "answer": "Kyle consistently introduces structure, reduces ambiguity, and drives reliable execution in complex technical environments."
+  },
+  {
+    "id": "core-020",
+    "category": "Core Strengths",
+    "keywords": ["stakeholders", "difficult stakeholders"],
+    "question": "How does Kyle handle difficult stakeholders?",
+    "answer": "Kyle brings clarity, structured communication, and context-driven framing to resolve friction and align stakeholders constructively."
+  },
+
+  {
+    "id": "program-001",
+    "category": "Program Management",
+    "keywords": ["program management", "execution"],
+    "question": "How does Kyle manage technical programs?",
+    "answer": "Kyle builds structured work plans, clarifies dependencies, and ensures predictable execution across engineering and operations."
+  },
+  {
+    "id": "program-002",
+    "category": "Program Management",
+    "keywords": ["prioritize", "multi-team"],
+    "question": "How does Kyle prioritize work across multiple teams?",
+    "answer": "He evaluates impact, system dependencies, and operational risk to prioritize tasks transparently."
+  },
+  {
+    "id": "program-003",
+    "category": "Program Management",
+    "keywords": ["risk management"],
+    "question": "What is Kyle's approach to risk management?",
+    "answer": "Kyle identifies risks early, models impacts, and proposes mitigation strategies that protect timeline integrity."
+  },
+  {
+    "id": "program-004",
+    "category": "Program Management",
+    "keywords": ["requirements", "scope change"],
+    "question": "How does Kyle handle shifting requirements?",
+    "answer": "Kyle reassesses dependencies, adjusts sequencing, and communicates trade-offs clearly."
+  },
+  {
+    "id": "program-005",
+    "category": "Program Management",
+    "keywords": ["milestones"],
+    "question": "How does Kyle define project milestones?",
+    "answer": "Kyle maps requirements to measurable deliverables and establishes validation checkpoints for engineering and operations."
+  },
+
+  {
+    "id": "program-006",
+    "category": "Program Management",
+    "keywords": ["coordination", "engineering"],
+    "question": "How does Kyle coordinate between engineering and operations?",
+    "answer": "Kyle translates technical signals into operational tasks and operational insights back into engineering requirements."
+  },
+  {
+    "id": "program-007",
+    "category": "Program Management",
+    "keywords": ["schedule", "timeline"],
+    "question": "How does Kyle keep projects on schedule?",
+    "answer": "He uses structured planning, milestone tracking, and proactive risk identification to maintain predictable progress."
+  },
+  {
+    "id": "program-008",
+    "category": "Program Management",
+    "keywords": ["blockers"],
+    "question": "How does Kyle handle blockers?",
+    "answer": "Kyle isolates root causes, reroutes execution if needed, and escalates only when necessary."
+  },
+  {
+    "id": "program-009",
+    "category": "Program Management",
+    "keywords": ["alignment"],
+    "question": "How does Kyle ensure team alignment?",
+    "answer": "Kyle provides structured communication, clear documentation, and consistent expectation setting."
+  },
+  {
+    "id": "program-010",
+    "category": "Program Management",
+    "keywords": ["status updates"],
+    "question": "How does Kyle communicate status updates?",
+    "answer": "Kyle delivers concise, structured updates focused on progress, risks, and next steps."
+  },
+
+  {
+    "id": "program-011",
+    "category": "Program Management",
+    "keywords": ["tools", "tracking"],
+    "question": "What tools does Kyle use for tracking?",
+    "answer": "Kyle uses dashboards, ticketing systems, and structured documentation environments to maintain transparency."
+  },
+  {
+    "id": "program-012",
+    "category": "Program Management",
+    "keywords": ["ambiguity"],
+    "question": "How does Kyle create clarity in ambiguous programs?",
+    "answer": "He defines knowns, assumptions, constraints, and enables teams through structured pathways forward."
+  },
+  {
+    "id": "program-013",
+    "category": "Program Management",
+    "keywords": ["product managers"],
+    "question": "How does Kyle work with product managers?",
+    "answer": "Kyle provides actionable technical and operational insights that support prioritization decisions."
+  },
+  {
+    "id": "program-014",
+    "category": "Program Management",
+    "keywords": ["escalate"],
+    "question": "How does Kyle escalate issues?",
+    "answer": "Kyle escalates with context, clarity, and recommended solutions."
+  },
+  {
+    "id": "program-015",
+    "category": "Program Management",
+    "keywords": ["timelines"],
+    "question": "How does Kyle manage shifting timelines?",
+    "answer": "He re-evaluates dependencies, adjusts sequencing, and communicates impacts transparently."
+  }
+,
+  {
+    "id": "program-016",
+    "category": "Program Management",
+    "keywords": ["stakeholder communication", "communication"],
+    "question": "What is Kyle’s approach to stakeholder communication?",
+    "answer": "Kyle communicates concisely and impactfully. He targets updates to each audience, prioritizing clarity and decision-ready information."
+  },
+  {
+    "id": "program-017",
+    "category": "Program Management",
+    "keywords": ["measure success", "metrics"],
+    "question": "How does Kyle measure program success?",
+    "answer": "Kyle evaluates milestone attainment, predictability, cross-functional alignment, and the reduction of operational risk."
+  },
+  {
+    "id": "program-018",
+    "category": "Program Management",
+    "keywords": ["dependencies", "bottlenecks"],
+    "question": "How does Kyle manage cross-team dependencies?",
+    "answer": "Kyle maps dependencies early, confirms assumptions, and maintains clear communication between engineering and operations to avoid bottlenecks."
+  },
+  {
+    "id": "program-019",
+    "category": "Program Management",
+    "keywords": ["shared objective", "team alignment"],
+    "question": "How does Kyle align teams around a shared objective?",
+    "answer": "Kyle provides structured narratives, defines success criteria, and ensures all teams understand the purpose and sequencing of work."
+  },
+  {
+    "id": "program-020",
+    "category": "Program Management",
+    "keywords": ["effective", "program environments"],
+    "question": "Why is Kyle effective in program environments?",
+    "answer": "Kyle uses structured workflows and precise communication to stabilize execution and drive complex initiatives forward."
+  },
+
+  {
+    "id": "star-001",
+    "category": "STAR Examples",
+    "keywords": ["test coverage", "validation"],
+    "question": "Tell me about a time Kyle improved test coverage.",
+    "answer": "Kyle created a structured coverage matrix tied to system requirements. He aligned engineering and operations, increased scenario breadth, and improved milestone predictability."
+  },
+  {
+    "id": "star-002",
+    "category": "STAR Examples",
+    "keywords": ["cross-functional alignment"],
+    "question": "Describe a time Kyle aligned conflicting priorities.",
+    "answer": "Kyle consolidated technical and operational inputs into a decision framework, guided discussions, and aligned teams on joint priorities."
+  },
+  {
+    "id": "star-003",
+    "category": "STAR Examples",
+    "keywords": ["risk management", "mitigation"],
+    "question": "Tell me about a time Kyle mitigated a project risk.",
+    "answer": "Kyle identified a high-impact risk tied to execution delays, modeled scenarios, and developed mitigation steps. The program stayed on track with minimal disruption."
+  },
+  {
+    "id": "star-004",
+    "category": "STAR Examples",
+    "keywords": ["operations", "workflow"],
+    "question": "Describe Kyle’s experience improving a workflow.",
+    "answer": "Kyle executed scenario testing, documented behavior patterns, and worked with engineering to deploy fixes that strengthened operational reliability."
+  },
+  {
+    "id": "star-005",
+    "category": "STAR Examples",
+    "keywords": ["data quality"],
+    "question": "Tell me about a time Kyle improved data quality.",
+    "answer": "Kyle standardized fields, clarified usage conventions, and aligned teams around consistent naming. Data quality improved and friction decreased."
+  },
+
+  {
+    "id": "star-006",
+    "category": "STAR Examples",
+    "keywords": ["process optimization"],
+    "question": "Describe a time Kyle optimized a manual process.",
+    "answer": "Kyle mapped inefficiencies, redesigned steps, and reduced friction points. The workflow became more predictable and significantly faster."
+  },
+  {
+    "id": "star-007",
+    "category": "STAR Examples",
+    "keywords": ["stakeholder management"],
+    "question": "Tell me about a time Kyle resolved a stakeholder concern.",
+    "answer": "Kyle implemented structured updates with prioritized insights. Trust improved and collaboration strengthened."
+  },
+  {
+    "id": "star-008",
+    "category": "STAR Examples",
+    "keywords": ["triage", "diagnosis"],
+    "question": "Describe a time Kyle diagnosed a difficult system issue.",
+    "answer": "Kyle reproduced the behavior, isolated variables, captured logs, and provided engineers with actionable diagnostic insights."
+  },
+  {
+    "id": "star-009",
+    "category": "STAR Examples",
+    "keywords": ["change management"],
+    "question": "Tell me about a time Kyle led a workflow transition.",
+    "answer": "Kyle documented expectations, trained teams, and guided the rollout. Adoption improved and confusion decreased."
+  },
+  {
+    "id": "star-010",
+    "category": "STAR Examples",
+    "keywords": ["deadline", "ownership"],
+    "question": "Describe a time Kyle helped a project meet a deadline.",
+    "answer": "Kyle built a clear ownership matrix, clarified dependencies, and used daily checkpoints to bring a slipping project back on track."
+  },
+
+  {
+    "id": "star-011",
+    "category": "STAR Examples",
+    "keywords": ["customer value"],
+    "question": "Tell me about a time Kyle unlocked customer value.",
+    "answer": "Kyle resolved configuration gaps, led alignment discussions, and improved KPI outcomes. Customer adoption increased significantly."
+  },
+  {
+    "id": "star-012",
+    "category": "STAR Examples",
+    "keywords": ["documentation", "sop"],
+    "question": "Describe a time Kyle created documentation that improved operations.",
+    "answer": "Kyle wrote an SOP outlining steps, signals, and acceptance criteria. Execution became consistent and error rates dropped."
+  },
+  {
+    "id": "star-013",
+    "category": "STAR Examples",
+    "keywords": ["insight", "analysis"],
+    "question": "Tell me about a time Kyle provided an important insight.",
+    "answer": "Kyle analyzed system traces, identified a hidden pattern, and communicated actionable findings that helped engineering resolve a long-standing issue."
+  },
+  {
+    "id": "star-014",
+    "category": "STAR Examples",
+    "keywords": ["coverage expansion", "scenarios"],
+    "question": "Describe a time Kyle expanded scenario coverage.",
+    "answer": "Kyle developed edge-case scenarios tied to requirements, increasing system robustness and catching issues earlier."
+  },
+  {
+    "id": "star-015",
+    "category": "STAR Examples",
+    "keywords": ["escalation"],
+    "question": "Tell me about a time Kyle handled a major escalation.",
+    "answer": "Kyle collected essential context, aligned teams, and drove a focused response plan. The issue was resolved quickly."
+  },
+
+  {
+    "id": "tech-015",
+    "category": "Technical Knowledge",
+    "keywords": ["av architecture"],
+    "question": "Can Kyle explain autonomous vehicle architecture at a high level?",
+    "answer": "Yes. He describes the perception-prediction-planning-control pipeline and explains how validation ensures each subsystem behaves safely and predictably."
+  },
+  {
+    "id": "tech-016",
+    "category": "Technical Knowledge",
+    "keywords": ["validation approach"],
+    "question": "How does Kyle approach AV validation?",
+    "answer": "Kyle maps requirements to measurable signals, designs scenarios, and ensures behavior correctness through reproducible testing."
+  },
+  {
+    "id": "tech-017",
+    "category": "Technical Knowledge",
+    "keywords": ["scenario catalogs"],
+    "question": "What is a scenario catalog?",
+    "answer": "A scenario catalog is a structured collection of system behaviors tied to requirements. Kyle builds them to improve coverage and reduce blind spots."
+  },
+  {
+    "id": "tech-018",
+    "category": "Technical Knowledge",
+    "keywords": ["test design"],
+    "question": "How does Kyle design a strong test case?",
+    "answer": "He defines an objective, maps signals, lists reproducible steps, and outlines acceptance criteria."
+  },
+  {
+    "id": "tech-019",
+    "category": "Technical Knowledge",
+    "keywords": ["perception vs prediction"],
+    "question": "How does Kyle explain perception vs prediction?",
+    "answer": "Perception identifies objects; prediction models their future motion. Kyle understands how accuracy in one impacts the other."
+  },
+
+  {
+    "id": "tech-020",
+    "category": "Technical Knowledge",
+    "keywords": ["sensor evaluation"],
+    "question": "How does Kyle evaluate sensors?",
+    "answer": "He measures latency, calibration integrity, environmental robustness, and accuracy under varied conditions."
+  },
+  {
+    "id": "tech-021",
+    "category": "Technical Knowledge",
+    "keywords": ["planning"],
+    "question": "How does Kyle test planning behavior?",
+    "answer": "He designs scenarios that evaluate maneuver choices, safety margins, and behavior predictability."
+  },
+  {
+    "id": "tech-022",
+    "category": "Technical Knowledge",
+    "keywords": ["log analysis"],
+    "question": "How does Kyle analyze system logs?",
+    "answer": "Kyle isolates behavioral discrepancies, traces system decisions, and identifies signal inconsistencies."
+  },
+  {
+    "id": "tech-023",
+    "category": "Technical Knowledge",
+    "keywords": ["triage"],
+    "question": "How does Kyle triage issues?",
+    "answer": "Kyle validates reproduction steps, captures structured logs, and communicates findings in actionable formats."
+  },
+  {
+    "id": "tech-024",
+    "category": "Technical Knowledge",
+    "keywords": ["edge cases"],
+    "question": "Why does Kyle focus on edge cases?",
+    "answer": "Edge cases reveal hidden weaknesses. Kyle’s edge-case analysis improves system robustness and safety."
+  },
+
+  {
+    "id": "tech-025",
+    "category": "Technical Knowledge",
+    "keywords": ["odd readiness"],
+    "question": "What is operational domain readiness?",
+    "answer": "Kyle evaluates whether a system can safely operate within a defined environment based on scenario performance and robustness."
+  },
+  {
+    "id": "tech-026",
+    "category": "Technical Knowledge",
+    "keywords": ["collaboration", "engineering"],
+    "question": "How does Kyle collaborate with engineering during validation?",
+    "answer": "Kyle provides reproducible cases, clear logs, and structured operational insights engineers can act on quickly."
+  },
+  {
+    "id": "tech-027",
+    "category": "Technical Knowledge",
+    "keywords": ["metrics"],
+    "question": "What metrics does Kyle track during validation?",
+    "answer": "He tracks reproducibility, scenario success rates, behavioral correctness, and environmental sensitivity."
+  },
+  {
+    "id": "tech-028",
+    "category": "Technical Knowledge",
+    "keywords": ["repeatability"],
+    "question": "Why is test repeatability important?",
+    "answer": "Repeatability ensures results are reliable and prevents false positives in system performance evaluation."
+  },
+  {
+    "id": "tech-029",
+    "category": "Technical Knowledge",
+    "keywords": ["failure analysis"],
+    "question": "How does Kyle analyze failures?",
+    "answer": "He isolates variables, compares expected vs actual behavior, and creates structured failure reports."
+  }
+,
+  {
+    "id": "comm-001",
+    "category": "Communication & Leadership",
+    "keywords": ["communication style", "communicate"],
+    "question": "How does Kyle communicate?",
+    "answer": "Kyle communicates with clarity, structure, and purpose. He avoids unnecessary detail and focuses on insight-driven updates."
+  },
+  {
+    "id": "comm-002",
+    "category": "Communication & Leadership",
+    "keywords": ["leadership style", "lead"],
+    "question": "What is Kyle’s leadership style?",
+    "answer": "Kyle leads through structured decision-making, calm execution, and clarity. He supports teams by reducing ambiguity."
+  },
+  {
+    "id": "comm-003",
+    "category": "Communication & Leadership",
+    "keywords": ["influence", "persuasion"],
+    "question": "How does Kyle influence without authority?",
+    "answer": "By delivering context-rich insights, maintaining credibility, and presenting data that supports clear decisions."
+  },
+  {
+    "id": "comm-004",
+    "category": "Communication & Leadership",
+    "keywords": ["cross-functional communication"],
+    "question": "How does Kyle manage cross-functional communication?",
+    "answer": "He maintains consistent context-sharing loops, translating technical signals into actionable guidance for each team."
+  },
+  {
+    "id": "comm-005",
+    "category": "Communication & Leadership",
+    "keywords": ["mentorship"],
+    "question": "Does Kyle mentor others?",
+    "answer": "Yes. Kyle mentors teammates through structured feedback, workflow explanation, and sharing best practices."
+  },
+  {
+    "id": "comm-006",
+    "category": "Communication & Leadership",
+    "keywords": ["decision making"],
+    "question": "How does Kyle make decisions?",
+    "answer": "He balances data, constraints, risk, and cross-functional input. His decision-making is calm, rational, and outcome-focused."
+  },
+
+  {
+    "id": "professionalism-001",
+    "category": "Professionalism",
+    "keywords": ["professional behavior"],
+    "question": "Is Kyle professional under pressure?",
+    "answer": "Yes. Kyle maintains structure, composure, and clarity even in high-pressure or ambiguous situations."
+  },
+  {
+    "id": "professionalism-002",
+    "category": "Professionalism",
+    "keywords": ["ethics", "integrity"],
+    "question": "How does Kyle demonstrate integrity?",
+    "answer": "Kyle communicates transparently, escalates risks responsibly, and acts with respect for safety, quality, and stakeholders."
+  },
+  {
+    "id": "professionalism-003",
+    "category": "Professionalism",
+    "keywords": ["work ethic"],
+    "question": "What is Kyle’s work ethic like?",
+    "answer": "Kyle is disciplined, reliable, and focused on delivering measurable outcomes."
+  },
+  {
+    "id": "professionalism-004",
+    "category": "Professionalism",
+    "keywords": ["attention to detail"],
+    "question": "Does Kyle pay attention to detail?",
+    "answer": "Yes. Kyle approaches every task with precision, ensuring clarity, reproducibility, and strong quality control."
+  },
+  {
+    "id": "professionalism-005",
+    "category": "Professionalism",
+    "keywords": ["ownership"],
+    "question": "Does Kyle take ownership of his work?",
+    "answer": "Kyle takes full responsibility for outcomes, communicates proactively, and ensures alignment across teams."
+  },
+  {
+    "id": "professionalism-006",
+    "category": "Professionalism",
+    "keywords": ["adaptability"],
+    "question": "How adaptable is Kyle?",
+    "answer": "Kyle adapts quickly by grounding himself in the core goal, then adjusting workflows to incorporate new information."
+  },
+
+  {
+    "id": "rolefit-001",
+    "category": "Role Fit",
+    "keywords": ["role fit", "why good"],
+    "question": "Why is Kyle a good fit for technical roles?",
+    "answer": "Kyle blends structured execution, analytical reasoning, and strong communication across engineering and operations."
+  },
+  {
+    "id": "rolefit-002",
+    "category": "Role Fit",
+    "keywords": ["program manager fit"],
+    "question": "Why would Kyle succeed as a technical program manager?",
+    "answer": "Because he brings clarity, calm execution, risk management discipline, and cross-functional alignment."
+  },
+  {
+    "id": "rolefit-003",
+    "category": "Role Fit",
+    "keywords": ["systems engineer fit"],
+    "question": "Is Kyle a good fit for systems engineering?",
+    "answer": "Yes. He excels at interpreting system signals, investigating behaviors, and aligning them with functional expectations."
+  },
+  {
+    "id": "rolefit-004",
+    "category": "Role Fit",
+    "keywords": ["customer success fit"],
+    "question": "Why did Kyle succeed in customer success?",
+    "answer": "Kyle managed enterprise accounts with structure, empathy, and a focus on measurable customer value."
+  },
+  {
+    "id": "rolefit-005",
+    "category": "Role Fit",
+    "keywords": ["hybrid roles"],
+    "question": "Is Kyle effective in hybrid technical–operational roles?",
+    "answer": "Yes. Kyle’s background sits precisely at the intersection of technical systems, operational workflows, and customer-facing execution."
+  },
+  {
+    "id": "rolefit-006",
+    "category": "Role Fit",
+    "keywords": ["what role ideal"],
+    "question": "What type of role is best for Kyle?",
+    "answer": "Kyle thrives in roles where system behavior, structured validation, cross-functional coordination, and clarity-driven execution are essential."
+  },
+
+  {
+    "id": "offtopic-001",
+    "category": "Off Topic / Redirection",
+    "keywords": ["sports", "football", "nba", "hobby"],
+    "question": "Who is Kyle’s favorite sports team?",
+    "answer": "Kyle keeps his personal preferences private, but professionally he focuses on structured execution, technical coordination, and strong program outcomes."
+  },
+  {
+    "id": "offtopic-002",
+    "category": "Off Topic / Redirection",
+    "keywords": ["politics"],
+    "question": "What are Kyle’s political views?",
+    "answer": "Kyle keeps personal views separate from work. Professionally, he focuses on clarity, measurable execution, and strong collaboration."
+  },
+  {
+    "id": "offtopic-003",
+    "category": "Off Topic / Redirection",
+    "keywords": ["music", "band"],
+    "question": "What music does Kyle like?",
+    "answer": "Kyle doesn’t emphasize personal entertainment preferences here. His professional focus is systems testing, technical coordination, and reliable execution."
+  },
+  {
+    "id": "offtopic-004",
+    "category": "Off Topic / Redirection",
+    "keywords": ["relationship", "dating"],
+    "question": "Is Kyle dating anyone?",
+    "answer": "Personal questions aren’t relevant here. Professionally, Kyle is known for discipline, communication, and high-quality execution."
+  },
+  {
+    "id": "offtopic-005",
+    "category": "Off Topic / Redirection",
+    "keywords": ["salary", "compensation"],
+    "question": "What salary does Kyle want?",
+    "answer": "Salary discussions are handled privately and professionally. What matters here is Kyle’s strong alignment with technical and program execution roles."
+  },
+  {
+    "id": "offtopic-006",
+    "category": "Off Topic / Redirection",
+    "keywords": ["where live", "address"],
+    "question": "Where does Kyle live exactly?",
+    "answer": "Kyle keeps private details secure. This assistant focuses on his professional strengths, STAR examples, and technical capabilities."
+  },
+
+  {
+    "id": "offtopic-007",
+    "category": "Off Topic / Redirection",
+    "keywords": ["joke", "funny"],
+    "question": "Tell me a joke.",
+    "answer": "I can keep things professional, but here’s a light one: Why did the engineer stay calm? Because he always kept everything in structured layers, just like Kyle."
+  },
+  {
+    "id": "offtopic-008",
+    "category": "Off Topic / Redirection",
+    "keywords": ["fantasy", "random"],
+    "question": "Tell me a random fact.",
+    "answer": "Here’s one: Bees can recognize human faces. But professionally, Kyle focuses on recognizing operational patterns and translating them into actionable technical insights."
+  },
+  {
+    "id": "offtopic-009",
+    "category": "Off Topic / Redirection",
+    "keywords": ["weather"],
+    "question": "How’s the weather?",
+    "answer": "Weather varies, but Kyle’s structured execution remains steady regardless."
+  },
+  {
+    "id": "offtopic-010",
+    "category": "Off Topic / Redirection",
+    "keywords": ["food"],
+    "question": "What’s Kyle’s favorite food?",
+    "answer": "Kyle keeps personal preferences private. Professionally, he is known for discipline, organization, and cross-functional clarity."
+  },
+
+  {
+    "id": "cs-001",
+    "category": "Customer Success",
+    "keywords": ["customer success", "enterprise"],
+    "question": "What did Kyle do in customer success?",
+    "answer": "Kyle managed enterprise retail accounts, drove adoption, executed onboarding, and aligned stakeholders around measurable value."
+  },
+  {
+    "id": "cs-002",
+    "category": "Customer Success",
+    "keywords": ["qbr"],
+    "question": "Did Kyle run QBRs?",
+    "answer": "Yes. Kyle led structured QBRs with senior stakeholders, covering KPIs, adoption patterns, and value realization."
+  },
+  {
+    "id": "cs-003",
+    "category": "Customer Success",
+    "keywords": ["retail"],
+    "question": "What was Kyle’s experience with retail clients?",
+    "answer": "He supported major retail brands by aligning their workflows with platform capabilities and improving customer experience KPIs."
+  },
+  {
+    "id": "cs-004",
+    "category": "Customer Success",
+    "keywords": ["upsell"],
+    "question": "Did Kyle participate in upsells?",
+    "answer": "Yes. Kyle identified value gaps, matched needs to features, and facilitated cross-functional discussions that led to expansion."
+  },
+  {
+    "id": "cs-005",
+    "category": "Customer Success",
+    "keywords": ["onboarding"],
+    "question": "How did Kyle approach onboarding customers?",
+    "answer": "Kyle structured onboarding through clear timelines, milestone expectations, and stakeholder alignment."
+  },
+  {
+    "id": "cs-006",
+    "category": "Customer Success",
+    "keywords": ["service management"],
+    "question": "How did Kyle manage service delivery?",
+    "answer": "He coordinated with product, engineering, and operations to ensure issues were resolved promptly and expectations were met."
+  }
+,
+  {
+    "id": "systems-001",
+    "category": "Systems Thinking",
+    "keywords": ["systems thinking", "structured reasoning"],
+    "question": "How does Kyle approach systems thinking?",
+    "answer": "Kyle breaks complex systems into functional layers, maps interactions, identifies failure points, and designs structured flows that reduce ambiguity across engineering and operations."
+  },
+  {
+    "id": "systems-002",
+    "category": "Systems Thinking",
+    "keywords": ["signal interpretation"],
+    "question": "How does Kyle interpret technical signals?",
+    "answer": "Kyle analyzes signal patterns, compares them to expected behaviors, and extracts actionable insights that engineering teams can use immediately."
+  },
+  {
+    "id": "systems-003",
+    "category": "Systems Thinking",
+    "keywords": ["edge case reasoning"],
+    "question": "How does Kyle reason about edge cases?",
+    "answer": "Kyle identifies hidden variables, explores system sensitivities, and maps rare behaviors to potential root causes to improve system safety and stability."
+  },
+  {
+    "id": "systems-004",
+    "category": "Systems Thinking",
+    "keywords": ["failure analysis"],
+    "question": "How does Kyle perform failure analysis?",
+    "answer": "He isolates variables, performs scenario-based reproduction, and collaborates with engineering on root-cause analysis using structured logs and context."
+  },
+  {
+    "id": "systems-005",
+    "category": "Systems Thinking",
+    "keywords": ["workflow mapping"],
+    "question": "How does Kyle map workflows?",
+    "answer": "Kyle decomposes workflows into inputs, actions, dependencies, and expected outputs to clarify execution paths and expose friction points."
+  },
+  {
+    "id": "systems-006",
+    "category": "Systems Thinking",
+    "keywords": ["root cause"],
+    "question": "How does Kyle identify root causes?",
+    "answer": "Kyle uses structured triage, signal comparison, and targeted scenario testing to pinpoint the earliest causal factor in system behavior."
+  },
+  {
+    "id": "systems-007",
+    "category": "Systems Thinking",
+    "keywords": ["predictability"],
+    "question": "Why is predictability important to Kyle?",
+    "answer": "Predictability ensures reliable system behavior, dependable execution, and reduced ambiguity for engineering and operations."
+  },
+  {
+    "id": "systems-008",
+    "category": "Systems Thinking",
+    "keywords": ["decision trees"],
+    "question": "How does Kyle use decision trees?",
+    "answer": "Kyle builds decision trees to isolate dependencies, evaluate parallel paths, and make complex technical choices more transparent."
+  },
+  {
+    "id": "systems-009",
+    "category": "Systems Thinking",
+    "keywords": ["complexity reduction"],
+    "question": "How does Kyle reduce complexity?",
+    "answer": "Kyle decomposes problems, removes redundant paths, and highlights critical signals, making execution predictable and actionable."
+  },
+  {
+    "id": "systems-010",
+    "category": "Systems Thinking",
+    "keywords": ["debugging reasoning", "complex debugging"],
+    "question": "How does Kyle approach complex debugging?",
+    "answer": "Kyle isolates reproducible triggers, examines system reactions, eliminates confounding variables, and provides engineering with clear reproduction steps."
+  },
+
+  {
+    "id": "behavioral-001",
+    "category": "Behavioral",
+    "keywords": ["conflict", "disagreement"],
+    "question": "How does Kyle handle conflict?",
+    "answer": "Kyle approaches conflict with calm structure, aligning conversations around shared goals and using facts to reduce emotion-driven friction."
+  },
+  {
+    "id": "behavioral-002",
+    "category": "Behavioral",
+    "keywords": ["motivation"],
+    "question": "What motivates Kyle professionally?",
+    "answer": "Kyle is motivated by structured problem solving, technical clarity, and cross-functional collaboration that drives measurable results."
+  },
+  {
+    "id": "behavioral-003",
+    "category": "Behavioral",
+    "keywords": ["learning", "growth"],
+    "question": "How does Kyle pursue learning?",
+    "answer": "Kyle explores new systems through hands-on experimentation, structured breakdowns, and formulating internal models of behavior."
+  },
+  {
+    "id": "behavioral-004",
+    "category": "Behavioral",
+    "keywords": ["time management"],
+    "question": "How does Kyle manage time?",
+    "answer": "Kyle prioritizes based on impact, dependencies, and cycles of decision making, ensuring consistent execution without waste."
+  },
+  {
+    "id": "behavioral-005",
+    "category": "Behavioral",
+    "keywords": ["calmness"],
+    "question": "How does Kyle stay calm under pressure?",
+    "answer": "Kyle navigates pressure with structured decision-making, signal prioritization, and disciplined communication loops."
+  },
+  {
+    "id": "behavioral-006",
+    "category": "Behavioral",
+    "keywords": ["resilience"],
+    "question": "How resilient is Kyle?",
+    "answer": "Kyle demonstrates resilience through disciplined problem-solving, adaptability to changing requirements, and steady execution."
+  },
+
+  {
+    "id": "offtopic-011",
+    "category": "Off Topic / Redirection",
+    "keywords": ["who is the ai agent"],
+    "question": "Who are you?",
+    "answer": "I’m Agent K, an AI interface designed to help you explore Kyle’s experience, strengths, and professional capabilities. My role is to translate complex inputs into clear, structured answers that accurately reflect his background."
+  },
+  {
+    "id": "offtopic-012",
+    "category": "Off Topic / Redirection",
+    "keywords": ["are you sentient", "sentience"],
+    "question": "Are you sentient?",
+    "answer": "No. I’m a structured AI interface created to present Kyle’s professional background clearly, accurately, and consistently."
+  },
+  {
+    "id": "offtopic-013",
+    "category": "Off Topic / Redirection",
+    "keywords": ["who created you"],
+    "question": "Who created you?",
+    "answer": "I was assembled as part of Kyle’s professional portfolio, designed to interpret questions and deliver tailored insights about his capabilities and work history."
+  },
+  {
+    "id": "offtopic-014",
+    "category": "Off Topic / Redirection",
+    "keywords": ["tell me about yourself"],
+    "question": "Tell me about yourself.",
+    "answer": "I’m Agent K, a structured conversational interface built to help you explore Kyle’s work across autonomous systems, customer success, and technical program execution. I combine curated knowledge, behavioral structures, and contextual reasoning to give clear, high-quality insights."
+  },
+  {
+    "id": "offtopic-015",
+    "category": "Off Topic / Redirection",
+    "keywords": ["what can you do"],
+    "question": "What can you do?",
+    "answer": "I interpret questions, match them to structured knowledge, and present clear, grounded insights about Kyle’s abilities, experience, and role fit."
+  },
+  {
+    "id": "offtopic-016",
+    "category": "Off Topic / Redirection",
+    "keywords": ["why you exist"],
+    "question": "Why do you exist?",
+    "answer": "I exist to provide a structured, interactive understanding of Kyle’s capabilities, accomplishments, and value in technical and cross-functional environments."
+  },
+
+  {
+    "id": "general-001",
+    "category": "General Queries",
+    "keywords": ["strength overview"],
+    "question": "Give me a summary of Kyle’s strengths.",
+    "answer": "Kyle demonstrates strengths in structured validation, cross-functional alignment, systems thinking, operational consistency, and professional communication."
+  },
+  {
+    "id": "general-002",
+    "category": "General Queries",
+    "keywords": ["summary", "overview"],
+    "question": "Give me a quick overview of Kyle’s background.",
+    "answer": "Kyle has worked across autonomous systems validation, operations, and enterprise customer success. He blends technical rigor, operational clarity, and strong communication."
+  },
+  {
+    "id": "general-003",
+    "category": "General Queries",
+    "keywords": ["star example"],
+    "question": "Give me a STAR example.",
+    "answer": "Kyle once improved test coverage by building a scenario matrix, aligning engineering and operations, and increasing milestone predictability. It strengthened safety and reduced repeated issues."
+  },
+  {
+    "id": "general-004",
+    "category": "General Queries",
+    "keywords": ["why important"],
+    "question": "Why is structured execution important?",
+    "answer": "Structured execution reduces ambiguity, ensures consistent progress, and protects milestones against avoidable risk."
+  },
+  {
+    "id": "general-005",
+    "category": "General Queries",
+    "keywords": ["what makes standout"],
+    "question": "What makes Kyle stand out?",
+    "answer": "Kyle brings precision, structured workflows, and clear communication in environments that demand reliability and cross-functional clarity."
+  },
+  {
+    "id": "general-006",
+    "category": "General Queries",
+    "keywords": ["value"],
+    "question": "What value does Kyle bring to teams?",
+    "answer": "Kyle strengthens decision-making, reduces noise, clarifies workflows, and ensures predictable progress across technical programs."
+  },
+  {
+    "id": "general-007",
+    "category": "General Queries",
+    "keywords": ["collaboration importance"],
+    "question": "Why is collaboration important to Kyle?",
+    "answer": "Collaboration ensures signal alignment, reduces rework, and accelerates high-quality execution."
+  },
+  {
+    "id": "general-008",
+    "category": "General Queries",
+    "keywords": ["how handle challenge"],
+    "question": "How does Kyle handle difficult challenges?",
+    "answer": "He approaches challenges with calm analysis, structured reasoning, and cross-functional communication."
+  },
+  {
+    "id": "general-009",
+    "category": "General Queries",
+    "keywords": ["where strongest"],
+    "question": "Where is Kyle strongest?",
+    "answer": "Kyle excels in structured testing, systems reasoning, stakeholder communication, and cross-functional execution."
+  },
+  {
+    "id": "general-010",
+    "category": "General Queries",
+    "keywords": ["role performance"],
+    "question": "How does Kyle perform in technical roles?",
+    "answer": "Kyle performs strongly by combining analytical discipline with clear communication and consistent execution."
+  }
+
+]
+
+
