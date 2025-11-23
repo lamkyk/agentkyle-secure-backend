@@ -296,3 +296,143 @@
     }
   ]
 }
+{
+  "id": "program-1",
+  "category": "Program Management",
+  "keywords": ["manage", "complex programs", "technical programs", "execution"],
+  "question": "How does Kyle manage complex technical programs?",
+  "answer": "Kyle manages complex programs by establishing structured execution workflows, clarifying dependencies, and aligning technical and operational stakeholders. He ensures consistent communication, clear expectations, and measurable milestones that keep progress predictable."
+},
+{
+  "id": "program-2",
+  "category": "Program Management",
+  "keywords": ["prioritize", "tasks", "multi-team", "environment"],
+  "question": "How does Kyle prioritize tasks in a multi-team environment?",
+  "answer": "Kyle prioritizes based on impact, risk, and system dependencies. He identifies which tasks unblock others, weighs operational urgency, and communicates rationale so teams remain aligned and focused."
+},
+{
+  "id": "program-3",
+  "category": "Program Management",
+  "keywords": ["risk management", "approach", "risks", "mitigation"],
+  "question": "What is Kyle's approach to risk management?",
+  "answer": "Kyle anticipates risks early by examining dependencies, workload patterns, and system constraints. He communicates risks with context and proposes mitigation steps that protect milestone timelines."
+},
+{
+  "id": "program-4",
+  "category": "Program Management",
+  "keywords": ["shifting requirements", "handle", "change", "flexibility"],
+  "question": "How does Kyle handle shifting requirements?",
+  "answer": "Kyle maintains flexibility by anchoring decisions to core objectives. He incorporates new requirements through structured reassessment, adjusts timelines or scope transparently, and keeps stakeholders aligned on trade-offs."
+},
+{
+  "id": "program-5",
+  "category": "Program Management",
+  "keywords": ["milestones", "establish", "project", "deliverables"],
+  "question": "How does Kyle establish project milestones?",
+  "answer": "Kyle defines milestones by mapping requirements to measurable deliverables, creating checkpoints for engineering validation, operational readiness, and cross-functional sign-off."
+},
+{
+  "id": "program-6",
+  "category": "Program Management",
+  "keywords": ["coordinate", "engineering", "operations", "cross-functional"],
+  "question": "How does Kyle coordinate across engineering and operations?",
+  "answer": "Kyle translates technical signals into actionable tasks for operations while bringing operational insights back into engineering. His communication reduces ambiguity and allows teams to make informed decisions."
+},
+{
+  "id": "program-7",
+  "category": "Program Management",
+  "keywords": ["schedule", "on schedule", "projects", "timeline"],
+  "question": "How does Kyle keep projects on schedule?",
+  "answer": "Kyle uses structured work plans, regular check-ins, and data-driven tracking. He identifies deviations early and adjusts resources, scope, or sequencing before delays escalate."
+},
+{
+  "id": "program-8",
+  "category": "Program Management",
+  "keywords": ["blockers", "handle", "obstacles", "remove"],
+  "question": "How does Kyle handle blockers?",
+  "answer": "Kyle isolates root causes, identifies affected dependencies, and works with teams to either remove the blocker or re-route work so progress continues. He escalates only when necessary."
+},
+{
+  "id": "program-9",
+  "category": "Program Management",
+  "keywords": ["alignment", "teams", "ensure", "coordination"],
+  "question": "How does Kyle ensure alignment between teams?",
+  "answer": "Kyle uses structured communication, clear documentation, and expectation setting. He makes sure each team understands how their work connects to the broader project goals."
+},
+{
+  "id": "program-10",
+  "category": "Program Management",
+  "keywords": ["status updates", "communicate", "progress", "reporting"],
+  "question": "How does Kyle communicate status updates?",
+  "answer": "Kyle communicates updates that are concise, structured, and focused on impact. His updates highlight progress, risks, and next steps without unnecessary detail."
+},
+{
+  "id": "program-11",
+  "category": "Program Management",
+  "keywords": ["tools", "program management", "ticketing", "dashboards"],
+  "question": "What tools does Kyle use for program management?",
+  "answer": "Kyle is experienced with ticketing systems, dashboards, and structured documentation environments. He uses these tools to maintain transparency and predictability across programs."
+},
+{
+  "id": "program-12",
+  "category": "Program Management",
+  "keywords": ["clarity", "ambiguous", "create", "uncertainty"],
+  "question": "How does Kyle create clarity in ambiguous situations?",
+  "answer": "Kyle defines what is known, establishes assumptions, maps constraints, and constructs a structured plan to reduce uncertainty while maintaining progress."
+},
+{
+  "id": "program-13",
+  "category": "Program Management",
+  "keywords": ["product managers", "work with", "pm", "prioritization"],
+  "question": "How does Kyle work with product managers?",
+  "answer": "Kyle provides clear technical signals and operational feedback that help product managers make prioritization decisions. He aligns execution with product direction."
+},
+{
+  "id": "program-14",
+  "category": "Program Management",
+  "keywords": ["escalate", "issues", "escalation", "constructive"],
+  "question": "How does Kyle escalate issues?",
+  "answer": "Kyle escalates with context, clarity, and recommended actions. He ensures escalations are constructive and solution-oriented, not noise."
+},
+{
+  "id": "program-15",
+  "category": "Program Management",
+  "keywords": ["shifting timelines", "manage", "adjust", "timelines"],
+  "question": "How does Kyle manage shifting timelines?",
+  "answer": "Kyle reassesses dependencies, adjusts execution order, and communicates trade-offs. He keeps teams aligned and focused on the most impactful path forward."
+},
+{
+  "id": "program-16",
+  "category": "Program Management",
+  "keywords": ["stakeholder", "communication", "approach", "updates"],
+  "question": "What is Kyle's approach to stakeholder communication?",
+  "answer": "Kyle communicates in a structured, action-oriented way. He ensures stakeholders understand progress, risks, and expectations without overwhelming them."
+},
+{
+  "id": "program-17",
+  "category": "Program Management",
+  "keywords": ["measure success", "program", "metrics", "success"],
+  "question": "How does Kyle measure success in a program?",
+  "answer": "Kyle measures success through milestone attainment, reliability of deliverables, and the clarity and predictability of execution workflows."
+},
+{
+  "id": "program-18",
+  "category": "Program Management",
+  "keywords": ["dependencies", "cross-functional", "manage", "bottlenecks"],
+  "question": "How does Kyle manage cross-functional dependencies?",
+  "answer": "Kyle maps dependencies early, identifies potential bottlenecks, and maintains communication loops between engineering, operations, and product teams."
+},
+{
+  "id": "program-19",
+  "category": "Program Management",
+  "keywords": ["align teams", "shared objective", "goal", "alignment"],
+  "question": "How does Kyle align teams toward a shared objective?",
+  "answer": "Kyle establishes a clear problem statement, defines success criteria, and ensures all teams understand the rationale behind decisions and sequencing."
+},
+{
+  "id": "program-20",
+  "category": "Program Management",
+  "keywords": ["effective", "program environments", "why effective", "success"],
+  "question": "Why is Kyle effective in program environments?",
+  "answer": "Kyle blends structured execution with strong interpersonal and technical communication. He reduces noise, enables clarity, and drives disciplined progress in environments that depend on precision."
+}
