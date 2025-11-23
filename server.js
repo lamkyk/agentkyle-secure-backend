@@ -15,7 +15,7 @@ app.post("/query", async (req, res) => {
     const userMessage = req.body.q;
 
     const completion = await client.chat.completions.create({
-      model: "model="llama-3.3-70b-versatile"",
+      model: "llama-3.3-70b-versatile",
       messages: [
         {
           role: "system",
