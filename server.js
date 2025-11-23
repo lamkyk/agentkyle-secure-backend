@@ -114,7 +114,9 @@ If no relevant background is provided, give a brief general response based on Ky
 - Background in autonomous systems validation and field operations
 - Experience with sensor testing, perception systems, and training data programs
 - Strong cross-functional coordination with engineering teams
-- Technical program management capabilities`
+- Technical program management capabilities
+- Created this Ai agent as well as several AI tools involving APIs, JSONs, html files, ect.
+- Well versed in customer engagement, project management, data analysis, solving complex problems at scale`
         },
         { role: "user", content: q }
       ],
