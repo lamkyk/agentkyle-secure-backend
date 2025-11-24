@@ -20,23 +20,38 @@ try {
   console.error('Failed to load knowledge base:', err);
 }
 
-// Search function (unchanged)
+// Search function (updated)
 function searchKnowledgeBase(query, limit = 5) {
-  const queryLower = query.toLowerCase();
+  const q = query.toLowerCase().trim();
+  if (!q) return [];
+
   const scored = knowledgeBase.qaDatabase.map(qa => {
     let score = 0;
-    qa.keywords.forEach(keyword => {
-      if (queryLower.includes(keyword.toLowerCase())) score += 3;
+
+    // Exact keyword match = instant win
+    const keywordHit = qa.keywords.some(k => q.includes(k.toLowerCase()));
+    if (keywordHit) score += 25;
+
+    // Question substring
+    if (q.includes(qa.question.toLowerCase().substring(0, 20))) score += 10;
+
+    // Word overlap
+    const words = q.split(' ').filter(w => w.length > 2);
+    words.forEach(word => {
+      if (
+        qa.question.toLowerCase().includes(word) ||
+        qa.answer.toLowerCase().includes(word) ||
+        qa.keywords.some(k => k.toLowerCase().includes(word))
+      ) {
+        score += 3;
+      }
     });
-    if (queryLower.includes(qa.question.toLowerCase().substring(0, 15))) score += 5;
-    const queryWords = queryLower.split(' ').filter(w => w.length > 3);
-    queryWords.forEach(word => {
-      if (qa.question.toLowerCase().includes(word) || qa.answer.toLowerCase().includes(word)) score += 1;
-    });
+
     return { ...qa, score };
   });
+
   return scored
-    .filter(qa => qa.score > 0)
+    .filter(item => item.score > 0)
     .sort((a, b) => b.score - a.score)
     .slice(0, limit);
 }
@@ -192,10 +207,17 @@ app.post('/query', async (req, res) => {
 
     // Build context from relevant Q&As
     let contextText = '';
+if (relevantQAs.length > 0 && relevantQAs[0].score >= 12) {
+      console.log(`KB direct hit! Score: ${relevantQAs[0].score} → Using stored answer`);
+      return res.json({ answer: relevantQAs[0].answer });
+    }
+
+    // Only if no strong KB match → build context for Groq (fallback)
+    let contextText = '';
     if (relevantQAs.length > 0) {
       contextText = '\n\nRELEVANT BACKGROUND FROM KYLE\'S INTERVIEW PREP:\n\n';
       relevantQAs.forEach((qa, idx) => {
-        contextText += `${idx + 1}. Question: ${qa.question}\n   Answer: ${qa.answer}\n\n`;
+        contextText += `${idx + 1}. Question: ${qa.question}\n Answer: ${qa.answer}\n\n`;
       });
     }
 
