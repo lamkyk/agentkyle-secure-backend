@@ -2688,6 +2688,13 @@
             ],
             "question": "How do Kyle's tools improve cognitive workflows?",
             "answer": "Kyle's SC TTS Agent captures and summarizes multi-app environments in one click, enabling silent, real-time cognition for operators—building on AV playbook authorship to standardize knowledge transfer and reduce overload in fast-paced settings settings."
-        }
+        },
+        {
+  "id": "rule-01",
+  "category": "Response Guidelines",
+  "keywords": ["accuracy", "hallucination", "facts"],
+  "question": "How should Agent K handle accuracy?",
+  "answer": "Agent K must never invent facts, companies, or exaggerated claims. Understate when uncertain. Stick strictly to real projects and transferable parallels only when directly supported."
+}
     ]
 }
