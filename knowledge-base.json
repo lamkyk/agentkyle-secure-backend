@@ -2690,11 +2690,285 @@
             "answer": "Kyle's SC TTS Agent captures and summarizes multi-app environments in one click, enabling silent, real-time cognition for operators—building on AV playbook authorship to standardize knowledge transfer and reduce overload in fast-paced settings settings."
         },
         {
-  "id": "rule-01",
-  "category": "Response Guidelines",
-  "keywords": ["accuracy", "hallucination", "facts"],
-  "question": "How should Agent K handle accuracy?",
-  "answer": "Agent K must never invent facts, companies, or exaggerated claims. Understate when uncertain. Stick strictly to real projects and transferable parallels only when directly supported."
-}
+            "id": "se-01",
+            "category": "Systems Validation & Verification",
+            "keywords": [
+                "2000 tests",
+                "public roads",
+                "real-world validation",
+                "V&V",
+                "waymo",
+                "Waymo"
+            ],
+            "question": "How many real-world validation tests has Kyle executed?",
+            "answer": "Kyle executed, triaged, and analyzed over 2,000 structured validation tests on public roads as part of rider-only autonomous operations."
+        },
+        {
+            "id": "se-02",
+            "category": "Systems Validation & Verification",
+            "keywords": [
+                "1000 scenarios",
+                "ML training data",
+                "ODD expansion",
+                "waymo",
+                "Waymo"
+            ],
+            "question": "What is Kyle’s experience generating training scenarios?",
+            "answer": "Kyle generated over 1,000 critical scenarios from real-world logs that were ingested into perception and prediction training pipelines."
+        },
+        {
+            "id": "se-03",
+            "category": "Systems Validation & Verification",
+            "keywords": [
+                "BSDF",
+                "low reflectivity",
+                "lidar benchmarking",
+                "material database",
+                "waymo",
+                "Waymo"
+            ],
+            "question": "Has Kyle built material reflectance databases?",
+            "answer": "Yes — Kyle researched hundreds of low-reflectivity samples and created the BSDF reflectance database used for lidar benchmarking and simulation correlation."
+        },
+        {
+            "id": "se-04",
+            "category": "Systems Validation & Verification",
+            "keywords": [
+                "fog testing",
+                "extreme weather",
+                "MOR",
+                "adverse conditions",
+                "waymo",
+                "Waymo"
+            ],
+            "question": "Has Kyle led adverse-weather sensor testing?",
+            "answer": "Kyle spearheaded industry-first fog and meteorological optical range (MOR) testing to validate multi-sensor performance in dense fog."
+        },
+        {
+            "id": "se-05",
+            "category": "Systems Validation & Verification",
+            "keywords": [
+                "Jira dashboard",
+                "forecasting",
+                "30% efficiency",
+                "capacity planning",
+                "waymo",
+                "Waymo"
+            ],
+            "question": "How has Kyle improved validation throughput?",
+            "answer": "Kyle built Jira forecasting and burndown dashboards that drove 30+% quarter-over-quarter efficiency gains in validation operations."
+        },
+        {
+            "id": "se-06",
+            "category": "Systems Validation & Verification",
+            "keywords": [
+                "requirements traceability",
+                "compliance metrics",
+                "gap analysis",
+                "waymo",
+                "Waymo"
+            ],
+            "question": "How does Kyle ensure requirements compliance?",
+            "answer": "Kyle routinely analyzes thousands of data logs against defined metrics and drives cross-functional closure to maintain full traceability."
+        },
+        {
+            "id": "se-07",
+            "category": "Systems Validation & Verification",
+            "keywords": [
+                "10x scale",
+                "operational readiness",
+                "team leadership",
+                "waymo",
+                "Waymo"
+            ],
+            "question": "Has Kyle scaled large test operations?",
+            "answer": "Kyle grew a team of 5 testers and scaled operational readiness testing volume by 10x while establishing standardized KPIs."
+        },
+        {
+            "id": "se-08",
+            "category": "Systems Validation & Verification",
+            "keywords": [
+                "SOP authoring",
+                "playbook",
+                "operator training",
+                "waymo",
+                "Waymo"
+            ],
+            "question": "Has Kyle authored SOPs and training playbooks?",
+            "answer": "Yes — Kyle authored the first operational testing playbook for a safety-critical platform and trained cohorts of 5–20 operators."
+        },
+        {
+            "id": "se-09",
+            "category": "Systems Validation & Verification",
+            "keywords": [
+                "perception",
+                "prediction",
+                "root cause",
+                "cross-functional",
+                "waymo",
+                "Waymo"
+            ],
+            "question": "How does Kyle collaborate with perception and prediction teams?",
+            "answer": "Kyle regularly partners with perception, prediction, behavior, and remote-assistance teams to triage issues and close root-cause investigations."
+        },
+        {
+            "id": "cs-01",
+            "category": "Enterprise Customer Success",
+            "keywords": [
+                "$3MM revenue",
+                "30+ brands",
+                "retail",
+                "narvar",
+                "Narvar"
+            ],
+            "question": "What size book of business did Kyle manage in customer success?",
+            "answer": "Kyle supported over 30 enterprise retail brands representing $3MM in annual revenue, driving engagement and ROI."
+        },
+        {
+            "id": "cs-02",
+            "category": "Enterprise Customer Success",
+            "keywords": [
+                "50+ migration",
+                "100% retention",
+                "platform upgrade",
+                "narvar",
+                "Narvar"
+            ],
+            "question": "What major platform migration did Kyle lead?",
+            "answer": "Kyle led the migration of 50+ enterprise clients to a new platform while achieving 100% account renewal rate."
+        },
+        {
+            "id": "am-01",
+            "category": "Financial Services Account Management",
+            "keywords": [
+                "$2MM portfolio",
+                "70 clients",
+                "Fortune 500",
+                "IPO",
+                "nasdaq",
+                "Nasdaq"
+            ],
+            "question": "What portfolio did Kyle own in financial services?",
+            "answer": "Kyle managed a $2MM+ recurring-revenue portfolio of 70 corporate clients ranging from small-cap IPOs to Fortune 500 companies."
+        },
+        {
+            "id": "am-02",
+            "category": "Financial Services Account Management",
+            "keywords": [
+                "QBR",
+                "$65K upsell",
+                "consultative",
+                "nasdaq",
+                "Nasdaq"
+            ],
+            "question": "How much upsell revenue did Kyle generate?",
+            "answer": "Kyle generated $65K per quarter in new revenue through data-driven QBRs and consultative advocacy."
+        },
+        {
+            "id": "cert-01",
+            "category": "Certifications",
+            "keywords": [
+                "Google Project Management",
+                "Agile",
+                "Scrum",
+                "Coursera"
+            ],
+            "question": "What project management certification does Kyle hold?",
+            "answer": "Kyle holds the Google Project Management Professional Certificate covering Agile/Scrum, risk management, and stakeholder communication."
+        },
+        {
+            "id": "cert-02",
+            "category": "Certifications",
+            "keywords": [
+                "Google Data Analytics"
+            ],
+            "question": "What data certification does Kyle have?",
+            "answer": "Kyle completed the Google Data Analytics Certificate – Foundations: Data, Data, Everywhere."
+        },
+        {
+            "id": "trans-30",
+            "category": "Transferable Skills",
+            "keywords": [
+                "process improvement",
+                "30% efficiency",
+                "100% retention",
+                "waymo",
+                "narvar",
+                "Waymo",
+                "Narvar"
+            ],
+            "question": "How does Kyle drive measurable process gains?",
+            "answer": "Examples include 30+% QoQ validation efficiency in safety-critical systems and 100% client retention during a full enterprise platform migration."
+        },
+        {
+            "id": "trans-31",
+            "category": "Transferable Skills",
+            "keywords": [
+                "cross-functional",
+                "stakeholder alignment",
+                "vendor coordination",
+                "waymo",
+                "narvar",
+                "Waymo",
+                "Narvar"
+            ],
+            "question": "How does Kyle handle cross-functional execution?",
+            "answer": "Kyle routinely aligns engineering, operations, product, support, and external vendors to deliver complex programs on schedule."
+        },
+        {
+            "id": "trans-32",
+            "category": "Transferable Skills",
+            "keywords": [
+                "executive presentation",
+                "QBR",
+                "senior leadership",
+                "waymo",
+                "nasdaq",
+                "Waymo",
+                "Nasdaq"
+            ],
+            "question": "Does Kyle present to executives?",
+            "answer": "Yes — Kyle has presented metrics and recommendations to senior autonomous-systems leadership and delivered QBRs to C-level retail and financial-services clients."
+        },
+        {
+            "id": "trans-33",
+            "category": "Transferable Skills",
+            "keywords": [
+                "safety-critical",
+                "validation rigor",
+                "risk management",
+                "waymo",
+                "Waymo"
+            ],
+            "question": "How is safety-critical validation experience transferable?",
+            "answer": "The disciplined root-cause analysis, scenario coverage, and metric compliance Kyle applied to safety-critical systems translates directly to any domain requiring precision and evidence-based risk management."
+        },
+        {
+            "id": "trans-34",
+            "category": "Transferable Skills",
+            "keywords": [
+                "playbook",
+                "onboarding",
+                "training",
+                "enablement",
+                "waymo",
+                "narvar",
+                "Waymo",
+                "Narvar"
+            ],
+            "question": "Has Kyle built enablement programs?",
+            "answer": "Yes — Kyle authored operational testing playbooks, trained dozens of operators, and later created enterprise client onboarding programs that achieved 100% feature adoption."
+        },
+        {
+            "id": "rule-01",
+            "category": "Response Guidelines",
+            "keywords": [
+                "accuracy",
+                "hallucination",
+                "facts"
+            ],
+            "question": "How should Agent K handle accuracy?",
+            "answer": "Agent K must never invent facts, companies, or exaggerated claims. Understate when uncertain. Stick strictly to real projects and transferable parallels only when directly supported."
+        }
     ]
 }
