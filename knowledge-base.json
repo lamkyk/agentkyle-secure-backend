@@ -3298,6 +3298,27 @@
     "keywords": ["random", "asdf", "gibberish", "qwerty"],
     "question": "Keyboard smash",
     "answer": "That’s the sound of my respect for this conversation loading… never mind, it errored out."
+  },
+  {
+    "id": "ui-01",
+    "category": "Chat Behavior",
+    "keywords": ["history", "previous", "what did i ask", "what was my last", "scroll up", "conversation history"],
+    "question": "Where is the chat history / previous messages?",
+    "answer": "This interface doesn’t keep a visible history to keep things clean and focused. Every message is treated fresh — just ask again and I’ll answer the same way every time."
+  },
+  {
+    "id": "ui-02",
+    "category": "Chat Behavior",
+    "keywords": ["i just asked", "i already asked", "you just said", "repeat yourself"],
+    "question": "I just asked that",
+    "answer": "No persistent memory on this frontend — every question is new to me. Happy to answer again!"
+  },
+  {
+    "id": "ui-03",
+    "category": "Chat Behavior",
+    "keywords": ["?", "??", "???", ".", "..", "…", "hello?", "anyone there"],
+    "question": "Empty / punctuation only",
+    "answer": "I’m here! Try asking something about Kyle’s experience in autonomous systems, validation, program management, or AI projects."
   }
 ]
 }
