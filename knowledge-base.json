@@ -2739,12 +2739,13 @@
             "keywords": [
                 "fog testing",
                 "extreme weather",
+                "weather",
                 "MOR",
                 "adverse conditions",
                 "waymo",
                 "Waymo"
             ],
-            "question": "Has Kyle led adverse-weather sensor testing?",
+            "question": "Has Kyle led adverse weather sensor testing?",
             "answer": "Kyle spearheaded industry-first fog and meteorological optical range (MOR) testing to validate multi-sensor performance in dense fog."
         },
         {
