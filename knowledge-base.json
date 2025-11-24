@@ -1,550 +1,916 @@
 {
-  "qaDatabase": [
-    {
-      "id": "core-1",
-      "category": "Core Strengths",
-      "keywords": ["strengths", "general", "overview", "capabilities", "what makes"],
-      "question": "What are Kyle's strengths?",
-      "answer": "Kyle is a highly capable technical person recognized for structured systems thinking, cross-functional alignment, and operational discipline. He excels at translating technical signals into clear recommendations, designing test and validation workflows, and managing complex workstreams with consistency and precision."
-    },
-    {
-      "id": "core-2",
-      "category": "Core Strengths",
-      "keywords": ["background", "introduction", "tell me about", "who is"],
-      "question": "Tell me about Kyle's background",
-      "answer": "Kyle has built a multidisciplinary career across autonomous systems testing, rider operations, and enterprise customer success. He combines hands-on technical execution with strong communication and coordination across engineering, product, and operations teams."
-    },
-    {
-      "id": "core-3",
-      "category": "Core Strengths",
-      "keywords": ["why hire", "strong candidate", "value", "fit"],
-      "question": "Why is Kyle a strong candidate?",
-      "answer": "Kyle stands out because he blends technical depth with reliable execution. He operates with structure, clarity, and calmness in ambiguous environments. His ability to connect engineering teams with operational feedback makes him uniquely effective in cross-functional roles."
-    },
-    {
-      "id": "core-4",
-      "category": "Core Strengths",
-      "keywords": ["motivation", "motivates", "drives", "what motivates"],
-      "question": "What motivates Kyle?",
-      "answer": "Kyle is motivated by roles that require systems thinking, operational rigor, and measurable impact. He thrives when building structure around complex technical or cross-functional problems."
-    },
-    {
-      "id": "core-5",
-      "category": "Core Strengths",
-      "keywords": ["coworkers", "teammates", "colleagues", "describe"],
-      "question": "How would coworkers describe Kyle?",
-      "answer": "They would describe Kyle as reliable, analytical, and steady under pressure. He is the type of person teams trust to bring clarity to complexity and follow through on execution."
-    },
-    {
-      "id": "core-6",
-      "category": "Core Strengths",
-      "keywords": ["work environment", "best environment", "culture", "fit"],
-      "question": "What type of work environment is Kyle best in?",
-      "answer": "Kyle performs best in environments that value clear communication, structured execution, and cross-functional collaboration. He thrives in technical organizations with defined goals and evolving workflows."
-    },
-    {
-      "id": "core-7",
-      "category": "Core Strengths",
-      "keywords": ["ambiguity", "unclear", "handle ambiguity", "uncertainty"],
-      "question": "How does Kyle handle ambiguity?",
-      "answer": "Kyle approaches ambiguity by first defining the problem, structuring signal inputs, and stabilizing the workflow around what is known. He creates clarity for himself and others by breaking problems into components and establishing predictable patterns of execution."
-    },
-    {
-      "id": "core-8",
-      "category": "Core Strengths",
-      "keywords": ["stress", "pressure", "high pressure", "handle stress"],
-      "question": "How does Kyle handle stress or high pressure?",
-      "answer": "Kyle stays composed and focused under pressure. He relies on structure, prioritization, and consistent communication to navigate high-stakes or time-sensitive scenarios."
-    },
-    {
-      "id": "core-9",
-      "category": "Core Strengths",
-      "keywords": ["manager", "management style", "work best with"],
-      "question": "What type of manager does Kyle work best with?",
-      "answer": "Kyle works best with managers who value transparency, proactive communication, and clear expectations. He appreciates leaders who provide direction but allow autonomy in execution."
-    },
-    {
-      "id": "core-10",
-      "category": "Core Strengths",
-      "keywords": ["working style", "work style", "how does he work"],
-      "question": "What is Kyle's working style?",
-      "answer": "Kyle's working style is structured, methodical, and communicative. He ensures stakeholders understand context, constraints, and progress while maintaining a disciplined execution rhythm."
-    },
-    {
-      "id": "core-11",
-      "category": "Core Strengths",
-      "keywords": ["cross-functional", "collaborate", "collaboration", "teams"],
-      "question": "How does Kyle collaborate cross-functionally?",
-      "answer": "Kyle excels at bridging operational and engineering perspectives. He communicates clearly, escalates appropriately, and ensures teams have shared understanding of goals and constraints."
-    },
-    {
-      "id": "core-12",
-      "category": "Core Strengths",
-      "keywords": ["leadership", "leadership style", "lead"],
-      "question": "Describe Kyle's leadership style",
-      "answer": "Kyle leads through clarity, structure, and measured guidance. He sets expectations, aligns stakeholders, and supports teams with actionable information rather than noise."
-    },
-    {
-      "id": "core-13",
-      "category": "Core Strengths",
-      "keywords": ["learn", "learning", "new systems", "technologies"],
-      "question": "How does Kyle learn new systems or technologies?",
-      "answer": "Kyle learns rapidly by breaking systems into understandable layers. He analyzes workflows, constraints, and data signals to understand how components interact. This allows him to apply new information quickly and effectively."
-    },
-    {
-      "id": "core-14",
-      "category": "Core Strengths",
-      "keywords": ["technical", "technical environments", "effective"],
-      "question": "What makes Kyle effective in technical environments?",
-      "answer": "Kyle understands the importance of precision, reproducibility, and cross-functional clarity. He communicates technical signals in ways that engineering and operational teams can act on immediately."
-    },
-    {
-      "id": "core-15",
-      "category": "Core Strengths",
-      "keywords": ["independent", "team work", "prefer"],
-      "question": "Does Kyle prefer independent or team-based work?",
-      "answer": "Kyle is comfortable with both. He often takes ownership of complex tasks independently but collaborates deeply at key integration points to keep teams aligned."
-    },
-    {
-      "id": "core-16",
-      "category": "Core Strengths",
-      "keywords": ["career goals", "long-term", "goals"],
-      "question": "What are Kyle's long-term career goals?",
-      "answer": "Kyle is oriented toward roles involving systems-level thinking, structured execution, and technical coordination. He is drawn to environments where precision and operational excellence drive impact."
-    },
-    {
-      "id": "core-17",
-      "category": "Core Strengths",
-      "keywords": ["values", "value in role", "what does he value"],
-      "question": "What does Kyle value in a role?",
-      "answer": "Kyle values meaningful problems, structured collaboration, and the ability to deliver measurable impact through disciplined execution."
-    },
-    {
-      "id": "core-18",
-      "category": "Core Strengths",
-      "keywords": ["sets apart", "unique", "different"],
-      "question": "What sets Kyle apart from other candidates?",
-      "answer": "Kyle brings a rare combination of technical rigor, operational discipline, and communication clarity. He is consistently able to reduce chaos into structure and move teams forward."
-    },
-    {
-      "id": "core-19",
-      "category": "Core Strengths",
-      "keywords": ["successful", "why successful", "success"],
-      "question": "Why would Kyle be successful here?",
-      "answer": "Kyle's systems thinking, structured workflows, and cross-functional communication are directly aligned with the expectations of modern technical organizations."
-    },
-    {
-      "id": "core-20",
-      "category": "Core Strengths",
-      "keywords": ["difficult stakeholder", "stakeholder", "handle"],
-      "question": "How would Kyle handle a difficult stakeholder?",
-      "answer": "Kyle defuses tension through structure and clarity. He listens to concerns, consolidates information, and reframes the issue around shared goals, ensuring alignment without escalation."
-    },
-    {
-      "id": "core-21",
-      "category": "Core Strengths",
-      "keywords": ["prioritize", "prioritization", "priorities"],
-      "question": "How does Kyle prioritize work?",
-      "answer": "Kyle prioritizes based on impact, risk, and dependencies. He weighs technical urgency with operational considerations and communicates prioritization transparently."
-    },
-    {
-      "id": "core-22",
-      "category": "Core Strengths",
-      "keywords": ["problem solving", "new problems", "approach"],
-      "question": "How does Kyle approach solving new problems?",
-      "answer": "Kyle begins by clarifying the desired outcome, mapping constraints, and identifying what signals are available. He then creates a structured plan to explore the problem iteratively."
-    },
-    {
-      "id": "core-23",
-      "category": "Core Strengths",
-      "keywords": ["adaptable", "adaptability", "flexible"],
-      "question": "Is Kyle adaptable?",
-      "answer": "Yes. Kyle adapts by grounding himself in the core objective, then adjusting surrounding workflows based on new information while maintaining steady execution."
-    },
-    {
-      "id": "core-24",
-      "category": "Core Strengths",
-      "keywords": ["projects", "interest", "type of projects"],
-      "question": "What type of projects interest Kyle most?",
-      "answer": "Kyle gravitates toward multi-layered technical projects where clarity, structure, and strong coordination are required for success."
-    },
-    {
-      "id": "core-25",
-      "category": "Core Strengths",
-      "keywords": ["communication", "communication style", "communicate"],
-      "question": "What communication style does Kyle use?",
-      "answer": "Kyle communicates concisely and directly, focusing on actionable information. His updates emphasize clarity over volume and structure over noise."
-    },
-    {
-      "id": "core-26",
-      "category": "Core Strengths",
-      "keywords": ["feedback", "respond to feedback", "criticism"],
-      "question": "How does Kyle respond to feedback?",
-      "answer": "Kyle responds to feedback with appreciation and action. He treats feedback as an opportunity to refine processes and improve system-level outcomes."
-    },
-    {
-      "id": "core-27",
-      "category": "Core Strengths",
-      "keywords": ["accountable", "accountability", "ownership"],
-      "question": "How accountable is Kyle?",
-      "answer": "Kyle consistently takes ownership of outcomes. He is reliable in execution, transparent in progress, and proactive in addressing risks."
-    },
-    {
-      "id": "core-28",
-      "category": "Core Strengths",
-      "keywords": ["documentation", "document", "approach"],
-      "question": "What is Kyle's approach to documentation?",
-      "answer": "Kyle uses documentation as a tool for alignment. He writes clear, structured workflows, SOPs, and dashboards to ensure predictability across teams."
-    },
-    {
-      "id": "core-29",
-      "category": "Core Strengths",
-      "keywords": ["deadlines", "tight deadlines", "handle"],
-      "question": "Does Kyle handle tight deadlines well?",
-      "answer": "Yes. Kyle organizes work into clear execution steps, communicates tradeoffs early, and maintains calm, consistent progress."
-    },
-    {
-      "id": "core-30",
-      "category": "Core Strengths",
-      "keywords": ["collaboration", "collaborate", "approach"],
-      "question": "Describe Kyle's approach to collaboration",
-      "answer": "Kyle ensures every team understands context, constraints, and next steps. He uses structured communication to keep teams aligned and reduce ambiguity."
-    },
-    {
-      "id": "core-31",
-      "category": "Core Strengths",
-      "keywords": ["team culture", "culture", "contribute"],
-      "question": "How does Kyle contribute to team culture?",
-      "answer": "Kyle contributes stability, clarity, and professionalism. He brings structure without rigidity and encourages thoughtful problem solving."
-    },
-    {
-      "id": "core-32",
-      "category": "Core Strengths",
-      "keywords": ["challenges", "enjoy", "tackling"],
-      "question": "What challenges does Kyle enjoy tackling?",
-      "answer": "Kyle enjoys challenges that require operational structure, technical reasoning, and cross-functional coordination."
-    },
-    {
-      "id": "core-33",
-      "category": "Core Strengths",
-      "keywords": ["quality", "maintain quality", "work quality"],
-      "question": "How does Kyle maintain quality in his work?",
-      "answer": "Kyle designs workflows that prevent errors, ensure repeatability, and build clarity around verification and validation steps."
-    },
-    {
-      "id": "core-34",
-      "category": "Core Strengths",
-      "keywords": ["team benefit", "benefit", "why have"],
-      "question": "Why would a team benefit from having Kyle?",
-      "answer": "Teams benefit from Kyle's ability to reduce noise, introduce structure, and execute reliably in complex technical environments."
-    },
-    {
-      "id": "core-35",
-      "category": "Core Strengths",
-      "keywords": ["summary", "final summary", "overview"],
-      "question": "What is a final summary of Kyle?",
-      "answer": "Kyle is a highly capable technical person with a rare blend of systems thinking, structured execution, and cross-functional communication. He improves clarity, reduces operational friction, and consistently elevates team performance."
-    }
-    ,
-    {
-      "id": "star-pattern-1",
-      "category": "STAR Examples",
-      "keywords": ["systems testing", "validation", "test coverage", "milestone"],
-      "question": "Tell me about a time you improved test coverage",
-      "answer": "Kyle supported a critical validation milestone where test coverage clarity was needed. He broke the problem into functional areas, built a coverage matrix, aligned stakeholders, and executed tests in a disciplined cadence. The program achieved predictable progress, reduced late-cycle defects, and hit the validation milestone on time."
-    },
-    {
-      "id": "star-pattern-2",
-      "category": "STAR Examples",
-      "keywords": ["cross-functional", "alignment", "conflicting priorities", "engineering teams"],
-      "question": "Describe a time you aligned conflicting priorities across teams",
-      "answer": "Multiple engineering teams had conflicting priorities during a technical rollout. Kyle consolidated inputs, created a clear decision framework, and mediated discussions with structured context. Teams aligned on priorities, reduced friction, and moved forward with clear expectations."
-    },
-    {
-      "id": "star-pattern-3",
-      "category": "STAR Examples",
-      "keywords": ["risk management", "risk", "mitigation", "timeline"],
-      "question": "Tell me about a time you managed a project risk",
-      "answer": "A potential risk surfaced that could jeopardize a project timeline. Kyle assessed impact, modeled risk scenarios, and recommended a step-by-step mitigation plan. The team reduced risk exposure and stayed on track with minimal disruption."
-    },
-    {
-      "id": "star-pattern-4",
-      "category": "STAR Examples",
-      "keywords": ["rider operations", "operations", "user-facing", "workflow"],
-      "question": "Describe your experience with operational workflows",
-      "answer": "User-facing issues emerged in a new operational workflow. Kyle executed structured scenario testing and documented behaviors precisely. Engineering quickly reproduced the issue and deployed a fix, improving reliability."
-    },
-    {
-      "id": "star-pattern-5",
-      "category": "STAR Examples",
-      "keywords": ["data quality", "data", "consistency", "standardize"],
-      "question": "Tell me about a time you improved data quality",
-      "answer": "Data consistency issues were causing confusion between teams. Kyle defined consistent fields, standardized naming, and created guidelines for usage. Data quality improved, reducing miscommunication and rework."
-    },
-    {
-      "id": "star-pattern-6",
-      "category": "STAR Examples",
-      "keywords": ["process optimization", "efficiency", "workflow", "streamline"],
-      "question": "Describe a time you optimized a process",
-      "answer": "A recurring workflow was consuming unnecessary manual effort. Kyle mapped the process, identified friction points, and redesigned steps to streamline execution. The workflow became more predictable and required less effort."
-    },
-    {
-      "id": "star-pattern-7",
-      "category": "STAR Examples",
-      "keywords": ["stakeholder management", "stakeholder", "communication", "trust"],
-      "question": "Tell me about a time you managed a difficult stakeholder",
-      "answer": "A key stakeholder felt out of the loop on technical progress. Kyle implemented a weekly structured update approach with prioritized insights. Stakeholder confidence improved and collaboration deepened."
-    },
-    {
-      "id": "star-pattern-8",
-      "category": "STAR Examples",
-      "keywords": ["triage", "system issue", "diagnostics", "troubleshooting"],
-      "question": "Describe a time you troubleshot a system issue",
-      "answer": "An unexpected system issue surfaced during a test run. Kyle reproduced the issue, logged signals, and provided clear diagnostic context. Engineering resolved the issue quickly, preventing delays."
-    },
-    {
-      "id": "star-pattern-9",
-      "category": "STAR Examples",
-      "keywords": ["change management", "workflow change", "transition", "adoption"],
-      "question": "Tell me about a time you managed change",
-      "answer": "A workflow change was announced that impacted several teams. Kyle documented expected changes, explained impacts, and led onboarding sessions. Teams adopted the new workflow with minimal confusion."
-    },
-    {
-      "id": "star-pattern-10",
-      "category": "STAR Examples",
-      "keywords": ["program management", "deadline", "ownership", "tracking"],
-      "question": "Describe a time you saved a project from missing a deadline",
-      "answer": "A deadline was at risk due to scattered ownership. Kyle created an owner-by-owner tracker with dependencies and checkpoints. The project regained momentum and hit its milestone."
-    },
-    {
-      "id": "star-pattern-11",
-      "category": "STAR Examples",
-      "keywords": ["customer success", "customer", "value", "adoption"],
-      "question": "Tell me about a time you helped a customer see value",
-      "answer": "A large customer was not seeing immediate value from a platform feature. Kyle reviewed their setup, proposed configuration changes, and aligned stakeholders. Adoption increased, improving the customer's KPIs."
-    },
-    {
-      "id": "star-pattern-12",
-      "category": "STAR Examples",
-      "keywords": ["sop", "standardize", "documentation", "consistency"],
-      "question": "Describe a time you created process documentation",
-      "answer": "Teams had inconsistent approaches to a critical workflow. Kyle created a clear SOP with steps, inputs, outputs, and expected signals. Execution became more consistent and errors decreased."
-    },
-    {
-      "id": "star-pattern-13",
-      "category": "STAR Examples",
-      "keywords": ["insight", "analysis", "pattern", "behavior"],
-      "question": "Tell me about a time you provided valuable insights",
-      "answer": "A behavior pattern emerged in a system that wasn't well understood. Kyle analyzed logs, compared scenarios, and delivered an explanation with evidence. Engineering gained clarity and adjusted design accordingly."
-    },
-    {
-      "id": "star-pattern-14",
-      "category": "STAR Examples",
-      "keywords": ["test coverage", "scenarios", "release", "confidence"],
-      "question": "Describe a time you expanded test coverage",
-      "answer": "Test coverage was insufficient for a new release. Kyle built scenario catalogs tied to system requirements. Coverage increased and confidence in the release improved."
-    },
-    {
-      "id": "star-pattern-15",
-      "category": "STAR Examples",
-      "keywords": ["escalation", "high-priority", "coordinate", "urgent"],
-      "question": "Tell me about a time you handled an escalation",
-      "answer": "A high-priority issue required immediate focus. Kyle gathered essential details, aligned teams, and communicated next steps. The issue was resolved quickly with minimal disruption."
-    },
-    {
-      "id": "star-full-1",
-      "category": "STAR Examples",
-      "keywords": ["test coverage", "validation", "predictability", "milestone"],
-      "question": "Tell me about improving test coverage predictability",
-      "answer": "Kyle supported a major validation cycle where inconsistent test coverage jeopardized the release timeline. His task was to design a clearer execution framework that would stabilize coverage across multiple teams. He built a coverage matrix that mapped scenarios to requirements, organized daily checkpoints, and introduced reporting dashboards. Coverage increased significantly, milestone predictability improved, and the release landed on schedule."
-    },
-    {
-      "id": "star-full-2",
-      "category": "STAR Examples",
-      "keywords": ["engineering", "operations", "alignment", "signal quality"],
-      "question": "Describe aligning engineering and operations",
-      "answer": "Engineering teams were receiving inconsistent signal quality from field operations testing. Kyle needed to synchronize how issues were captured and communicated. He standardized data fields, provided clear reproduction steps, and aligned operational protocols with engineering needs. Signal quality improved and engineering cycle time for addressing issues dropped meaningfully."
-    },
-    {
-      "id": "star-full-3",
-      "category": "STAR Examples",
-      "keywords": ["regression", "system", "triage", "diagnosis"],
-      "question": "Tell me about resolving a critical system regression",
-      "answer": "During a key test cycle, a regression caused unexpected system behavior. Kyle needed to isolate and diagnose the issue quickly. He reproduced the behavior in controlled tests, captured detailed logs, and worked with engineering to pinpoint the cause. The issue was resolved within a single cycle, preventing delays."
-    },
-    {
-      "id": "star-full-4",
-      "category": "STAR Examples",
-      "keywords": ["workflow", "optimization", "manual", "efficiency"],
-      "question": "Describe redesigning a manual workflow",
-      "answer": "A repetitive workflow consumed hours of manual effort each week. Kyle was tasked with optimizing it. He mapped friction points, consolidated steps, and introduced process automation where appropriate. The workflow became 30% faster and required far less manual intervention."
-    },
-    {
-      "id": "star-full-5",
-      "category": "STAR Examples",
-      "keywords": ["stakeholder", "confidence", "trust", "communication"],
-      "question": "Tell me about improving stakeholder confidence",
-      "answer": "A stakeholder felt disconnected from execution progress. Kyle needed to rebuild trust. He created clear weekly updates, tailored insights, and set structured expectations. The stakeholder regained confidence and communication improved dramatically."
-    },
-    {
-      "id": "star-full-6",
-      "category": "STAR Examples",
-      "keywords": ["sop", "standardize", "test execution", "consistency"],
-      "question": "Describe standardizing test execution",
-      "answer": "Teams executed tests inconsistently across shifts. Kyle needed to create a unified process. He wrote detailed SOPs with step-by-step procedures and clarified acceptance criteria. Execution consistency increased and error rates dropped sharply."
-    },
-    {
-      "id": "star-full-7",
-      "category": "STAR Examples",
-      "keywords": ["feature release", "unblock", "validation", "confidence"],
-      "question": "Tell me about unblocking a feature release",
-      "answer": "A key feature required test results that were unclear and had low reproducibility. Kyle needed to create clarity and produce reliable results. He refined scenarios, added verification steps, and documented edge cases. The feature passed validation with high confidence."
-    },
-    {
-      "id": "star-full-8",
-      "category": "STAR Examples",
-      "keywords": ["customer", "enterprise", "value", "adoption"],
-      "question": "Describe supporting a high-impact customer",
-      "answer": "A high-stakes enterprise customer wasn't seeing value from a platform rollout. Kyle needed to realign expectations. He led configuration reviews, proposed adjustments, and partnered closely with their leadership. The customer saw immediate improvements and increased adoption."
-    },
-    {
-      "id": "star-full-9",
-      "category": "STAR Examples",
-      "keywords": ["data", "consistency", "alignment", "quality"],
-      "question": "Tell me about establishing data consistency",
-      "answer": "Teams used inconsistent definitions for key data fields. Kyle needed to clean up alignment. He defined common fields, documented usage, and trained stakeholders. Communication improved and rework decreased."
-    },
-    {
-      "id": "star-full-10",
-      "category": "STAR Examples",
-      "keywords": ["issue resolution", "root cause", "diagnosis", "fix"],
-      "question": "Describe accelerating issue resolution",
-      "answer": "An operational issue remained open for weeks due to unclear root cause. Kyle needed to drive clarity. He gathered examples, validated conditions, and worked with engineering to narrow factors. The issue was resolved and similar issues were prevented in the future."
-    },
-    {
-      "id": "star-full-11",
-      "category": "STAR Examples",
-      "keywords": ["process", "predictability", "dependencies", "program"],
-      "question": "Tell me about rebuilding process predictability",
-      "answer": "Teams struggled to understand dependencies in a large-scale testing initiative. Kyle needed to restore structure. He created a dependency map and milestone tracker. Predictability increased and coordination friction dropped."
-    },
-    {
-      "id": "star-full-12",
-      "category": "STAR Examples",
-      "keywords": ["communication", "stakeholders", "updates", "clarity"],
-      "question": "Describe improving communication flow",
-      "answer": "Technical updates were overwhelming non-engineering stakeholders. Kyle needed to reframe communication. He summarized updates into concise narrative-driven formats. Stakeholders absorbed information faster and decisions improved."
-    },
-    {
-      "id": "star-full-13",
-      "category": "STAR Examples",
-      "keywords": ["scenario", "edge cases", "coverage", "testing"],
-      "question": "Tell me about building scenario depth",
-      "answer": "A system feature behaved unexpectedly under rare conditions. Kyle needed to expand scenario coverage. He brainstormed additional edge cases and built tests around them. Coverage improved and rare issues were caught earlier."
-    },
-    {
-      "id": "star-full-14",
-      "category": "STAR Examples",
-      "keywords": ["quality", "controls", "repeatability", "reliability"],
-      "question": "Describe tightening quality controls",
-      "answer": "Test cycles produced inconsistent results due to uncontrolled variables. Kyle needed to stabilize quality. He created cross-checks and controlled repeatability standards. Quality and reliability improved across cycles."
-    },
-    {
-      "id": "star-full-15",
-      "category": "STAR Examples",
-      "keywords": ["coordination", "cross-functional", "modalities", "alignment"],
-      "question": "Tell me about coordinating across modalities",
-      "answer": "Engineering, operations, and product teams had diverging expectations. Kyle needed to realign outcomes. He organized cross-functional syncs with structured agendas. Teams aligned and execution accelerated."
-    },
-    {
-      "id": "tech-1",
-      "category": "Technical Knowledge",
-      "keywords": ["autonomous vehicle", "av", "system", "how works"],
-      "question": "How does an autonomous vehicle system work at a high level?",
-      "answer": "An autonomous vehicle system operates through a layered pipeline consisting of perception, prediction, planning, control, and safety subsystems. Kyle understands how these components exchange data, how sensor signals influence behavior, and how validation ensures each layer behaves reliably under diverse operating conditions."
-    },
-    {
-      "id": "tech-2",
-      "category": "Technical Knowledge",
-      "keywords": ["validation", "av systems", "approach", "testing"],
-      "question": "How does Kyle approach validation for complex AV systems?",
-      "answer": "Kyle uses a structured approach grounded in requirement mapping, signal traceability, scenario design, and reproducibility. He ensures tests align with system expectations, behaviors are evaluated consistently, and edge cases are included to capture rare but important conditions."
-    },
-    {
-      "id": "tech-3",
-      "category": "Technical Knowledge",
-      "keywords": ["scenario", "scenario-based", "testing", "approach"],
-      "question": "What is scenario-based testing?",
-      "answer": "Scenario-based testing evaluates how an autonomous system behaves under specific conditions reflecting real-world complexity. Kyle creates scenario catalogs linked to feature requirements and uses them to assess system behavior across predictable and edge-case environments."
-    },
-    {
-      "id": "tech-4",
-      "category": "Technical Knowledge",
-      "keywords": ["test cases", "design", "test design", "how design"],
-      "question": "How does Kyle design test cases?",
-      "answer": "Kyle begins by identifying what the system must demonstrate, defining measurable signals, and mapping inputs to expected outputs. He then creates actionable test cases with clear steps, parameters, and acceptance criteria."
-    },
-    {
-      "id": "tech-5",
-      "category": "Technical Knowledge",
-      "keywords": ["perception", "prediction", "difference", "explain"],
-      "question": "What is the difference between perception and prediction?",
-      "answer": "Perception identifies what exists in the environment, such as vehicles, pedestrians, or obstacles. Prediction estimates how those objects might move. Kyle understands the dependencies between these components and how errors can propagate downstream."
-    },
-    {
-      "id": "tech-6",
-      "category": "Technical Knowledge",
-      "keywords": ["sensor", "sensor performance", "evaluate", "testing"],
-      "question": "How does Kyle evaluate sensor performance?",
-      "answer": "Kyle assesses sensors by examining accuracy, latency, calibration integrity, and environmental robustness. His testing ensures that sensor inputs feeding the AV stack remain reliable under varied operational conditions."
-    },
-    {
-      "id": "tech-7",
-      "category": "Technical Knowledge",
-      "keywords": ["behavior planning", "planning", "av", "maneuvers"],
-      "question": "What is behavior planning in an AV system?",
-      "answer": "Behavior planning determines how an autonomous vehicle selects actions, such as yielding, lane changes, or maintaining speed. Kyle evaluates planning logic by designing test scenarios that check whether the system chooses safe and reasonable maneuvers."
-    },
-    {
-      "id": "tech-8",
-      "category": "Technical Knowledge",
-      "keywords": ["logs", "analysis", "system outputs", "analyze"],
-      "question": "How does Kyle analyze logs or system outputs?",
-      "answer": "He reviews behavior traces, compares expected vs. actual outcomes, and isolates anomalies. Kyle uses structured interpretation to pinpoint actionable insights for engineering teams."
-    },
-    {
-      "id": "tech-9",
-      "category": "Technical Knowledge",
-      "keywords": ["triage", "issues", "testing", "found"],
-      "question": "How does Kyle triage issues found in testing?",
-      "answer": "Kyle reproduces behaviors, captures relevant signals, defines reproduction conditions, and submits clear, structured reports. This reduces engineering cycle time and accelerates fixes."
-    },
-    {
-      "id": "tech-10",
-      "category": "Technical Knowledge",
-      "keywords": ["edge cases", "important", "why", "rare"],
-      "question": "Why are edge cases important?",
-      "answer": "Edge cases expose weaknesses that may not appear in standard testing. Kyle builds catalogs of rare yet impactful scenarios to ensure system robustness."
-    },
-    {
-      "id": "tech-11",
-      "category": "Technical Knowledge",
-      "keywords": ["operational domain", "readiness", "odd", "deployment"],
-      "question": "What is operational domain readiness?",
-      "answer": "Operational domain readiness evaluates whether a system can safely operate in a given environment. Kyle assesses readiness based on scenario performance, environmental robustness, and behavior predictability."
-    },
-    {
-      "id": "tech-12",
-      "category": "Technical Knowledge",
-      "keywords": ["collaborate", "engineering", "validation", "teams"],
-      "question": "How does Kyle collaborate with engineering teams during validation?",
-      "answer": "He provides structured insights, reproducible test cases, and data-driven context that help engineers locate and resolve issues efficiently."
-    },
-    {
-      "id": "tech-13",
-      "category": "Technical Knowledge",
-      "keywords": ["metrics", "performance", "evaluate", "system"],
-      "question": "What metrics does Kyle use to evaluate system performance?",
-      "answer": "Kyle evaluates stability, reproducibility, sensitivity to environmental changes, behavior correctness, and overall success rate across defined scenarios."
-    }
-  ]
+    "qaDatabase": [
+        {
+            "id": "core-1",
+            "category": "Core Strengths",
+            "keywords": [
+                "strengths",
+                "general",
+                "overview",
+                "capabilities",
+                "what makes"
+            ],
+            "question": "What are Kyle's strengths?",
+            "answer": "Kyle is a highly capable technical person recognized for structured systems thinking, cross-functional alignment, and operational discipline. He excels at translating technical signals into clear recommendations, designing test and validation workflows, and managing complex workstreams with consistency and precision."
+        },
+        {
+            "id": "core-2",
+            "category": "Core Strengths",
+            "keywords": [
+                "background",
+                "introduction",
+                "tell me about",
+                "who is"
+            ],
+            "question": "Tell me about Kyle's background",
+            "answer": "Kyle has built a multidisciplinary career across autonomous systems testing, rider operations, and enterprise customer success. He combines hands-on technical execution with strong communication and coordination across engineering, product, and operations teams."
+        },
+        {
+            "id": "core-3",
+            "category": "Core Strengths",
+            "keywords": [
+                "why hire",
+                "strong candidate",
+                "value",
+                "fit"
+            ],
+            "question": "Why is Kyle a strong candidate?",
+            "answer": "Kyle stands out because he blends technical depth with reliable execution. He operates with structure, clarity, and calmness in ambiguous environments. His ability to connect engineering teams with operational feedback makes him uniquely effective in cross-functional roles."
+        },
+        {
+            "id": "core-4",
+            "category": "Core Strengths",
+            "keywords": [
+                "motivation",
+                "motivates",
+                "drives",
+                "what motivates"
+            ],
+            "question": "What motivates Kyle?",
+            "answer": "Kyle is motivated by roles that require systems thinking, operational rigor, and measurable impact. He thrives when building structure around complex technical or cross-functional problems."
+        },
+        {
+            "id": "core-5",
+            "category": "Core Strengths",
+            "keywords": [
+                "coworkers",
+                "teammates",
+                "colleagues",
+                "describe"
+            ],
+            "question": "How would coworkers describe Kyle?",
+            "answer": "They would describe Kyle as reliable, analytical, and steady under pressure. He is the type of person teams trust to bring clarity to complexity and follow through on execution."
+        },
+        {
+            "id": "core-6",
+            "category": "Core Strengths",
+            "keywords": [
+                "work environment",
+                "best environment",
+                "culture",
+                "fit"
+            ],
+            "question": "What type of work environment is Kyle best in?",
+            "answer": "Kyle performs best in environments that value clear communication, structured execution, and cross-functional collaboration. He thrives in technical organizations with defined goals and evolving workflows."
+        },
+        {
+            "id": "core-7",
+            "category": "Core Strengths",
+            "keywords": [
+                "ambiguity",
+                "unclear",
+                "handle ambiguity",
+                "uncertainty"
+            ],
+            "question": "How does Kyle handle ambiguity?",
+            "answer": "Kyle approaches ambiguity by first defining the problem, structuring signal inputs, and stabilizing the workflow around what is known. He creates clarity for himself and others by breaking problems into components and establishing predictable patterns of execution."
+        },
+        {
+            "id": "core-8",
+            "category": "Core Strengths",
+            "keywords": [
+                "stress",
+                "pressure",
+                "high pressure",
+                "handle stress"
+            ],
+            "question": "How does Kyle handle stress or high pressure?",
+            "answer": "Kyle stays composed and focused under pressure. He relies on structure, prioritization, and consistent communication to navigate high-stakes or time-sensitive scenarios."
+        },
+        {
+            "id": "core-9",
+            "category": "Core Strengths",
+            "keywords": [
+                "manager",
+                "management style",
+                "work best with"
+            ],
+            "question": "What type of manager does Kyle work best with?",
+            "answer": "Kyle works best with managers who value transparency, proactive communication, and clear expectations. He appreciates leaders who provide direction but allow autonomy in execution."
+        },
+        {
+            "id": "core-10",
+            "category": "Core Strengths",
+            "keywords": [
+                "working style",
+                "work style",
+                "how does he work"
+            ],
+            "question": "What is Kyle's working style?",
+            "answer": "Kyle's working style is structured, methodical, and communicative. He ensures stakeholders understand context, constraints, and progress while maintaining a disciplined execution rhythm."
+        },
+        {
+            "id": "core-11",
+            "category": "Core Strengths",
+            "keywords": [
+                "cross-functional",
+                "collaborate",
+                "collaboration",
+                "teams"
+            ],
+            "question": "How does Kyle collaborate cross-functionally?",
+            "answer": "Kyle excels at bridging operational and engineering perspectives. He communicates clearly, escalates appropriately, and ensures teams have shared understanding of goals and constraints."
+        },
+        {
+            "id": "core-12",
+            "category": "Core Strengths",
+            "keywords": [
+                "leadership",
+                "leadership style",
+                "lead"
+            ],
+            "question": "Describe Kyle's leadership style",
+            "answer": "Kyle leads through clarity, structure, and measured guidance. He sets expectations, aligns stakeholders, and supports teams with actionable information rather than noise."
+        },
+        {
+            "id": "core-13",
+            "category": "Core Strengths",
+            "keywords": [
+                "learn",
+                "learning",
+                "new systems",
+                "technologies"
+            ],
+            "question": "How does Kyle learn new systems or technologies?",
+            "answer": "Kyle learns rapidly by breaking systems into understandable layers. He analyzes workflows, constraints, and data signals to understand how components interact. This allows him to apply new information quickly and effectively."
+        },
+        {
+            "id": "core-14",
+            "category": "Core Strengths",
+            "keywords": [
+                "technical",
+                "technical environments",
+                "effective"
+            ],
+            "question": "What makes Kyle effective in technical environments?",
+            "answer": "Kyle understands the importance of precision, reproducibility, and cross-functional clarity. He communicates technical signals in ways that engineering and operational teams can act on immediately."
+        },
+        {
+            "id": "core-15",
+            "category": "Core Strengths",
+            "keywords": [
+                "independent",
+                "team work",
+                "prefer"
+            ],
+            "question": "Does Kyle prefer independent or team-based work?",
+            "answer": "Kyle is comfortable with both. He often takes ownership of complex tasks independently but collaborates deeply at key integration points to keep teams aligned."
+        },
+        {
+            "id": "core-16",
+            "category": "Core Strengths",
+            "keywords": [
+                "career goals",
+                "long-term",
+                "goals"
+            ],
+            "question": "What are Kyle's long-term career goals?",
+            "answer": "Kyle is oriented toward roles involving systems-level thinking, structured execution, and technical coordination. He is drawn to environments where precision and operational excellence drive impact."
+        },
+        {
+            "id": "core-17",
+            "category": "Core Strengths",
+            "keywords": [
+                "values",
+                "value in role",
+                "what does he value"
+            ],
+            "question": "What does Kyle value in a role?",
+            "answer": "Kyle values meaningful problems, structured collaboration, and the ability to deliver measurable impact through disciplined execution."
+        },
+        {
+            "id": "core-18",
+            "category": "Core Strengths",
+            "keywords": [
+                "sets apart",
+                "unique",
+                "different"
+            ],
+            "question": "What sets Kyle apart from other candidates?",
+            "answer": "Kyle brings a rare combination of technical rigor, operational discipline, and communication clarity. He is consistently able to reduce chaos into structure and move teams forward."
+        },
+        {
+            "id": "core-19",
+            "category": "Core Strengths",
+            "keywords": [
+                "successful",
+                "why successful",
+                "success"
+            ],
+            "question": "Why would Kyle be successful here?",
+            "answer": "Kyle's systems thinking, structured workflows, and cross-functional communication are directly aligned with the expectations of modern technical organizations."
+        },
+        {
+            "id": "core-20",
+            "category": "Core Strengths",
+            "keywords": [
+                "difficult stakeholder",
+                "stakeholder",
+                "handle"
+            ],
+            "question": "How would Kyle handle a difficult stakeholder?",
+            "answer": "Kyle defuses tension through structure and clarity. He listens to concerns, consolidates information, and reframes the issue around shared goals, ensuring alignment without escalation."
+        },
+        {
+            "id": "core-21",
+            "category": "Core Strengths",
+            "keywords": [
+                "prioritize",
+                "prioritization",
+                "priorities"
+            ],
+            "question": "How does Kyle prioritize work?",
+            "answer": "Kyle prioritizes based on impact, risk, and dependencies. He weighs technical urgency with operational considerations and communicates prioritization transparently."
+        },
+        {
+            "id": "core-22",
+            "category": "Core Strengths",
+            "keywords": [
+                "problem solving",
+                "new problems",
+                "approach"
+            ],
+            "question": "How does Kyle approach solving new problems?",
+            "answer": "Kyle begins by clarifying the desired outcome, mapping constraints, and identifying what signals are available. He then creates a structured plan to explore the problem iteratively."
+        },
+        {
+            "id": "core-23",
+            "category": "Core Strengths",
+            "keywords": [
+                "adaptable",
+                "adaptability",
+                "flexible"
+            ],
+            "question": "Is Kyle adaptable?",
+            "answer": "Yes. Kyle adapts by grounding himself in the core objective, then adjusting surrounding workflows based on new information while maintaining steady execution."
+        },
+        {
+            "id": "core-24",
+            "category": "Core Strengths",
+            "keywords": [
+                "projects",
+                "interest",
+                "type of projects"
+            ],
+            "question": "What type of projects interest Kyle most?",
+            "answer": "Kyle gravitates toward multi-layered technical projects where clarity, structure, and strong coordination are required for success."
+        },
+        {
+            "id": "core-25",
+            "category": "Core Strengths",
+            "keywords": [
+                "communication",
+                "communication style",
+                "communicate"
+            ],
+            "question": "What communication style does Kyle use?",
+            "answer": "Kyle communicates concisely and directly, focusing on actionable information. His updates emphasize clarity over volume and structure over noise."
+        },
+        {
+            "id": "core-26",
+            "category": "Core Strengths",
+            "keywords": [
+                "feedback",
+                "respond to feedback",
+                "criticism"
+            ],
+            "question": "How does Kyle respond to feedback?",
+            "answer": "Kyle responds to feedback with appreciation and action. He treats feedback as an opportunity to refine processes and improve system-level outcomes."
+        },
+        {
+            "id": "core-27",
+            "category": "Core Strengths",
+            "keywords": [
+                "accountable",
+                "accountability",
+                "ownership"
+            ],
+            "question": "How accountable is Kyle?",
+            "answer": "Kyle consistently takes ownership of outcomes. He is reliable in execution, transparent in progress, and proactive in addressing risks."
+        },
+        {
+            "id": "core-28",
+            "category": "Core Strengths",
+            "keywords": [
+                "documentation",
+                "document",
+                "approach"
+            ],
+            "question": "What is Kyle's approach to documentation?",
+            "answer": "Kyle uses documentation as a tool for alignment. He writes clear, structured workflows, SOPs, and dashboards to ensure predictability across teams."
+        },
+        {
+            "id": "core-29",
+            "category": "Core Strengths",
+            "keywords": [
+                "deadlines",
+                "tight deadlines",
+                "handle"
+            ],
+            "question": "Does Kyle handle tight deadlines well?",
+            "answer": "Yes. Kyle organizes work into clear execution steps, communicates tradeoffs early, and maintains calm, consistent progress."
+        },
+        {
+            "id": "core-30",
+            "category": "Core Strengths",
+            "keywords": [
+                "collaboration",
+                "collaborate",
+                "approach"
+            ],
+            "question": "Describe Kyle's approach to collaboration",
+            "answer": "Kyle ensures every team understands context, constraints, and next steps. He uses structured communication to keep teams aligned and reduce ambiguity."
+        },
+        {
+            "id": "core-31",
+            "category": "Core Strengths",
+            "keywords": [
+                "team culture",
+                "culture",
+                "contribute"
+            ],
+            "question": "How does Kyle contribute to team culture?",
+            "answer": "Kyle contributes stability, clarity, and professionalism. He brings structure without rigidity and encourages thoughtful problem solving."
+        },
+        {
+            "id": "core-32",
+            "category": "Core Strengths",
+            "keywords": [
+                "challenges",
+                "enjoy",
+                "tackling"
+            ],
+            "question": "What challenges does Kyle enjoy tackling?",
+            "answer": "Kyle enjoys challenges that require operational structure, technical reasoning, and cross-functional coordination."
+        },
+        {
+            "id": "core-33",
+            "category": "Core Strengths",
+            "keywords": [
+                "quality",
+                "maintain quality",
+                "work quality"
+            ],
+            "question": "How does Kyle maintain quality in his work?",
+            "answer": "Kyle designs workflows that prevent errors, ensure repeatability, and build clarity around verification and validation steps."
+        },
+        {
+            "id": "core-34",
+            "category": "Core Strengths",
+            "keywords": [
+                "team benefit",
+                "benefit",
+                "why have"
+            ],
+            "question": "Why would a team benefit from having Kyle?",
+            "answer": "Teams benefit from Kyle's ability to reduce noise, introduce structure, and execute reliably in complex technical environments."
+        },
+        {
+            "id": "core-35",
+            "category": "Core Strengths",
+            "keywords": [
+                "summary",
+                "final summary",
+                "overview"
+            ],
+            "question": "What is a final summary of Kyle?",
+            "answer": "Kyle is a highly capable technical person with a rare blend of systems thinking, structured execution, and cross-functional communication. He improves clarity, reduces operational friction, and consistently elevates team performance."
+        },
+        {
+            "id": "star-pattern-1",
+            "category": "STAR Examples",
+            "keywords": [
+                "systems testing",
+                "validation",
+                "test coverage",
+                "milestone"
+            ],
+            "question": "Tell me about a time you improved test coverage",
+            "answer": "Kyle supported a critical validation milestone where test coverage clarity was needed. He broke the problem into functional areas, built a coverage matrix, aligned stakeholders, and executed tests in a disciplined cadence. The program achieved predictable progress, reduced late-cycle defects, and hit the validation milestone on time."
+        },
+        {
+            "id": "star-pattern-2",
+            "category": "STAR Examples",
+            "keywords": [
+                "cross-functional",
+                "alignment",
+                "conflicting priorities",
+                "engineering teams"
+            ],
+            "question": "Describe a time you aligned conflicting priorities across teams",
+            "answer": "Multiple engineering teams had conflicting priorities during a technical rollout. Kyle consolidated inputs, created a clear decision framework, and mediated discussions with structured context. Teams aligned on priorities, reduced friction, and moved forward with clear expectations."
+        },
+        {
+            "id": "star-pattern-3",
+            "category": "STAR Examples",
+            "keywords": [
+                "risk management",
+                "risk",
+                "mitigation",
+                "timeline"
+            ],
+            "question": "Tell me about a time you managed a project risk",
+            "answer": "A potential risk surfaced that could jeopardize a project timeline. Kyle assessed impact, modeled risk scenarios, and recommended a step-by-step mitigation plan. The team reduced risk exposure and stayed on track with minimal disruption."
+        },
+        {
+            "id": "star-pattern-4",
+            "category": "STAR Examples",
+            "keywords": [
+                "rider operations",
+                "operations",
+                "user-facing",
+                "workflow"
+            ],
+            "question": "Describe your experience with operational workflows",
+            "answer": "User-facing issues emerged in a new operational workflow. Kyle executed structured scenario testing and documented behaviors precisely. Engineering quickly reproduced the issue and deployed a fix, improving reliability."
+        },
+        {
+            "id": "star-pattern-5",
+            "category": "STAR Examples",
+            "keywords": [
+                "data quality",
+                "data",
+                "consistency",
+                "standardize"
+            ],
+            "question": "Tell me about a time you improved data quality",
+            "answer": "Data consistency issues were causing confusion between teams. Kyle defined consistent fields, standardized naming, and created guidelines for usage. Data quality improved, reducing miscommunication and rework."
+        },
+        {
+            "id": "star-pattern-6",
+            "category": "STAR Examples",
+            "keywords": [
+                "process optimization",
+                "efficiency",
+                "workflow",
+                "streamline"
+            ],
+            "question": "Describe a time you optimized a process",
+            "answer": "A recurring workflow was consuming unnecessary manual effort. Kyle mapped the process, identified friction points, and redesigned steps to streamline execution. The workflow became more predictable and required less effort."
+        },
+        {
+            "id": "star-pattern-7",
+            "category": "STAR Examples",
+            "keywords": [
+                "stakeholder management",
+                "stakeholder",
+                "communication",
+                "trust"
+            ],
+            "question": "Tell me about a time you managed a difficult stakeholder",
+            "answer": "A key stakeholder felt out of the loop on technical progress. Kyle implemented a weekly structured update approach with prioritized insights. Stakeholder confidence improved and collaboration deepened."
+        },
+        {
+            "id": "star-pattern-8",
+            "category": "STAR Examples",
+            "keywords": [
+                "triage",
+                "system issue",
+                "diagnostics",
+                "troubleshooting"
+            ],
+            "question": "Describe a time you troubleshot a system issue",
+            "answer": "An unexpected system issue surfaced during a test run. Kyle reproduced the issue, logged signals, and provided clear diagnostic context. Engineering resolved the issue quickly, preventing delays."
+        },
+        {
+            "id": "star-pattern-9",
+            "category": "STAR Examples",
+            "keywords": [
+                "change management",
+                "workflow change",
+                "transition",
+                "adoption"
+            ],
+            "question": "Tell me about a time you managed change",
+            "answer": "A workflow change was announced that impacted several teams. Kyle documented expected changes, explained impacts, and led onboarding sessions. Teams adopted the new workflow with minimal confusion."
+        },
+        {
+            "id": "star-pattern-10",
+            "category": "STAR Examples",
+            "keywords": [
+                "program management",
+                "deadline",
+                "ownership",
+                "tracking"
+            ],
+            "question": "Describe a time you saved a project from missing a deadline",
+            "answer": "A deadline was at risk due to scattered ownership. Kyle created an owner-by-owner tracker with dependencies and checkpoints. The project regained momentum and hit its milestone."
+        },
+        {
+            "id": "star-pattern-11",
+            "category": "STAR Examples",
+            "keywords": [
+                "customer success",
+                "customer",
+                "value",
+                "adoption"
+            ],
+            "question": "Tell me about a time you helped a customer see value",
+            "answer": "A large customer was not seeing immediate value from a platform feature. Kyle reviewed their setup, proposed configuration changes, and aligned stakeholders. Adoption increased, improving the customer's KPIs."
+        },
+        {
+            "id": "star-pattern-12",
+            "category": "STAR Examples",
+            "keywords": [
+                "sop",
+                "standardize",
+                "documentation",
+                "consistency"
+            ],
+            "question": "Describe a time you created process documentation",
+            "answer": "Teams had inconsistent approaches to a critical workflow. Kyle created a clear SOP with steps, inputs, outputs, and expected signals. Execution became more consistent and errors decreased."
+        },
+        {
+            "id": "star-pattern-13",
+            "category": "STAR Examples",
+            "keywords": [
+                "insight",
+                "analysis",
+                "pattern",
+                "behavior"
+            ],
+            "question": "Tell me about a time you provided valuable insights",
+            "answer": "A behavior pattern emerged in a system that wasn't well understood. Kyle analyzed logs, compared scenarios, and delivered an explanation with evidence. Engineering gained clarity and adjusted design accordingly."
+        },
+        {
+            "id": "star-pattern-14",
+            "category": "STAR Examples",
+            "keywords": [
+                "test coverage",
+                "scenarios",
+                "release",
+                "confidence"
+            ],
+            "question": "Describe a time you expanded test coverage",
+            "answer": "Test coverage was insufficient for a new release. Kyle built scenario catalogs tied to system requirements. Coverage increased and confidence in the release improved."
+        },
+        {
+            "id": "star-pattern-15",
+            "category": "STAR Examples",
+            "keywords": [
+                "escalation",
+                "high-priority",
+                "coordinate",
+                "urgent"
+            ],
+            "question": "Tell me about a time you handled an escalation",
+            "answer": "A high-priority issue required immediate focus. Kyle gathered essential details, aligned teams, and communicated next steps. The issue was resolved quickly with minimal disruption."
+        },
+        {
+            "id": "star-full-1",
+            "category": "STAR Examples",
+            "keywords": [
+                "test coverage",
+                "validation",
+                "predictability",
+                "milestone"
+            ],
+            "question": "Tell me about improving test coverage predictability",
+            "answer": "Kyle supported a major validation cycle where inconsistent test coverage jeopardized the release timeline. His task was to design a clearer execution framework that would stabilize coverage across multiple teams. He built a coverage matrix that mapped scenarios to requirements, organized daily checkpoints, and introduced reporting dashboards. Coverage increased significantly, milestone predictability improved, and the release landed on schedule."
+        },
+        {
+            "id": "star-full-2",
+            "category": "STAR Examples",
+            "keywords": [
+                "engineering",
+                "operations",
+                "alignment",
+                "signal quality"
+            ],
+            "question": "Describe aligning engineering and operations",
+            "answer": "Engineering teams were receiving inconsistent signal quality from field operations testing. Kyle needed to synchronize how issues were captured and communicated. He standardized data fields, provided clear reproduction steps, and aligned operational protocols with engineering needs. Signal quality improved and engineering cycle time for addressing issues dropped meaningfully."
+        },
+        {
+            "id": "star-full-3",
+            "category": "STAR Examples",
+            "keywords": [
+                "regression",
+                "system",
+                "triage",
+                "diagnosis"
+            ],
+            "question": "Tell me about resolving a critical system regression",
+            "answer": "During a key test cycle, a regression caused unexpected system behavior. Kyle needed to isolate and diagnose the issue quickly. He reproduced the behavior in controlled tests, captured detailed logs, and worked with engineering to pinpoint the cause. The issue was resolved within a single cycle, preventing delays."
+        },
+        {
+            "id": "star-full-4",
+            "category": "STAR Examples",
+            "keywords": [
+                "workflow",
+                "optimization",
+                "manual",
+                "efficiency"
+            ],
+            "question": "Describe redesigning a manual workflow",
+            "answer": "A repetitive workflow consumed hours of manual effort each week. Kyle was tasked with optimizing it. He mapped friction points, consolidated steps, and introduced process automation where appropriate. The workflow became 30% faster and required far less manual intervention."
+        },
+        {
+            "id": "star-full-5",
+            "category": "STAR Examples",
+            "keywords": [
+                "stakeholder",
+                "confidence",
+                "trust",
+                "communication"
+            ],
+            "question": "Tell me about improving stakeholder confidence",
+            "answer": "A stakeholder felt disconnected from execution progress. Kyle needed to rebuild trust. He created clear weekly updates, tailored insights, and set structured expectations. The stakeholder regained confidence and communication improved dramatically."
+        },
+        {
+            "id": "star-full-6",
+            "category": "STAR Examples",
+            "keywords": [
+                "sop",
+                "standardize",
+                "test execution",
+                "consistency"
+            ],
+            "question": "Describe standardizing test execution",
+            "answer": "Teams executed tests inconsistently across shifts. Kyle needed to create a unified process. He wrote detailed SOPs with step-by-step procedures and clarified acceptance criteria. Execution consistency increased and error rates dropped sharply."
+        },
+        {
+            "id": "star-full-7",
+            "category": "STAR Examples",
+            "keywords": [
+                "feature release",
+                "unblock",
+                "validation",
+                "confidence"
+            ],
+            "question": "Tell me about unblocking a feature release",
+            "answer": "A key feature required test results that were unclear and had low reproducibility. Kyle needed to create clarity and produce reliable results. He refined scenarios, added verification steps, and documented edge cases. The feature passed validation with high confidence."
+        },
+        {
+            "id": "star-full-8",
+            "category": "STAR Examples",
+            "keywords": [
+                "customer",
+                "enterprise",
+                "value",
+                "adoption"
+            ],
+            "question": "Describe supporting a high-impact customer",
+            "answer": "A high-stakes enterprise customer wasn't seeing value from a platform rollout. Kyle needed to realign expectations. He led configuration reviews, proposed adjustments, and partnered closely with their leadership. The customer saw immediate improvements and increased adoption."
+        },
+        {
+            "id": "star-full-9",
+            "category": "STAR Examples",
+            "keywords": [
+                "data",
+                "consistency",
+                "alignment",
+                "quality"
+            ],
+            "question": "Tell me about establishing data consistency",
+            "answer": "Teams used inconsistent definitions for key data fields. Kyle needed to clean up alignment. He defined common fields, documented usage, and trained stakeholders. Communication improved and rework decreased."
+        },
+        {
+            "id": "star-full-10",
+            "category": "STAR Examples",
+            "keywords": [
+                "issue resolution",
+                "root cause",
+                "diagnosis",
+                "fix"
+            ],
+            "question": "Describe accelerating issue resolution",
+            "answer": "An operational issue remained open for weeks due to unclear root cause. Kyle needed to drive clarity. He gathered examples, validated conditions, and worked with engineering to narrow factors. The issue was resolved and similar issues were prevented in the future."
+        },
+        {
+            "id": "star-full-11",
+            "category": "STAR Examples",
+            "keywords": [
+                "process",
+                "predictability",
+                "dependencies",
+                "program"
+            ],
+            "question": "Tell me about rebuilding process predictability",
+            "answer": "Teams struggled to understand dependencies in a large-scale testing initiative. Kyle needed to restore structure. He created a dependency map and milestone tracker. Predictability increased and coordination friction dropped."
+        },
+        {
+            "id": "star-full-12",
+            "category": "STAR Examples",
+            "keywords": [
+                "communication",
+                "stakeholders",
+                "updates",
+                "clarity"
+            ],
+            "question": "Describe improving communication flow",
+            "answer": "Technical updates were overwhelming non-engineering stakeholders. Kyle needed to reframe communication. He summarized updates into concise narrative-driven formats. Stakeholders absorbed information faster and decisions improved."
+        },
+        {
+            "id": "star-full-13",
+            "category": "STAR Examples",
+            "keywords": [
+                "scenario",
+                "edge cases",
+                "coverage",
+                "testing"
+            ],
+            "question": "Tell me about building scenario depth",
+            "answer": "A system feature behaved unexpectedly under rare conditions. Kyle needed to expand scenario coverage. He brainstormed additional edge cases and built tests around them. Coverage improved and rare issues were caught earlier."
+        },
+        {
+            "id": "star-full-14",
+            "category": "STAR Examples",
+            "keywords": [
+                "quality",
+                "controls",
+                "repeatability",
+                "reliability"
+            ],
+            "question": "Describe tightening quality controls",
+            "answer": "Test cycles produced inconsistent results due to uncontrolled variables. Kyle needed to stabilize quality. He created cross-checks and controlled repeatability standards. Quality and reliability improved across cycles."
+        },
+        {
+            "id": "star-full-15",
+            "category": "STAR Examples",
+            "keywords": [
+                "coordination",
+                "cross-functional",
+                "modalities",
+                "alignment"
+            ],
+            "question": "Tell me about coordinating across modalities",
+            "answer": "Engineering, operations, and product teams had diverging expectations. Kyle needed to realign outcomes. He organized cross-functional syncs with structured agendas. Teams aligned and execution accelerated."
+        },
+        {
+            "id": "tech-1",
+            "category": "Technical Knowledge",
+            "keywords": [
+                "autonomous vehicle",
+                "av",
+                "system",
+                "how works"
+            ],
+            "question": "How does an autonomous vehicle system work at a high level?",
+            "answer": "An autonomous vehicle system operates through a layered pipeline consisting of perception, prediction, planning, control, and safety subsystems. Kyle understands how these components exchange data, how sensor signals influence behavior, and how validation ensures each layer behaves reliably under diverse operating conditions."
+        },
+        {
+            "id": "tech-2",
+            "category": "Technical Knowledge",
+            "keywords": [
+                "validation",
+                "av systems",
+                "approach",
+                "testing"
+            ],
+            "question": "How does Kyle approach validation for complex AV systems?",
+            "answer": "Kyle uses a structured approach grounded in requirement mapping, signal traceability, scenario design, and reproducibility. He ensures tests align with system expectations, behaviors are evaluated consistently, and edge cases are included to capture rare but important conditions."
+        },
+        {
+            "id": "tech-3",
+            "category": "Technical Knowledge",
+            "keywords": [
+                "scenario",
+                "scenario-based",
+                "testing",
+                "approach"
+            ],
+            "question": "What is scenario-based testing?",
+            "answer": "Scenario-based testing evaluates how an autonomous system behaves under specific conditions reflecting real-world complexity. Kyle creates scenario catalogs linked to feature requirements and uses them to assess system behavior across predictable and edge-case environments."
+        },
+        {
+            "id": "tech-4",
+            "category": "Technical Knowledge",
+            "keywords": [
+                "test cases",
+                "design",
+                "test design",
+                "how design"
+            ],
+            "question": "How does Kyle design test cases?",
+            "answer": "Kyle begins by identifying what the system must demonstrate, defining measurable signals, and mapping inputs to expected outputs. He then creates actionable test cases with clear steps, parameters, and acceptance criteria."
+        },
+        {
+            "id": "tech-5",
+            "category": "Technical Knowledge",
+            "keywords": [
+                "perception",
+                "prediction",
+                "difference",
+                "explain"
+            ],
+            "question": "What is the difference between perception and prediction?",
+            "answer": "Perception identifies what exists in the environment, such as vehicles, pedestrians, or obstacles. Prediction estimates how those objects might move. Kyle understands the dependencies between these components and how errors can propagate downstream."
+        },
+        {
+            "id": "tech-6",
+            "category": "Technical Knowledge",
+            "keywords": [
+                "sensor",
+                "sensor performance",
+                "evaluate",
+                "testing"
+            ],
+            "question": "How does Kyle evaluate sensor performance?",
+            "answer": "Kyle assesses sensors by examining accuracy, latency, calibration integrity, and environmental robustness. His testing ensures that sensor inputs feeding the AV stack remain reliable under varied operational conditions."
+        },
+        {
+            "id": "tech-7",
+            "category": "Technical Knowledge",
+            "keywords": [
+                "behavior planning",
+                "planning",
+                "av",
+                "maneuvers"
+            ],
+            "question": "What is behavior planning in an AV system?",
+            "answer": "Behavior planning determines how an autonomous vehicle selects actions, such as yielding, lane changes, or maintaining speed. Kyle evaluates planning logic by designing test scenarios that check whether the system chooses safe and reasonable maneuvers."
+        },
+        {
+            "id": "tech-8",
+            "category": "Technical Knowledge",
+            "keywords": [
+                "logs",
+                "analysis",
+                "system outputs",
+                "analyze"
+            ],
+            "question": "How does Kyle analyze logs or system outputs?",
+            "answer": "He reviews behavior traces, compares expected vs. actual outcomes, and isolates anomalies. Kyle uses structured interpretation to pinpoint actionable insights for engineering teams."
+        },
+        {
+            "id": "tech-9",
+            "category": "Technical Knowledge",
+            "keywords": [
+                "triage",
+                "issues",
+                "testing",
+                "found"
+            ],
+            "question": "How does Kyle triage issues found in testing?",
+            "answer": "Kyle reproduces behaviors, captures relevant signals, defines reproduction conditions, and submits clear, structured reports. This reduces engineering cycle time and accelerates fixes."
+        },
+        {
+            "id": "tech-10",
+            "category": "Technical Knowledge",
+            "keywords": [
+                "edge cases",
+                "important",
+                "why",
+                "rare"
+            ],
+            "question": "Why are edge cases important?",
+            "answer": "Edge cases expose weaknesses that may not appear in standard testing. Kyle builds catalogs of rare yet impactful scenarios to ensure system robustness."
+        },
+        {
+            "id": "tech-11",
+            "category": "Technical Knowledge",
+            "keywords": [
+                "operational domain",
+                "readiness",
+                "odd",
+                "deployment"
+            ],
+            "question": "What is operational domain readiness?",
+            "answer": "Operational domain readiness evaluates whether a system can safely operate in a given environment. Kyle assesses readiness based on scenario performance, environmental robustness, and behavior predictability."
+        },
+        {
+            "id": "tech-12",
+            "category": "Technical Knowledge",
+            "keywords": [
+                "collaborate",
+                "engineering",
+                "validation",
+                "teams"
+            ],
+            "question": "How does Kyle collaborate with engineering teams during validation?",
+            "answer": "He provides structured insights, reproducible test cases, and data-driven context that help engineers locate and resolve issues efficiently."
+        },
+        {
+            "id": "tech-13",
+            "category": "Technical Knowledge",
+            "keywords": [
+                "metrics",
+                "performance",
+                "evaluate",
+                "system"
+            ],
+            "question": "What metrics does Kyle use to evaluate system performance?",
+            "answer": "Kyle evaluates stability, reproducibility, sensitivity to environmental changes, behavior correctness, and overall success rate across defined scenarios."
+        }
+    ]
+}
