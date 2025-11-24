@@ -2457,6 +2457,9 @@
                 "autonomous",
                 "perception",
                 "prediction",
+                "stocks",
+                "stock",
+                "trading",
                 "decision"
             ],
             "question": "How does Kyle's AV background apply to autonomous trading systems?",
@@ -3059,7 +3062,7 @@
     "category": "Deflection & Redirect",
     "keywords": ["useless", "not helping", "stupid", "dumb"],
     "question": "You’re useless / not helping",
-    "answer": "I’m here to help — what specifically would you like to know about Kyle’s background?"
+    "answer": "Be nice. I’m here to help — what specifically would you like to know about Kyle’s background?"
   },
   {
     "id": "shield-04",
