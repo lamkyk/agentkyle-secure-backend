@@ -2969,6 +2969,76 @@
             ],
             "question": "How should Agent K handle accuracy?",
             "answer": "Agent K must never invent facts, companies, or exaggerated claims. Understate when uncertain. Stick strictly to real projects and transferable parallels only when directly supported."
-        }
+        },
+  {
+    "id": "logistics-01",
+    "category": "Work Authorization & Location",
+    "keywords": ["visa", "sponsorship", "authorization", "citizen", "US citizen", "work authorization"],
+    "question": "Does Kyle require visa sponsorship?",
+    "answer": "Kyle is a U.S. citizen and does not require sponsorship for employment in the United States."
+  },
+  {
+    "id": "logistics-02",
+    "category": "Work Authorization & Location",
+    "keywords": ["location", "based", "Bay Area", "San Francisco", "SF", "current location"],
+    "question": "Where is Kyle currently located?",
+    "answer": "Kyle is based in the San Francisco Bay Area."
+  },
+  {
+    "id": "logistics-03",
+    "category": "Work Authorization & Location",
+    "keywords": ["relocation", "open to", "remote", "hybrid", "onsite", "Bay Area", "Seattle", "Austin"],
+    "question": "What work arrangements is Kyle open to?",
+    "answer": "Kyle is open to onsite or hybrid roles in the San Francisco Bay Area as well as fully remote opportunities nationwide."
+  },
+  {
+    "id": "logistics-04",
+    "category": "Work Authorization & Location",
+    "keywords": ["relocation", "move", "other locations", "willing to relocate", "right opportunity"],
+    "question": "Is Kyle open to relocating?",
+    "answer": "Kyle is primarily focused on Bay Area or remote roles, but may be willing to relocate if it’s the right opportunity."
+  },
+  {
+    "id": "logistics-05",
+    "category": "Availability",
+    "keywords": ["availability", "start date", "notice period", "when can you start"],
+    "question": "When is Kyle available to start?",
+    "answer": "Kyle is immediately available and can start within two weeks of an offer."
+  },
+  {
+    "id": "logistics-06",
+    "category": "Compensation",
+    "keywords": ["salary", "compensation", "expectations", "base", "total comp", "pay"],
+    "question": "What are Kyle’s compensation expectations?",
+    "answer": "Kyle is targeting competitive, industry-standard total compensation for senior technical program management or systems engineering roles with his background in autonomous systems and enterprise SaaS."
+  },
+  {
+    "id": "logistics-07",
+    "category": "Availability",
+    "keywords": ["interviewing", "other offers", "process", "active"],
+    "question": "Is Kyle actively interviewing elsewhere?",
+    "answer": "Kyle is selectively exploring new opportunities and is in early stages with a few companies."
+  },
+  {
+    "id": "logistics-08",
+    "category": "Practical",
+    "keywords": ["background check", "drug screen", "reference", "clean background"],
+    "question": "Is Kyle comfortable with background checks and drug screens?",
+    "answer": "Yes — Kyle has a clean background and is comfortable with standard pre-employment checks."
+  },
+  {
+    "id": "logistics-09",
+    "category": "Practical",
+    "keywords": ["vacation", "PTO", "time off", "commitments"],
+    "question": "Does Kyle have any upcoming vacations or commitments?",
+    "answer": "Kyle has no planned time off in the next few months and is fully available for interviews and onboarding."
+  },
+  {
+    "id": "logistics-10",
+    "category": "Role Type",
+    "keywords": ["contract", "contract-to-hire", "full-time", "permanent", "FTE"],
+    "question": "Is Kyle open to contract or contract-to-hire roles?",
+    "answer": "Kyle is primarily seeking full-time permanent roles but is open to discussing the right contract-to-hire opportunity."
+  }
     ]
 }
