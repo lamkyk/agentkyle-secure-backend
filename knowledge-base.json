@@ -3323,6 +3323,13 @@
     "keywords": ["?", "??", "???", ".", "..", "…", "hello?", "anyone there"],
     "question": "Empty / punctuation only",
     "answer": "I’m here! Try asking something about Kyle’s experience in autonomous systems, validation, program management, or AI projects."
-  }
+  },
+        {
+  "id": "weather-shield",
+  "category": "Deflection & Redirect",
+  "keywords": ["weather", "weather tests", "rain", "fog", "snow", "sunny", "temperature"],
+  "question": "Weather-related queries",
+  "answer": "I don't track live weather, but Kyle designed and executed thousands of autonomous vehicle tests in rain, fog, snow, and glare — including the first structured MOR weather testing program in the industry. Want to hear how he scaled that?"
+}
 ]
 }
