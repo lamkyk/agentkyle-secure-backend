@@ -2218,6 +2218,274 @@
             ],
             "question": "Is Kyle's analytical approach consistent across industries?",
             "answer": "Yes. Whether analyzing system logs or customer adoption metrics, Kyle uses a structured, signal-driven approach grounded in clarity, reproducibility, and cross-functional alignment."
-        }
-    ]
+        },
+        [
+  {
+    "id": "exp-01",
+    "category": "Leadership & Scale",
+    "keywords": ["scale", "fleet", "thousands", "tests", "executed", "2000", "coordination"],
+    "question": "How has Kyle managed validation at scale?",
+    "answer": "Kyle has orchestrated validation programs involving thousands of real-world test executions across geographically distributed fleets. He designed processes and tooling that allowed teams to execute, triage, and close hundreds of tests per week while maintaining safety and data quality standards."
+  },
+  {
+    "id": "exp-02",
+    "category": "Safety & Investigations",
+    "keywords": ["safety", "critical", "investigation", "collision", "incident", "root cause"],
+    "question": "What is Kyle's experience with safety-critical investigations?",
+    "answer": "Kyle has led multiple high-priority safety investigations involving near-miss and contact events. He drives cross-functional root-cause analysis with perception, behavior, and hardware teams, translates findings into concrete product improvements, and tracks fixes through to deployment."
+  },
+  {
+    "id": "exp-03",
+    "category": "Tooling & Automation",
+    "keywords": ["tooling", "automation", "pipeline", "efficiency", "build", "script"],
+    "question": "What kind of internal tools has Kyle built?",
+    "answer": "Kyle has developed numerous internal tools and automation pipelines that reduced manual validation effort by 60–80%. Examples include automated scenario generation from real-world data, regression dashboards, and one-click reproducibility environments for bug investigation."
+  },
+  {
+    "id": "exp-04",
+    "category": "Data-Driven Decision Making",
+    "keywords": ["data-driven", "metrics", "dashboard", "kpi", "decision"],
+    "question": "How does Kyle use data to drive decisions?",
+    "answer": "Kyle builds and maintains executive-level dashboards tracking system maturity across dozens of KPIs. He translates raw telemetry and test results into clear trends and actionable insights that directly inform release and prioritization decisions."
+  },
+  {
+    "id": "exp-05",
+    "category": "Cross-Functional Influence",
+    "keywords": ["influence", "stakeholder", "pm", "executive", "alignment"],
+    "question": "How does Kyle work with stakeholders and leadership?",
+    "answer": "Kyle regularly presents validation status, risks, and recommendations to directors and VPs. He is known for framing complex technical trade-offs in clear, business-relevant terms that help leadership make informed go/no-go decisions."
+  },
+  {
+    "id": "exp-06",
+    "category": "Scenario Design",
+    "keywords": ["scenario", "rare", "edge case", "construction", "design"],
+    "question": "How does Kyle approach scenario design?",
+    "answer": "Kyle specializes in mining real-world data for rare but safety-critical scenarios, then turning them into structured, repeatable test cases. His scenario libraries have exposed numerous perception and behavior regressions before they reached production."
+  },
+  {
+    "id": "exp-07",
+    "category": "On-Call & Reliability",
+    "keywords": ["on-call", "pager", "incident", "response", "reliability"],
+    "question": "Does Kyle have production or on-call experience?",
+    "answer": "Yes — Kyle has carried pager responsibility for validation infrastructure and has led incident response for fleet-wide testing outages, typically achieving root-cause identification and mitigation within hours."
+  },
+  {
+    "id": "exp-08",
+    "category": "Mentorship",
+    "keywords": ["mentor", "junior", "onboarding", "guidance"],
+    "question": "Has Kyle mentored others?",
+    "answer": "Kyle has mentored multiple junior validation engineers and new hires, helping them ramp up on tooling, processes, and safety culture. Several of his mentees now lead their own validation sub-teams."
+  },
+  {
+    "id": "exp-09",
+    "category": "Release Sign-Off",
+    "keywords": ["release", "sign-off", "gate", "criteria", "readiness"],
+    "question": "What role does Kyle play in release decisions?",
+    "answer": "Kyle owns final validation sign-off for major software releases. He defines and enforces objective release criteria across perception, behavior, safety, and performance, ensuring no release ships without meeting predefined readiness thresholds."
+  },
+  {
+    "id": "exp-10",
+    "category": "Failure Mode Analysis",
+    "keywords": ["failure", "mode", "fmea", "hazard", "risk"],
+    "question": "What is Kyle's experience with failure mode analysis?",
+    "answer": "Kyle regularly performs system-level failure mode analysis and hazard identification workshops. He maps potential failure modes to concrete test coverage and tracks mitigation status across the stack."
+  },
+  {
+    "id": "exp-11",
+    "category": "Continuous Improvement",
+    "keywords": ["process", "improvement", "retro", "kaizen"],
+    "question": "How does Kyle approach process improvement?",
+    "answer": "Kyle runs regular retrospectives on validation processes and has implemented numerous improvements that reduced test cycle time from weeks to days while simultaneously increasing coverage and depth."
+  },
+  {
+    "id": "exp-12",
+    "category": "Simulation vs Real World",
+    "keywords": ["simulation", "sim", "correlation", "real-world"],
+    "question": "How does Kyle bridge simulation and real-world validation?",
+    "answer": "Kyle maintains tight correlation loops between simulation results and real-world outcomes. He identifies systematic gaps, drives sim improvements, and ensures release criteria are validated in both domains."
+  },
+  {
+    "id": "exp-13",
+    "category": "Regulatory & Standards",
+    "keywords": ["regulatory", "standard", "iso", "safety case"],
+    "question": "Does Kyle have experience with safety standards or regulations?",
+    "answer": "Yes — Kyle has contributed to internal safety case development and has experience mapping validation evidence to relevant industry standards and regulatory expectations."
+  },
+  {
+    "id": "exp-14",
+    "category": "Geographic Expansion",
+    "keywords": ["geo", "expansion", "new city", "mapping", "readiness"],
+    "question": "Has Kyle supported geographic expansion?",
+    "answer": "Kyle led validation readiness for multiple new geographic launches, defining city-specific test matrices, establishing local fleets, and ensuring operational readiness before public deployment."
+  },
+  {
+    "id": "exp-15",
+    "category": "Cost & Efficiency",
+    "keywords": ["cost", "efficiency", "budget", "resource"],
+    "question": "How does Kyle think about cost and efficiency?",
+    "answer": "Kyle routinely identifies high-leverage testing strategies that maximize coverage while minimizing fleet and compute spend. His initiatives have saved millions in operational costs without compromising safety."
+  },
+  {
+    "id": "exp-16",
+    "category": "Bug Triage Leadership",
+    "keywords": ["triage", "prioritization", "severity", "impact"],
+    "question": "How does Kyle handle bug triage?",
+    "answer": "Kyle runs daily triage meetings during release cycles, assigns severity and impact scores using a standardized framework, and ensures critical issues are resolved before release deadlines."
+  },
+  {
+    "id": "exp-17",
+    "category": "Public Speaking & Communication",
+    "keywords": ["all-hands", "presentation", "communication", "storytelling"],
+    "question": "Is Kyle comfortable presenting to large groups?",
+    "answer": "Yes — Kyle has presented validation status and learnings at company all-hands, leadership reviews, and cross-functional summits. He is known for clear, data-rich storytelling that lands complex topics effectively."
+  },
+  {
+    "id": "exp-18",
+    "category": "Personal Initiative",
+    "keywords": ["initiative", "self-starter", "ownership", "passion"],
+    "question": "What shows Kyle takes initiative?",
+    "answer": "Kyle consistently identifies gaps before they become problems — whether that’s building a new tool, proposing a process change, or volunteering to lead a high-visibility investigation. His bias toward action and ownership is widely recognized."
+  },
+ [
+  {
+    "id": "trans-01",
+    "category": "Transferable Skills: Validation to Trading",
+    "keywords": ["trading", "autonomous", "perception", "prediction", "decision"],
+    "question": "How does Kyle's AV background apply to autonomous trading systems?",
+    "answer": "Kyle adapted AV validation principles—such as perception for market signal detection, prediction for price forecasting, and planning for trade execution—to build KYMEX, a fully autonomous futures trading engine. This transferred field-tested rigor from sensor data to real-time price action, achieving 14% returns over 2 years in backtests with $2,000 simulated capital."
+  },
+  {
+    "id": "trans-02",
+    "category": "Client Success & AV Coordination",
+    "keywords": ["onboarding", "enablement", "cross-functional", "SLA"],
+    "question": "How has Kyle's experience in AV testing informed client onboarding?",
+    "answer": "Drawing from leading cross-functional AV test efforts (executing 2,000+ tests), Kyle developed structured onboarding playbooks for enterprise clients, aligning technical teams on SLAs, workflows, and KPIs. This ensured 100% feature adoption for 30+ brands, mirroring the precision of AV scenario planning to drive quick ROI."
+  },
+  {
+    "id": "trans-03",
+    "category": "Data Analysis & Insights",
+    "keywords": ["data", "insights", "retrospectives", "QBR"],
+    "question": "What transferable data skills does Kyle bring from AV to client management?",
+    "answer": "Kyle's AV work analyzing 200+ data logs for performance gaps directly translates to client QBRs, where he presents historical trends and strategic recommendations to senior leadership. In one role, this drove 30% efficiency gains in quarterly retrospectives, much like burn-down tracking for ML training scenarios."
+  },
+  {
+    "id": "trans-04",
+    "category": "Leadership & Scale",
+    "keywords": ["team management", "scaling", "10x", "metrics"],
+    "question": "How has Kyle scaled teams in AV and client success?",
+    "answer": "Kyle managed a 5-tester team to 10x operational readiness testing in AV, using quantifiable metrics and workflows—skills he applied to oversee migrations for 50+ clients, ensuring adherence to safety standards and operational playbooks while extracting key performance insights for stakeholders."
+  },
+  {
+    "id": "trans-05",
+    "category": "Innovation & Tooling",
+    "keywords": ["tooling", "automation", "chatbots", "TTS"],
+    "question": "What innovative tools has Kyle built that bridge AV and enterprise support?",
+    "answer": "Inspired by AV data pipelines, Kyle automated client features like chatbots, reporting, and email alerts, reducing manual effort by 30%. His SC TTS Agent—capturing multi-monitor workflows for real-time summarization—mirrors AV scenario generation, compressing fragmented info into actionable insights for traders and engineers."
+  },
+  {
+    "id": "trans-06",
+    "category": "Stakeholder Engagement",
+    "keywords": ["C-level", "executives", "advocacy", "upsell"],
+    "question": "How does Kyle engage C-level stakeholders across domains?",
+    "answer": "Kyle's AV collaborations with executives (e.g., low-light testing with safety officers) honed consultative advocacy, which he used to generate $65K/quarter in upsells via QBR insights. He refines partnerships with C-level teams, translating technical metrics into business wins like 100% client retention."
+  },
+  {
+    "id": "trans-07",
+    "category": "Risk & Compliance",
+    "keywords": ["compliance", "metrics", "BSDF", "regulatory"],
+    "question": "What risk management experience does Kyle have from AV and finance?",
+    "answer": "Kyle created BSDF databases for low-reflectivity material measurements in AV sensor validation, ensuring compliance with defined metrics—transferable to financial services where he provided contract insights on PR, legal, and procurement for 70 corporate clients, mitigating risks in high-stakes deployments."
+  },
+  {
+    "id": "trans-08",
+    "category": "Efficiency & ROI",
+    "keywords": ["efficiency", "ROI", "migration", "30%"],
+    "question": "How has Kyle driven efficiency and ROI in diverse roles?",
+    "answer": "In AV, Kyle's Jira datasets and forecasting boosted QoQ efficiency by 30%; in client success, he led migrations retaining 100% of key relationships, directly impacting $3MM+ revenue. This data-driven approach ensures measurable outcomes, from test burn-downs to platform upgrades."
+  },
+  {
+    "id": "trans-09",
+    "category": "Mentorship & Knowledge Transfer",
+    "keywords": ["mentoring", "training", "playbook", "cohorts"],
+    "question": "How does Kyle approach knowledge transfer and mentoring?",
+    "answer": "Kyle authored the first AV operational testing playbook, training 5–20 vehicle operator cohorts on safety standards—skills he applied to enablement phases, aligning teams on communication cadences and workflows to accelerate client onboarding and feature adoption."
+  },
+  {
+    "id": "trans-10",
+    "category": "Scenario & Edge Case Handling",
+    "keywords": ["edge cases", "scenarios", "1000+", "rare"],
+    "question": "How does Kyle handle edge cases in testing and trading?",
+    "answer": "Kyle generated 1,000+ critical scenarios from AV data logs to unbias ML models, exposing rare edge cases; in KYMEX, this rigor informed trade strategies for volatile markets, achieving low drawdowns (5% max) by simulating environmental sensitivities like fog testing."
+  },
+  {
+    "id": "trans-11",
+    "category": "Cross-Functional Collaboration",
+    "keywords": ["vendors", "dispatch", "program managers"],
+    "question": "What is Kyle's experience with cross-functional and vendor teams?",
+    "answer": "Kyle spearheaded AV SOPs and meteorological testing with vendors, meeting high-quality standards; in enterprise support, he collaborated with dispatch and program managers to extract bug insights, ensuring large-scale project deliverables like 10x testing scale."
+  },
+  {
+    "id": "trans-12",
+    "category": "Financial & Revenue Impact",
+    "keywords": ["revenue", "$3MM", "upsell", "QBR"],
+    "question": "How has Kyle impacted revenue in client-facing roles?",
+    "answer": "Managing a $3MM portfolio of 70 clients, Kyle delivered QBRs with performance metrics that drove $65K quarterly upsells through advocacy—building on AV leadership where he provided senior insights on testing metrics to influence strategic recommendations."
+  },
+  {
+    "id": "trans-13",
+    "category": "AI & Automation Projects",
+    "keywords": ["AI agent", "TTS", "summarization", "workflows"],
+    "question": "Tell me about Kyle's AI projects for workflow automation.",
+    "answer": "Kyle built the SC TTS Agent for real-time multi-monitor capture and summarization, using TTS to read insights aloud—transferring AV automation (e.g., regression dashboards) to compress fragmented data for high-volume users like PMs and operators."
+  },
+  {
+    "id": "trans-14",
+    "category": "Strategic Planning",
+    "keywords": ["strategic", "outcomes", "short-term", "long-term"],
+    "question": "How does Kyle plan for short- and long-term outcomes?",
+    "answer": "In AV, Kyle documented strategic testing outcomes from quarterly data; in client success, he mapped stakeholder models and integrations to define success KPIs, ensuring short-term wins (e.g., feature deployments) ladder into long-term ROI like 100% migrations."
+  },
+  {
+    "id": "trans-15",
+    "category": "Performance Metrics & Dashboards",
+    "keywords": ["dashboards", "KPIs", "burn-down", "trends"],
+    "question": "What metrics and dashboards has Kyle developed?",
+    "answer": "Kyle built AV burn-down trackers and Jira datasets for capacity planning; extending this, he created QBR dashboards in client roles, highlighting trends in uptime and adoption to deliver insights on financial services and compliance solutions."
+  },
+  {
+    "id": "trans-16",
+    "category": "Geographic & Operational Scaling",
+    "keywords": ["geo", "fleet", "expansion", "10x"],
+    "question": "How has Kyle supported operational scaling across locations?",
+    "answer": "Kyle scaled AV readiness testing by 10x with distributed fleets, optimizing workflows for global teams; this informed client enablement, where he aligned internal support for deployments across enterprise brands, ensuring seamless feature rollouts."
+ },
+  {
+    "id": "trans-17",
+    "category": "Backtesting & Simulation",
+    "keywords": ["backtest", "simulation", "Sharpe", "drawdown"],
+    "question": "What simulation and backtesting experience does Kyle have?",
+    "answer": "Mirroring AV sim-to-real correlations, Kyle backtested KYMEX strategies for 2-year horizons (14% returns, 1.9 Sharpe, 5% max drawdown), using APIs and Pine Script to validate autonomous decisions in volatile futures markets."
+  },
+  {
+    "id": "trans-18",
+    "category": "Customer ROI & Retention",
+    "keywords": ["retention", "ROI", "migration", "100%"],
+    "question": "How does Kyle ensure client retention and ROI?",
+    "answer": "Kyle achieved 100% retention in migrations by partnering with decision-makers on platform enhancements; rooted in AV's 30% efficiency gains from data analysis, this delivers tangible ROI through automated alerts and strategic QBR recommendations."
+  },
+  {
+    "id": "trans-19",
+    "category": "Low-Visibility & Edge Testing",
+    "keywords": ["low-light", "fog", "reflectivity", "edge"],
+    "question": "What specialized testing has Kyle led for challenging conditions?",
+    "answer": "Kyle conducted industry-first fog and low-light pedestrian testing in AV, researching low-reflectivity samples for BSDF databases; these edge-case skills enhance trading models in KYMEX, where environmental noise simulation prevents false signals."
+  },
+  {
+    "id": "trans-20",
+    "category": "Holistic Workflow Tools",
+    "keywords": ["workflow", "multi-monitor", "cognitive", "enablement"],
+    "question": "How do Kyle's tools improve cognitive workflows?",
+    "answer": "Kyle's SC TTS Agent captures and summarizes multi-app environments in one click, enabling silent, real-time cognition for operators—building on AV playbook authorship to standardize knowledge transfer and reduce overload in fast-paced settings settings."
+  }
+]
 }
