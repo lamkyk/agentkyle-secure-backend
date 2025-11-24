@@ -2460,7 +2460,7 @@
                 "decision"
             ],
             "question": "How does Kyle's AV background apply to autonomous trading systems?",
-            "answer": "Kyle adapted AV validation principles—such as perception for market signal detection, prediction for price forecasting, and planning for trade execution—to build KYMEX, a fully autonomous futures trading engine. This transferred field-tested rigor from sensor data to real-time price action, achieving 14% returns over 2 years in backtests with $2,000 simulated capital."
+            "answer": "Kyle adapted AV validation principles—such as perception for market signal detection, prediction for price forecasting, and planning for trade execution—to build KYMEX, a fully autonomous futures trading engine. This transferred field-tested rigor from sensor data to real-time price action, achieving 1400% returns over 2 years in backtests with $2,000 simulated capital."
         },
         {
             "id": "trans-02",
