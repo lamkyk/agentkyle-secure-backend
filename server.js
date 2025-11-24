@@ -146,7 +146,7 @@ app.post('/query', async (req, res) => {
 
     // THRESHOLD LOWERED HERE — this is the only other change
     if (relevantQAs.length > 0 && relevantQAs[0].score >= 6) {
-      return res.json({ answer: relevantQAs[0].entry.answer });
+      return res.json({ answer: relevantQAs[0].answer });
     }
 
     // Rest of your existing Groq logic unchanged
