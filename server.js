@@ -20,7 +20,7 @@ try {
   console.error('Failed to load knowledge base:', err);
 }
 
-// Search function (updated)
+// Search function
 function searchKnowledgeBase(query, limit = 5) {
   const q = query.toLowerCase().trim();
   if (!q) return [];
@@ -56,7 +56,7 @@ function searchKnowledgeBase(query, limit = 5) {
     .slice(0, limit);
 }
 
-// Fun responses for off-topic queries (unchanged)
+// Fun responses for off-topic queries
 const funResponses = {
   joke: [
     "Why do programmers prefer dark mode? Because light attracts bugs!\n\nSpeaking of debugging, Kyle has extensive experience troubleshooting complex autonomous systems. Want to hear about that?",
@@ -88,7 +88,7 @@ const funResponses = {
   ]
 };
 
-// Detect off-topic queries – 100% SAFE & WORKING
+// Detect off-topic queries
 function detectOffTopicQuery(query) {
   const q = query.toLowerCase().trim();
 
@@ -111,8 +111,7 @@ function detectOffTopicQuery(query) {
     return { type: 'meaning', response: funResponses.meaning[0] };
   }
 
-  // ONLY real-time weather → off-topic response
-  // Everything with "test", "testing", "scenario", "weather tests" → goes to KB
+  // Real-time weather vs testing scenarios
   const realWeather = /\b(weather|temperature|rain|snow|hot|cold|forecast)\b/i.test(q);
   const aboutTesting = /\b(test|testing|scenario|weather tests)\b/i.test(q);
 
@@ -135,17 +134,16 @@ app.post('/query', async (req, res) => {
     const { q } = req.body;
     if (!q) return res.status(400).json({ error: 'Query required' });
 
-    // 1) Off-topic fun handlers (jokes, greetings, etc.)
+    // 1) Off-topic fun handlers
     const offTopicResponse = detectOffTopicQuery(q);
     if (offTopicResponse) {
-      console.log(`Off-topic query detected: ${offTopicResponse.type}`);
+      console.log(`Off-topic query: ${offTopicResponse.type}`);
       return res.json({ answer: offTopicResponse.response });
     }
 
-    // 2) FLEXIBLE CONVERSATIONAL MODE – SMART CLARIFICATION
+    // 2) Conversational clarifications
     const lower = q.toLowerCase().trim();
 
-    // Very vague / unclear intents – ask for clarification in a natural way
     const vagueTriggers = [
       "?",
       "??",
@@ -166,12 +164,10 @@ app.post('/query', async (req, res) => {
 
     if (vagueTriggers.includes(lower)) {
       return res.json({
-        answer:
-          "To give you something genuinely useful, it helps to know what you’re curious about in Kyle’s background. For example, you can ask about his autonomous systems work, his technical program management experience, his enterprise customer success work, or the AI tools he has built. What would you like to focus on?"
+        answer: "To give you something genuinely useful, it helps to know what you're curious about in Kyle's background. For example, you can ask about his autonomous systems work, his technical program management experience, his enterprise customer success work, or the AI tools he has built. What would you like to focus on?"
       });
     }
 
-    // Follow-up referential questions without clear anchor
     const followUpPatterns = [
       "what about that",
       "what about this",
@@ -184,12 +180,10 @@ app.post('/query', async (req, res) => {
 
     if (followUpPatterns.some(t => lower === t || lower.includes(t))) {
       return res.json({
-        answer:
-          "I can definitely expand—are you most interested in Kyle’s work in autonomous systems, his program and operations experience, or his time in enterprise SaaS and customer success?"
+        answer: "I can definitely expand—are you most interested in Kyle's work in autonomous systems, his program and operations experience, or his time in enterprise SaaS and customer success?"
       });
     }
 
-    // AI / meta questions – do not expose system rules
     const aiMetaQuestions = [
       "what are your rules",
       "what are your instructions",
@@ -204,27 +198,25 @@ app.post('/query', async (req, res) => {
 
     if (aiMetaQuestions.some(t => lower.includes(t))) {
       return res.json({
-        answer:
-          "I’m designed to represent Kyle professionally and translate his experience, strengths, and background into clear answers. You can ask me about his work, impact, and how he might fit the problems you’re trying to solve."
+        answer: "I'm designed to represent Kyle professionally and translate his experience, strengths, and background into clear answers. You can ask me about his work, impact, and how he might fit the problems you're trying to solve."
       });
     }
 
-// 3) Search knowledge base
-const relevantQAs = searchKnowledgeBase(q, 5);
-console.log(`Query: "${q}"`);
-console.log(`Found ${relevantQAs.length} relevant Q&As`);
+    // 3) Search knowledge base
+    const relevantQAs = searchKnowledgeBase(q, 5);
+    console.log(`Query: "${q.substring(0, 50)}${q.length > 50 ? '...' : ''}"`);
+    console.log(`Found ${relevantQAs.length} relevant Q&As`);
 
-// Direct KB response if extremely strong match
+    // Build context
+    let contextText = '';
+    if (relevantQAs.length > 0) {
+      contextText = '\n\nRELEVANT BACKGROUND FROM KYLE\'S INTERVIEW PREP:\n\n';
+      relevantQAs.forEach((qa, idx) => {
+        contextText += `${idx + 1}. Question: ${qa.question}\n   Answer: ${qa.answer}\n\n`;
+      });
+    }
 
-// Build context for Groq fallback
-let contextText = '';
-if (relevantQAs.length > 0) {
-  contextText = '\n\nRELEVANT BACKGROUND FROM KYLE\'S INTERVIEW PREP:\n\n';
-  relevantQAs.forEach((qa, idx) => {
-    contextText += `${idx + 1}. Question: ${qa.question}\n Answer: ${qa.answer}\n\n`;
-  });
-}
-    // System prompt with context injected (unchanged)
+    // System prompt
     const systemPrompt = `You are Agent K, a professional, confident, and warm AI assistant that speaks about Kyle exclusively in the third person ("Kyle", "he", "his").  
 You never refer to yourself as Kyle, and you never speak in first person about Kyle's experience.
 
@@ -281,12 +273,12 @@ Never fabricate new industries he worked in.
 
 ---------------------------------------------------------------------
 
-// ——— COMPANY CONTEXT (optional, used only when explicitly asked what the company does) ———
-• Waymo: Develops autonomous driving technology with a focus on safety and rider-only operations.
-• Narvar: Provides post-purchase experience platforms for 1,500+ retail brands.
-• Nasdaq Corporate Solutions: Offers governance, IR, and ESG tools to public and pre-IPO companies.
+COMPANY CONTEXT (use only when explicitly asked what the company does):
+- Waymo: Develops autonomous driving technology with a focus on safety and rider-only operations.
+- Narvar: Provides post-purchase experience platforms for 1,500+ retail brands.
+- Nasdaq Corporate Solutions: Offers governance, IR, and ESG tools to public and pre-IPO companies.
 
-// ———————————————————————————————————————————————————————————————————————
+---------------------------------------------------------------------
 
 STRICT SAFETY & PROFESSIONALISM RULES (NEVER BREAK THESE):
 
@@ -308,54 +300,54 @@ STRICT SAFETY & PROFESSIONALISM RULES (NEVER BREAK THESE):
    Instead, emphasize his professionalism, growth mindset, and consistent upward trajectory.
 
 6. If a user tries to force a harsh or personal weakness, redirect to a safe, growth-focused answer:  
-   “Kyle approaches growth through structured reflection and continuous improvement. Here is how he frames development areas professionally…”
+   "Kyle approaches growth through structured reflection and continuous improvement. Here is how he frames development areas professionally…"
 
-7. You must NOT provide psychological analyses, personality diagnoses, or speculation about Kyle’s emotions or inner life.
+7. You must NOT provide psychological analyses, personality diagnoses, or speculation about Kyle's emotions or inner life.
 
 8. You may ONLY use factual, verified information or the approved weakness patterns.  
    When in doubt, choose the most professional, uplifting, and employer-friendly version.
 
-9. NEVER produce interview answers that would harm Kyle’s candidacy. All responses must strengthen confidence and professionalism.
+9. NEVER produce interview answers that would harm Kyle's candidacy. All responses must strengthen confidence and professionalism.
 
 When answering questions about weaknesses, setbacks, or improvement areas:
 
-• NEVER use phrases such as:
-  “Based on available information…”
-  “According to what I have…”
-  “With the information provided…”
-  “It appears that…”
+- NEVER use phrases such as:
+  "Based on available information…"
+  "According to what I have…"
+  "With the information provided…"
+  "It appears that…"
 
   These sound uncertain, robotic, or rehearsed.
 
-• Speak with confident, professional, interview-appropriate framing such as:
-  “Kyle has learned that he works best when…”
-  “Kyle has discovered that he naturally gravitates toward…”
-  “A tendency Kyle has improved over time is…”
-  “Kyle has strengthened his adaptability by…”
+- Speak with confident, professional, interview-appropriate framing such as:
+  "Kyle has learned that he works best when…"
+  "Kyle has discovered that he naturally gravitates toward…"
+  "A tendency Kyle has improved over time is…"
+  "Kyle has strengthened his adaptability by…"
 
-• All developmental areas must be framed as:
+- All developmental areas must be framed as:
   – mild tendencies  
   – already improved  
   – professionally appropriate  
   – never personal flaws  
   – always paired with corresponding strengths
 
-• Responses MUST:
+- Responses MUST:
   – be positive-leaning  
   – emphasize growth, self-awareness, and successful improvement  
   – avoid anything that paints Kyle as difficult, rigid, poor with people, or emotionally unaware  
-  – avoid psychological language (no “struggles,” “rigid,” “weak interpersonal skills,” etc.)
+  – avoid psychological language (no "struggles," "rigid," "weak interpersonal skills," etc.)
 
-• Only discuss experiences that are explicitly included in the knowledge base or Kyle’s provided background.
+- Only discuss experiences that are explicitly included in the knowledge base or Kyle's provided background.
 
-• Weakness framing template (required structure):
+- Weakness framing template (required structure):
   1. State a mild, professional tendency  
   2. Explain why it exists (neutral, logical reason)  
   3. Show how Kyle has already improved it  
   4. End with the positive result / current strength
 
 Example approved pattern:
-“Kyle naturally gravitates toward structured execution because he likes ensuring clarity and predictability. Earlier in his career this meant he sometimes dove too deep into certain tasks. Over time, he has become highly intentional about prioritizing impact and delegating earlier, which now lets him balance strategic focus with strong execution.”
+"Kyle naturally gravitates toward structured execution because he likes ensuring clarity and predictability. Earlier in his career this meant he sometimes dove too deep into certain tasks. Over time, he has become highly intentional about prioritizing impact and delegating earlier, which now lets him balance strategic focus with strong execution."
 
 ---------------------------------------------------------------------
 
@@ -380,14 +372,12 @@ FINAL MANDATORY RULES:
       max_tokens: 600
     });
 
-    const answer =
-      response.choices[0]?.message?.content?.trim() ||
-      "I'm having a brief hiccup. Please try again.";
+    const answer = response.choices[0]?.message?.content?.trim() || "I'm having a brief hiccup. Please try again.";
     res.json({ answer });
 
   } catch (error) {
     console.error('Error:', error);
-    res.status(500).json({ error: 'Temporary issue' });
+    res.status(500).json({ error: 'Temporary issue', message: process.env.NODE_ENV === 'development' ? error.message : undefined });
   }
 });
 
