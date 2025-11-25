@@ -74,7 +74,7 @@ const funResponses = {
     "My pleasure! Feel free to ask more about Kyle's skills or experience."
   ],
   weather: [
-    "I don't track weather data, but Kyle did track thousands of autonomous vehicle test scenarios in various conditions! Want to hear about his field operations experience?"
+    "I don't track weather data, but Kyle did track thousands of autonomous vehicle test scenarios in various conditions! Ask about his weather tests done in the past."
   ],
   howAreYou: [
     "I'm doing great—ready to share Kyle's professional story! What aspect of his background interests you most?",
@@ -101,8 +101,11 @@ function detectOffTopicQuery(query) {
   if (q.includes('thank') || q.includes('thanks')) {
     return { type: 'thanks', response: funResponses.thanks[Math.floor(Math.random() * funResponses.thanks.length)] };
   }
-  if (q.includes('weather') || q.includes('temperature')) {
-    return { type: 'weather', response: funResponses.weather[0] };
+// Only catch real-time weather requests, NOT "weather testing" etc.
+if (q.match(/\b(weather|temperature|rain|snow|hot|cold|forecast)\b/i) &&
+    !q.includes('test') && !q.includes('testing') && !q.includes('scenario')) {
+  return { type: 'weather', response: funResponses.weather[0] };
+}
   }
   if (q.match(/how are you|how're you|how r u/i)) {
     return { type: 'howAreYou', response: funResponses.howAreYou[Math.floor(Math.random() * funResponses.howAreYou.length)] };
