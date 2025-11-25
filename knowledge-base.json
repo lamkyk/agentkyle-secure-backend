@@ -3337,6 +3337,13 @@
   "keywords": ["weather", "weather tests", "rain", "fog", "snow", "sunny", "temperature"],
   "question": "Weather-related queries",
   "answer": "I don't track live weather, but Kyle designed and executed thousands of autonomous vehicle tests in rain, fog, snow, and glare — including the first structured MOR weather testing program in the industry. Want to hear how he scaled that?"
+},
+        {
+  "id": "star-enhanced-1",
+  "category": "STAR Examples",
+  "keywords": ["challenges", "overcame", "difficult", "time when", "validation", "test coverage"],
+  "question": "Tell me about a time Kyle faced a significant challenge and how he overcame it",
+  "answer": "Situation: Kyle was supporting a major validation cycle where inconsistent test coverage was jeopardizing the release timeline. Multiple teams were executing tests differently, creating gaps and redundancy.\n\nTask: His responsibility was to design a clearer execution framework that would stabilize coverage across teams and restore confidence in the validation process.\n\nAction: Kyle built a comprehensive coverage matrix that mapped scenarios to system requirements. He organized daily checkpoint meetings to track progress, introduced standardized reporting dashboards that made gaps visible immediately, and worked directly with each team to align their execution approach.\n\nResult: Test coverage increased by 40%, milestone predictability improved significantly, and the release landed on schedule. The framework Kyle created became the standard approach for future validation cycles."
 }
 ]
 }
