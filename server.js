@@ -206,10 +206,6 @@ console.log(`Query: "${q}"`);
 console.log(`Found ${relevantQAs.length} relevant Q&As`);
 
 // Direct KB response if extremely strong match
-if (relevantQAs.length > 0 && relevantQAs[0].score >= 12) {
-  console.log(`KB direct hit! Score: ${relevantQAs[0].score} → Using stored answer`);
-  return res.json({ answer: relevantQAs[0].answer });
-}
 
 // Build context for Groq fallback
 let contextText = '';
