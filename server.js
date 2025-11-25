@@ -119,7 +119,7 @@ function detectOffTopicQuery(query) {
   if (realWeather && !aboutTesting) {
     return {
       type: 'weather',
-      response: "I don't track live weather data, but Kyle did track thousands of autonomous vehicle test scenarios in various conditions, and preformed weather related preception tests."
+      response: "I don't track live weather data, but Kyle did track thousands of autonomous vehicle test scenarios in various conditions, and performed weather related perception tests!"
     };
   }
 
