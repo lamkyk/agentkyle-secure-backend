@@ -134,6 +134,21 @@ app.post('/query', async (req, res) => {
     const { q } = req.body;
     if (!q) return res.status(400).json({ error: 'Query required' });
 
+    // === MAGIC YES/K/SURE FIX (only new part) ===
+    const originalQuery = q;
+    const shortAffirmative = /^(y(es)?|yeah|yep|ya|sure|ok(ay)?|k|ok|go ?on|continue|more|tell ?me ?more|interested|mhm|absolutely|definitely)\s*$/i;
+
+    if (shortAffirmative.test(q.trim())) {
+      // Extract strong topic keywords from last bot response
+      const keywords = lastBotMessage.toLowerCase().match(/\b(csm|customer success|weather|testing|rain|fog|snow|perception|fleet|data|validation|onboarding|sla|saas|program|operations|code|ai|tool|autonomous|sensor|validation)\b/gi) || [];
+      const unique = [...new Set(keywords)].slice(0, 4); // top 4 unique
+      if (unique.length > 0) {
+        q = unique.join(' ') + ' ' + q;  // inject context
+        console.log(`Context carry-over → "${q}"`);
+      }
+    }
+    // === END OF NEW CODE ===
+    
     // 1) Off-topic fun handlers
     const offTopicResponse = detectOffTopicQuery(q);
     if (offTopicResponse) {
