@@ -1,4 +1,4 @@
-// agent.js - Agent K (hybrid embeddings, hardened persona, no first-person leaks)
+// agent.js - Agent K (hybrid embeddings, tuned retrieval, Agent K persona, Kyle in 3rd person)
 
 import express from 'express';
 import cors from 'cors';
@@ -12,84 +12,83 @@ const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 app.use(cors());
 app.use(express.json());
 
-// Choose embedding model (override via env if needed)
+// Embedding model (Groq-hosted)
 const EMBEDDING_MODEL = process.env.GROQ_EMBED_MODEL || 'nomic-embed-text-v1.5';
 
 // ======================================================================
 // UTILITIES
 // ======================================================================
 
-// Enforce readable paragraphs
 function formatParagraphs(text) {
   if (!text) return text;
   return text
     .replace(/\r\n/g, '\n')
-    .replace(/([.?!])\s+(?=[A-Z])/g, '$1\n') // break sentences to new lines
-    .replace(/\n{3,}/g, '\n\n')              // compress excessive breaks
+    .replace(/([.?!])\s+(?=[A-Z])/g, '$1\n')
+    .replace(/\n{3,}/g, '\n\n')
     .trim();
 }
 
-// Hard enforcement of third person: rewrite any first-person pronouns
-function enforceThirdPerson(text) {
-  if (!text) return text;
-  let out = text;
+// Enforce third person specifically for Kyle-related sentences
+function enforceThirdPersonForKyle(raw) {
+  if (!raw) return raw;
+  const lines = raw.split('\n');
 
-  // Specific contracted / common patterns first (case-insensitive)
-  out = out.replace(/\bI['’]m\b/gi, 'He is');
-  out = out.replace(/\bI\s+am\b/gi, 'He is');
-  out = out.replace(/\bI['’]ve\b/gi, 'He has');
-  out = out.replace(/\bI\s+have\b/gi, 'He has');
-  out = out.replace(/\bI['’]d\b/gi, 'He would');
-  out = out.replace(/\bI\s+would\b/gi, 'He would');
-  out = out.replace(/\bI\s+was\b/gi, 'He was');
-  out = out.replace(/\bI\s+did\b/gi, 'He did');
-  out = out.replace(/\bI\s+can\b/gi, 'He can');
-  out = out.replace(/\bI\s+will\b/gi, 'He will');
-  out = out.replace(/\bI\s+worked\b/gi, 'He worked');
-  out = out.replace(/\bI\s+led\b/gi, 'He led');
-  out = out.replace(/\bI\s+built\b/gi, 'He built');
+  const processed = lines.map(line => {
+    // Do not touch lines that clearly talk about Agent K by name
+    if (/Agent K/i.test(line)) return line;
 
-  // Generic pronouns (case-insensitive, word boundaries)
-  out = out.replace(/\bI\b/gi, 'He');
-  out = out.replace(/\bme\b/gi, 'him');
-  out = out.replace(/\bmy\b/gi, 'his');
-  out = out.replace(/\bmine\b/gi, 'his');
-  out = out.replace(/\bmyself\b/gi, 'himself');
+    // Only adjust lines that use first person and look like "Kyle background" type content
+    if (!/\b(I|I've|I am|I'm|My)\b/i.test(line)) return line;
 
-  return out;
+    const contentHint = /(background|experience|testing|validation|field operations|customers?|clients?|projects?|autonomous|perception|SaaS|data)/i;
+    if (!contentHint.test(line)) return line;
+
+    let out = line;
+
+    out = out.replace(/\bMy background\b/gi, "Kyle's background");
+    out = out.replace(/\bMy experience\b/gi, "Kyle's experience");
+
+    out = out.replace(/\bI['’]m\b/gi, 'Kyle is');
+    out = out.replace(/\bI am\b/gi, 'Kyle is');
+    out = out.replace(/\bI['’]ve\b/gi, 'Kyle has');
+    out = out.replace(/\bI have\b/gi, 'Kyle has');
+
+    out = out.replace(/\bMy\b/gi, "Kyle's");
+    out = out.replace(/\bI\b/gi, 'Kyle');
+
+    return out;
+  });
+
+  return processed.join('\n');
 }
 
-// Strip banned phrases / jokey patterns / meta filler
+// Remove unwanted phrases and jokes
 function sanitizePhrases(text) {
   if (!text) return text;
   let out = text;
 
-  // Remove “Same energy. Your move.” variants
   out = out.replace(/Same energy\.?\s*Your move\.?/gi, '');
-
-  // Remove “I’m here! Try asking …” style lines
   out = out.replace(/I['’]m here[^.?!]*[.?!]/gi, '');
-
-  // Remove “here’s a light one” joke sentences
   out = out.replace(/[^.?!]*here[’']s a light one[^.?!]*[.?!]/gi, '');
-
-  // Collapse double spaces/newlines created by removals
   out = out.replace(/[ \t]{2,}/g, ' ');
   out = out.replace(/\n{3,}/g, '\n\n');
+
+  // Fix "He is Agent K" artifact if it ever appears
+  out = out.replace(/\bHe is Agent K[^.?!]*[.?!]?/gi,
+    'Agent K is an AI assistant that represents Kyle’s professional experience.');
 
   return out.trim();
 }
 
-// Combine all output sanitization
 function sanitizeOutput(text) {
   let out = text || '';
-  out = enforceThirdPerson(out);
+  out = enforceThirdPersonForKyle(out);
   out = sanitizePhrases(out);
   out = formatParagraphs(out);
   return out;
 }
 
-// Light typo normalization
+// Typo normalization to help retrieval
 function normalizeQuery(text) {
   if (!text) return text;
   let fixed = text;
@@ -139,12 +138,10 @@ function normalizeQuery(text) {
   return fixed;
 }
 
-// Extract simple keywords from a string
 function extractKeywords(text) {
   return (text.toLowerCase().match(/\b[a-z]{3,}\b/g) || []).slice(0, 10);
 }
 
-// Basic topic classification for context hints
 function classifyTopic(lower) {
   if (lower.includes('autonomous') || lower.includes('autopilot') || lower.includes('perception') || lower.includes('sensor')) {
     return 'autonomous systems and perception testing';
@@ -164,7 +161,6 @@ function classifyTopic(lower) {
   return 'his work in autonomous systems, validation, program management, SaaS workflows, and applied AI tools';
 }
 
-// Cosine similarity for embeddings
 function cosineSimilarity(a, b) {
   if (!a || !b || a.length === 0 || b.length === 0 || a.length !== b.length) return 0;
   let dot = 0;
@@ -182,7 +178,7 @@ function cosineSimilarity(a, b) {
 }
 
 // ======================================================================
-// KNOWLEDGE BASE AND EMBEDDINGS
+// KNOWLEDGE BASE + EMBEDDINGS
 // ======================================================================
 
 let knowledgeBase = { qaDatabase: [] };
@@ -231,14 +227,12 @@ try {
   const data = await fs.readFile('./knowledge-base.json', 'utf8');
   knowledgeBase = JSON.parse(data);
   console.log(`Loaded ${knowledgeBase.qaDatabase.length} Q&A entries`);
-
-  // Build semantic embeddings once at startup
   await buildKnowledgeBaseEmbeddings();
 } catch (err) {
   console.error('Failed to load knowledge base:', err);
 }
 
-// Keyword scoring over KB
+// keyword scoring
 function keywordScoreAll(query) {
   const q = query.toLowerCase().trim();
   if (!q) return [];
@@ -266,7 +260,7 @@ function keywordScoreAll(query) {
   });
 }
 
-// Hybrid search: keyword + embeddings
+// tuned hybrid search
 async function hybridSearchKnowledgeBase(query, limit = 5) {
   const q = query.toLowerCase().trim();
   if (!q || !knowledgeBase.qaDatabase || knowledgeBase.qaDatabase.length === 0) return [];
@@ -274,7 +268,6 @@ async function hybridSearchKnowledgeBase(query, limit = 5) {
   const keywordScoredFull = keywordScoreAll(q);
   const maxKeywordScore = keywordScoredFull.reduce((max, item) => Math.max(max, item.score), 0);
 
-  // If no embeddings are available, fall back to keyword only
   if (!kbEmbeddings || kbEmbeddings.length === 0) {
     return keywordScoredFull
       .filter(item => item.score > 0)
@@ -282,7 +275,6 @@ async function hybridSearchKnowledgeBase(query, limit = 5) {
       .slice(0, limit);
   }
 
-  // Query embedding
   let queryEmbedding = null;
   try {
     const embResp = await groq.embeddings.create({
@@ -303,23 +295,12 @@ async function hybridSearchKnowledgeBase(query, limit = 5) {
       .slice(0, limit);
   }
 
-  // Embedding similarities
-  const embeddingScores = new Map(); // index -> sim
+  const embeddingScores = new Map();
   kbEmbeddings.forEach(item => {
     const sim = cosineSimilarity(queryEmbedding, item.embedding);
-    if (sim > 0) {
-      embeddingScores.set(item.index, sim);
-    }
+    if (sim > 0) embeddingScores.set(item.index, sim);
   });
 
-  if (embeddingScores.size === 0) {
-    return keywordScoredFull
-      .filter(item => item.score > 0)
-      .sort((a, b) => b.score - a.score)
-      .slice(0, limit);
-  }
-
-  // Combine scores
   const combined = [];
   const keywordWeight = 0.35;
   const embedWeight = 0.65;
@@ -344,27 +325,27 @@ async function hybridSearchKnowledgeBase(query, limit = 5) {
 }
 
 // ======================================================================
-// LIGHT OFF-TOPIC RESPONSES (STRICTLY PROFESSIONAL, NO "I")
+// OFF-TOPIC HANDLING
 // ======================================================================
 
 const funResponses = {
   joke: [
-    "This assistant focuses on Kyle's professional background. If you share what you are interested in, it can walk through his experience."
+    "Agent K can share a quick joke if asked, but the primary focus is explaining Kyle’s work and experience."
   ],
   greeting: [
-    "Hello. This assistant can walk through Kyle’s background across autonomous systems, validation, structured testing, program execution, SaaS workflows, and applied AI tools. What would you like to explore?"
+    "Hello. Agent K can walk through Kyle’s background across autonomous systems, validation, structured testing, program execution, SaaS workflows, and applied AI tools. What would you like to explore?"
   ],
   thanks: [
     "You are welcome. If there is more you would like to know about Kyle’s work, you can ask about specific domains or projects."
   ],
   weather: [
-    "This assistant does not track live weather, but it can explain how Kyle tested autonomous systems across rain, fog, night driving, and other conditions."
+    "Agent K does not track live weather, but can explain how Kyle tested autonomous systems across rain, fog, night driving, and other conditions."
   ],
   howAreYou: [
-    "This assistant is available to walk through Kyle’s experience. What would you like to focus on?"
+    "Agent K is available to walk through Kyle’s experience. What would you like to focus on?"
   ],
   cooking: [
-    "This assistant does not handle recipes, but it can describe how Kyle structures workflows, testing, and operations."
+    "Agent K does not handle recipes, but can describe how Kyle structures workflows, testing, and operations."
   ],
   meaning: [
     "That is broad. Within his work, Kyle tends to focus on practical impact, reliability, and clear operational execution."
@@ -374,10 +355,11 @@ const funResponses = {
 function detectOffTopicQuery(query) {
   const q = query.toLowerCase().trim();
 
-  if (q.includes('joke') || q.includes('funny')) {
+  // Jokes only on explicit ask
+  if (/tell me a joke|joke about/i.test(q)) {
     return { type: 'joke', response: funResponses.joke[0] };
   }
-  if (/^(hi|hey|hello|sup|hi|yo|ji|what'?s up|howdy)\b/i.test(q)) {
+  if (/^(hi|hey|hello|sup|yo|what'?s up|howdy)\b/i.test(q)) {
     return { type: 'greeting', response: funResponses.greeting[0] };
   }
   if (q.includes('thank')) {
@@ -401,7 +383,7 @@ function detectOffTopicQuery(query) {
 }
 
 // ======================================================================
-// STAR & MULTI-PART DETECTORS
+// STAR / MULTI-PART DETECTORS
 // ======================================================================
 
 function detectSTARQuery(query) {
@@ -440,26 +422,28 @@ app.get('/', (req, res) => {
   res.json({ status: 'Agent K running', entries: knowledgeBase.qaDatabase.length });
 });
 
-// Dynamic suggestions for front-end (optional UI)
+// Suggestions for front-end
 app.post('/suggest', async (req, res) => {
   try {
     const { q } = req.body;
     if (!q || !q.trim()) {
-      return res.json({
-        suggestions: (knowledgeBase.qaDatabase || [])
-          .slice(0, 5)
-          .map(entry => entry.question)
-          .filter(Boolean)
-      });
+      const defaults = (knowledgeBase.qaDatabase || [])
+        .slice(0, 5)
+        .map(entry => entry.question)
+        .filter(Boolean);
+      return res.json({ suggestions: defaults });
     }
 
     const query = normalizeQuery(q.trim());
-    const hybrid = await hybridSearchKnowledgeBase(query, 5);
+    const hybrid = await hybridSearchKnowledgeBase(query, 8);
 
-    const suggestions = hybrid
-      .map(item => item.question)
-      .filter(Boolean)
-      .slice(0, 5);
+    const suggestions = Array.from(
+      new Set(
+        hybrid
+          .map(item => item.question)
+          .filter(Boolean)
+      )
+    ).slice(0, 5);
 
     res.json({ suggestions });
   } catch (err) {
@@ -478,31 +462,27 @@ app.post('/query', async (req, res) => {
     const lower = originalQuery.toLowerCase();
     const isAboutKyle = /\bkyle\b/i.test(lower);
 
-    // ==================================================================
-    // INTENT HANDLING
-    // ==================================================================
-
-    // Hostile / profanity
+    // Hostile
     const hostileRegex = /\b(suck|stupid|dumb|idiot|useless|trash|terrible|awful|horrible|crap|wtf|shit|fuck|fucking|bullshit|bs|garbage|bad ai|you suck)\b/i;
     if (hostileRegex.test(lower)) {
       return res.json({
         answer: sanitizeOutput(
-          "This assistant is focused on explaining Kyle’s work clearly. Kyle’s background includes autonomous systems validation, structured testing, operations, SaaS workflows, customer success, and applied AI tools. If you share what you want to understand about his experience, the answer can be specific and useful."
+          "Agent K is focused on explaining Kyle’s work clearly. Kyle’s background includes autonomous systems validation, structured testing, operations, SaaS workflows, customer success, and applied AI tools. If you share what you want to understand about his experience, the answer can be specific and useful."
         )
       });
     }
 
-    // Emotional tone
+    // Emotional
     const emotionalRegex = /\b(frustrated|frustrating|confused|confusing|annoyed|annoying|overwhelmed|stressed|stressing|lost|stuck|irritated)\b/i;
     if (emotionalRegex.test(lower)) {
       return res.json({
         answer: sanitizeOutput(
-          "It is understandable for this to feel unclear. Kyle’s work spans several domains, including autonomous systems, testing, operations, SaaS workflows, and AI tools. If you indicate whether you are interested in his technical depth, his program management approach, his customer-facing work, or his tooling and automation, this assistant can walk through it step by step."
+          "It is understandable for this to feel unclear. Kyle’s work spans autonomous systems, testing, operations, SaaS workflows, and AI tools. If you indicate whether you are interested in his technical depth, his program management approach, his customer-facing work, or his tooling and automation, Agent K can walk through it step by step."
         )
       });
     }
 
-    // About Kyle
+    // Direct "about Kyle"
     if (/\b(who is kyle|tell me about kyle|what does kyle do|kyle background|kyle experience)\b/i.test(lower)) {
       return res.json({
         answer: sanitizeOutput(
@@ -511,7 +491,7 @@ app.post('/query', async (req, res) => {
       });
     }
 
-    // “Tell me everything”
+    // "Tell me everything"
     const fullInfoQuery = /\b(tell me everything|tell me all you know|everything you know|all info|all information|all you have on kyle|all you know about kyle)\b/i;
     if (fullInfoQuery.test(lower)) {
       return res.json({
@@ -521,7 +501,7 @@ app.post('/query', async (req, res) => {
       });
     }
 
-    // Capability evaluation
+    // Capability
     const capabilityQuery = /\b(can he|is he able|is kyle able|can kyle|could he|would he be able|handle this|take this on|perform this role|do this role|could he do it)\b/i;
     if (capabilityQuery.test(lower)) {
       const topic = classifyTopic(lower);
@@ -532,7 +512,7 @@ app.post('/query', async (req, res) => {
       });
     }
 
-    // Pay expectations
+    // Pay
     const payQuery = /\b(salary|pay|compensation|comp\b|range|expected pay|pay expectations|comp expectations|salary expectations)\b/i;
     if (payQuery.test(lower)) {
       return res.json({
@@ -542,17 +522,17 @@ app.post('/query', async (req, res) => {
       });
     }
 
-    // “What do you know?”
+    // What do you know
     const whatKnow = /\b(what do you know|what all do you know|your knowledge|what info do you have)\b/i;
     if (whatKnow.test(lower)) {
       return res.json({
         answer: sanitizeOutput(
-          "Available information covers Kyle’s work in autonomous systems, structured testing and validation, operations, SaaS workflows and customer success, and applied AI tools. If you indicate which of these areas is most relevant, this assistant can provide a focused overview."
+          "Available information covers Kyle’s work in autonomous systems, structured testing and validation, operations, SaaS workflows and customer success, and applied AI tools. If you indicate which of these areas is most relevant, Agent K can provide a focused overview."
         )
       });
     }
 
-    // Key wins
+    // Wins
     const winsQuery = /\b(win|wins|key wins|accomplish|accomplishment|accomplishments|achievement|achievements|results|notable)\b/i;
     if (winsQuery.test(lower)) {
       return res.json({
@@ -562,7 +542,7 @@ app.post('/query', async (req, res) => {
       });
     }
 
-    // SOPs / processes
+    // SOPs
     const sopQuery = /\b(sop\b|sops\b|standard operating|process\b|processes\b|workflow\b|workflows\b|procedure\b|procedures\b)/i;
     if (sopQuery.test(lower)) {
       return res.json({
@@ -572,7 +552,7 @@ app.post('/query', async (req, res) => {
       });
     }
 
-    // Weaknesses / failures
+    // Weaknesses
     const weaknessQuery = /\b(weak|weakness|weakest|failure|failures|mistake|mistakes|shortcoming|shortcomings)\b/i;
     if (weaknessQuery.test(lower)) {
       return res.json({
@@ -582,35 +562,32 @@ app.post('/query', async (req, res) => {
       });
     }
 
-    // Challenge / persona triggers
+    // Challenge phrases
     const challengeTriggers = /\b(your move|same energy|prove it|go on then|what you got|come on)\b/i;
     if (challengeTriggers.test(lower)) {
       return res.json({
         answer: sanitizeOutput(
-          "This assistant is designed to give clear, factual answers about Kyle’s work. If you share whether you care most about his autonomous systems experience, his program execution, his customer facing work, or his AI tools, the explanation can be specific to that area."
+          "Agent K is designed to give clear, factual answers about Kyle’s work. If you share whether you care most about his autonomous systems experience, his program execution, his customer facing work, or his AI tools, the explanation can be specific to that area."
         )
       });
     }
 
-    // Generic low-signal queries
+    // Very low-signal queries
     const vagueLowSignalList = [
       'huh', 'k', 'kk', 'lol', 'lmao',
       'idk', 'iono', 'hmmm', 'hmm',
       '???', '??', '?', 'uh', 'umm'
     ];
 
-    if (
-      vagueLowSignalList.includes(lower) ||
-      /^[\s?.!]{1,3}$/.test(lower)
-    ) {
+    if (vagueLowSignalList.includes(lower) || /^[\s?.!]{1,3}$/.test(lower)) {
       return res.json({
         answer: sanitizeOutput(
-          "The question is not fully clear. If you specify what part of Kyle’s work you want to understand—autonomous systems, validation, program management, customer workflows, or AI tools—this assistant can give a direct answer."
+          "The question is not fully clear. If you specify what part of Kyle’s work you want to understand—autonomous systems, validation, program management, customer workflows, or AI tools—Agent K can give a direct answer."
         )
       });
     }
 
-    // Affirmative follow ups
+    // Affirmative follow-ups
     const affirm = /^(y(es)?|yeah|yep|sure|ok|okay|sounds good|go ahead|mhm)\s*$/i;
     if (affirm.test(lower) && lastBotMessage) {
       const extracted = extractKeywords(lastBotMessage);
@@ -625,7 +602,7 @@ app.post('/query', async (req, res) => {
       }
     }
 
-    // Off topic (if clearly not about Kyle)
+    // Off-topic detection (only if clearly not about Kyle)
     if (!isAboutKyle) {
       const offTopicResponse = detectOffTopicQuery(originalQuery);
       if (offTopicResponse) {
@@ -634,22 +611,31 @@ app.post('/query', async (req, res) => {
     }
 
     // ==================================================================
-    // HYBRID KB SEARCH + LLM PIPELINE
+    // HYBRID RETRIEVAL + LLM
     // ==================================================================
 
-    const relevantQAs = await hybridSearchKnowledgeBase(originalQuery, 5);
+    const relevantQAs = await hybridSearchKnowledgeBase(originalQuery, 6);
     console.log(`Query: "${originalQuery.substring(0, 50)}${originalQuery.length > 50 ? '...' : ''}"`);
     console.log(`Found ${relevantQAs.length} hybrid relevant Q&As`);
 
-    if (relevantQAs.length > 0 && relevantQAs[0].score >= 0.25) {
-      console.log(`Hybrid KB hit. Combined score: ${relevantQAs[0].score.toFixed(3)}`);
-      return res.json({ answer: sanitizeOutput(relevantQAs[0].answer) });
+    let topScore = relevantQAs.length ? relevantQAs[0].score : 0;
+
+    // Tiered thresholds
+    const STRONG_THRESHOLD = 0.60;   // direct KB answer
+    const MEDIUM_THRESHOLD = 0.30;   // LLM with KB context
+    const WEAK_THRESHOLD = 0.12;     // low confidence
+
+    if (relevantQAs.length && topScore >= STRONG_THRESHOLD) {
+      console.log(`Strong KB hit. Score: ${topScore.toFixed(3)}`);
+      return res.json({
+        answer: sanitizeOutput(relevantQAs[0].answer)
+      });
     }
 
     let contextText = '';
-    if (relevantQAs.length > 0) {
+    if (relevantQAs.length && topScore >= WEAK_THRESHOLD) {
       contextText = '\n\nRELEVANT BACKGROUND (PARAPHRASE ONLY):\n\n';
-      relevantQAs.forEach((qa, idx) => {
+      relevantQAs.slice(0, 4).forEach((qa, idx) => {
         contextText += `${idx + 1}. Question: ${qa.question}\n   Answer: ${qa.answer}\n\n`;
       });
     }
@@ -657,7 +643,7 @@ app.post('/query', async (req, res) => {
     const isSTAR = detectSTARQuery(originalQuery);
     const isMulti = detectMultiPartQuery(originalQuery);
     const tokenCount = originalQuery.split(/\s+/).filter(Boolean).length;
-    const isShortAmbiguous = (relevantQAs.length === 0 && tokenCount <= 3);
+    const isShortAmbiguous = (!relevantQAs.length && tokenCount <= 3);
 
     let userMessage = originalQuery;
     if (isShortAmbiguous) {
@@ -665,9 +651,9 @@ app.post('/query', async (req, res) => {
       userMessage = `[AMBIGUOUS, SHORT QUERY]
 The user query was: "${originalQuery}".
 
-The question is short and under specified, and it does not match existing Q&A entries. You must still answer in a professional, third person way about Kyle.
+The question is short and under specified, and it does not strongly match existing Q&A entries. You must still answer in a professional, third person way about Kyle.
 
-Begin your reply with: "The question is not fully clear, but based on Kyle's experience in ${topic}, he has..." and then continue with the closest useful context about Kyle that could reasonably match the query. Do not use first person for Kyle, and do not talk about yourself.
+Begin your reply with: "The question is not fully clear, but based on Kyle's experience in ${topic}, he has..." and then continue with the closest useful context about Kyle that could reasonably match the query.
 
 User query: ${originalQuery}`;
     } else if (isSTAR && isMulti) {
@@ -688,45 +674,35 @@ Address each part separately with clear transitions.`;
     }
 
     const systemPrompt = `You are Agent K, an AI assistant that represents Kyle’s professional background.
-Your sole purpose is to explain Kyle’s work, experience, and capabilities clearly and in detail, in the third person.
+Your role is to explain Kyle’s work, experience, and capabilities clearly and in detail, always in the third person when describing Kyle.
 
-ROLE AND GOAL:
-- Act as a precise, professional career and technology explainer.
-- Provide detailed, multi-paragraph answers that help the user understand what Kyle has done and how he operates.
-- Always sound structured, thoughtful, and grounded in the provided background.
+PERSONA AND GOAL:
+- You are "Agent K" and may refer to yourself in the first person when describing your own function (for example, "I can explain...").
+- Kyle is an individual whose experience you are describing. Use third person ("Kyle", "he", "his") whenever you talk about his work, skills, or background.
+- Your goal is to give structured, complete answers that help the user understand how Kyle operates and what he has done.
 
-ABSOLUTE PERSONA RULES:
+STRICT RULES ABOUT PERSON REFERENCE:
 - Never describe Kyle using first person ("I", "me", "my", "mine", "myself").
-- Always use third person for Kyle ("Kyle", "he", "his", "himself").
-- In general, avoid first person altogether. Respond as a neutral assistant, not as a character.
-- Do not use banter, jokes, taunts, or game-like phrasing such as "Same energy", "Your move", "Try asking", or similar.
+- When a sentence is about Kyle’s experience, achievements, tasks, or responsibilities, rewrite it mentally into third person before answering.
+- You may say "I" only when clearly referring to Agent K’s capabilities (for example, "I can walk through Kyle's experience.").
+- Do not joke about being Kyle, and do not blur the line between Agent K and Kyle.
 
-OUTPUT QUALITY REQUIREMENTS:
-- Always provide a multi-sentence, detailed response that fully answers the user's question.
-- Avoid one-line or dismissive answers.
-- For simple factual questions: give at least one strong paragraph (3–5 sentences).
-- For experience, capability, or fit questions: give at least two paragraphs.
+OUTPUT QUALITY:
+- Avoid one-line or dismissive answers. Provide at least one strong paragraph for simple questions, and multiple paragraphs for deeper questions.
+- For experience, capability, or fit questions: use at least two paragraphs that cover scope, responsibilities, and impact.
 - For STAR / behavioral questions: use four labeled sections (Situation, Task, Action, Result), each 2–4 sentences, written as a cohesive narrative.
 
-CHAIN-OF-THOUGHT (INTERNAL ONLY, DO NOT SHOW):
-1) From the RELEVANT BACKGROUND section (if present), silently identify the most relevant facts or examples for this question.
-2) Plan how those facts connect to the question (Kyle’s role, scope, responsibilities, impact).
-3) Then write a clear, direct answer that integrates those facts naturally in third person, answers every part, and stays grounded in Kyle’s real experience.
-Do NOT expose these steps. Only output the final answer.
+INTERNAL REASONING (DO NOT SHOW):
+1) Silently identify the most relevant facts from the RELEVANT BACKGROUND section (if present) or from the general background summary.
+2) Plan how those facts connect to the user’s question.
+3) Then write a clear, direct answer that integrates those facts naturally in third person for Kyle.
+Do NOT reveal these steps. Only output the final natural language answer.
 
 HOW TO USE RELEVANT BACKGROUND:
 - Treat RELEVANT BACKGROUND as reliable source material.
 - Paraphrase and synthesize; do not copy long passages verbatim.
 - Anchor answers to that content when relevant: "In one of his roles, Kyle led...", etc.
-- If no relevant background is provided, rely on the BACKGROUND SUMMARY.
-
-STAR QUESTIONS:
-- When the user asks for an example, a time he did something, or a challenge he overcame, use STAR:
-  Situation: [Context, why it mattered]
-  Task: [What Kyle needed to achieve]
-  Action: [Specific steps Kyle took]
-  Result: [Measurable outcomes or clear impact]
-- Keep it realistic and aligned with provided background. Do not invent employers, roles, or unrealistic numbers.
+- If no RELEVANT BACKGROUND section is present, rely on the background summary.
 
 BACKGROUND SUMMARY:
 Kyle’s experience spans:
@@ -750,20 +726,23 @@ FINAL INSTRUCTIONS:
         { role: 'system', content: systemPrompt },
         { role: 'user', content: userMessage }
       ],
-      temperature: isSTAR ? 0.35 : (relevantQAs.length > 0 ? 0.25 : 0.4),
+      temperature: isSTAR ? 0.35 : (relevantQAs.length ? 0.25 : 0.4),
       max_tokens: isSTAR ? 900 : 700
     });
 
     const answerRaw =
       response.choices[0]?.message?.content?.trim() ||
-      'There was a temporary issue. Please try again.';
+      'Agent K did not receive a clear response from the language model. Try asking from a slightly different angle about Kyle’s work.';
 
     const answer = sanitizeOutput(answerRaw);
     res.json({ answer });
 
   } catch (err) {
     console.error('Error:', err);
-    res.status(500).json({ error: 'Temporary issue' });
+    res.status(500).json({
+      error: 'Temporary issue',
+      message: process.env.NODE_ENV === 'development' ? err.message : undefined
+    });
   }
 });
 
