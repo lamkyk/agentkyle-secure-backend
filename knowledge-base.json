@@ -2032,6 +2032,7 @@
                 "teamwork",
                 "impact",
                 "v&v",
+                "vnv",
                 "validation"
             ],
             "question": "What recognition has Kyle received for his work?",
@@ -2700,6 +2701,7 @@
                 "public roads",
                 "real-world validation",
                 "V&V",
+                "vnv",
                 "waymo",
                 "Waymo"
             ],
@@ -2741,6 +2743,7 @@
                 "extreme weather",
                 "weather",
                 "MOR",
+                "fog",
                 "adverse conditions",
                 "waymo",
                 "Waymo"
@@ -2862,6 +2865,10 @@
                 "QBR",
                 "$65K upsell",
                 "consultative",
+                "finance",
+                "IR",
+                "investor relations",
+                "stock market",
                 "nasdaq",
                 "Nasdaq"
             ],
