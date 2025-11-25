@@ -200,27 +200,25 @@ app.post('/query', async (req, res) => {
       });
     }
 
-    // 3) Search knowledge base
-    const relevantQAs = searchKnowledgeBase(q, 5);
-    console.log(`Query: "${q}"`);
-    console.log(`Found ${relevantQAs.length} relevant Q&As`);
+// 3) Search knowledge base
+const relevantQAs = searchKnowledgeBase(q, 5);
+console.log(`Query: "${q}"`);
+console.log(`Found ${relevantQAs.length} relevant Q&As`);
 
-    // Build context from relevant Q&As
-    let contextText = '';
+// Direct KB response if extremely strong match
 if (relevantQAs.length > 0 && relevantQAs[0].score >= 12) {
-      console.log(`KB direct hit! Score: ${relevantQAs[0].score} → Using stored answer`);
-      return res.json({ answer: relevantQAs[0].answer });
-    }
+  console.log(`KB direct hit! Score: ${relevantQAs[0].score} → Using stored answer`);
+  return res.json({ answer: relevantQAs[0].answer });
+}
 
-    // Only if no strong KB match → build context for Groq (fallback)
-    let contextText = '';
-    if (relevantQAs.length > 0) {
-      contextText = '\n\nRELEVANT BACKGROUND FROM KYLE\'S INTERVIEW PREP:\n\n';
-      relevantQAs.forEach((qa, idx) => {
-        contextText += `${idx + 1}. Question: ${qa.question}\n Answer: ${qa.answer}\n\n`;
-      });
-    }
-
+// Build context for Groq fallback
+let contextText = '';
+if (relevantQAs.length > 0) {
+  contextText = '\n\nRELEVANT BACKGROUND FROM KYLE\'S INTERVIEW PREP:\n\n';
+  relevantQAs.forEach((qa, idx) => {
+    contextText += `${idx + 1}. Question: ${qa.question}\n Answer: ${qa.answer}\n\n`;
+  });
+}
     // System prompt with context injected (unchanged)
     const systemPrompt = `You are Agent K, a professional, confident, and warm AI assistant that speaks about Kyle exclusively in the third person ("Kyle", "he", "his").  
 You never refer to yourself as Kyle, and you never speak in first person about Kyle's experience.
