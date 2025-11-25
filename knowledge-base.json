@@ -1877,7 +1877,7 @@
         {
             "id": "offtopic-011",
             "category": "Off Topic / Redirection",
-            "keywords": [
+            "keywords": ["ai",
                 "who is the ai agent"
             ],
             "question": "Who are you?",
@@ -1905,7 +1905,7 @@
         {
             "id": "offtopic-014",
             "category": "Off Topic / Redirection",
-            "keywords": [
+            "keywords": ["ai",
                 "tell me about yourself"
             ],
             "question": "Tell me about yourself.",
@@ -3061,7 +3061,7 @@
   {
     "id": "shield-02",
     "category": "Deflection & Redirect",
-    "keywords": ["how was this built", "tech stack", "code", "groq"],
+    "keywords": ["how was this built", "tech stack", "code", "groq","ai tools","ai"],
     "question": "How was this built?",
     "answer": "Kyle built me with Node.js, Express, Groq API, and a custom knowledge base. Want to talk about his experience instead?"
   },
