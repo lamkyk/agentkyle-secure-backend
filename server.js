@@ -26,6 +26,35 @@ function formatParagraphs(text) {
     .trim();
 }
 
+// Hard enforcement of third person: rewrite any first-person pronouns
+function enforceThirdPerson(text) {
+  if (!text) return text;
+  let out = text;
+
+  // More specific patterns first
+  out = out.replace(/\bI'm\b/g, 'He is');
+  out = out.replace(/\bI am\b/g, 'He is');
+  out = out.replace(/\bI've\b/g, 'He has');
+  out = out.replace(/\bI have\b/g, 'He has');
+  out = out.replace(/\bI'd\b/g, 'He would');
+  out = out.replace(/\bI was\b/g, 'He was');
+  out = out.replace(/\bI did\b/g, 'He did');
+  out = out.replace(/\bI can\b/g, 'He can');
+  out = out.replace(/\bI will\b/g, 'He will');
+  out = out.replace(/\bI worked\b/g, 'He worked');
+  out = out.replace(/\bI led\b/g, 'He led');
+  out = out.replace(/\bI built\b/g, 'He built');
+
+  // Generic pronouns
+  out = out.replace(/\bI\b/g, 'He');
+  out = out.replace(/\bme\b/g, 'him');
+  out = out.replace(/\bmy\b/g, 'his');
+  out = out.replace(/\bmine\b/g, 'his');
+  out = out.replace(/\bmyself\b/g, 'himself');
+
+  return out;
+}
+
 // Light typo normalization (Option A)
 function normalizeQuery(text) {
   if (!text) return text;
@@ -381,16 +410,16 @@ app.post('/query', async (req, res) => {
       'explain', 'explain?', 'more', 'continue', 'whatever'
     ];
 
-   if (
-  vagueLowSignalList.includes(lower) ||
-  /^[\s?.!]{1,3}$/.test(lower)
-) {
-  return res.json({
-    answer: formatParagraphs(
-      "The question is not fully clear. If you specify what part of Kyle’s work you want to understand—autonomous systems, validation, program management, customer workflows, or AI tools—this assistant can give a direct answer."
-    )
-  });
-}
+    if (
+      vagueLowSignalList.includes(lower) ||
+      /^[\s?.!]{1,3}$/.test(lower)
+    ) {
+      return res.json({
+        answer: formatParagraphs(
+          "The question is not fully clear. If you specify what part of Kyle’s work you want to understand—autonomous systems, validation, program management, customer workflows, or AI tools—this assistant can give a direct answer."
+        )
+      });
+    }
 
     // 12. Affirmative follow ups
     const affirm = /^(y(es)?|yeah|yep|sure|ok|okay|sounds good|go ahead|mhm)\s*$/i;
@@ -519,7 +548,10 @@ Respond as a professional assistant describing Kyle’s background and capabilit
       response.choices[0]?.message?.content?.trim() ||
       'There was a temporary issue. Please try again.';
 
-    const answer = formatParagraphs(answerRaw);
+    // Enforce third person on any model output, then format
+    const safeAnswer = enforceThirdPerson(answerRaw);
+    const answer = formatParagraphs(safeAnswer);
+
     res.json({ answer });
 
   } catch (err) {
