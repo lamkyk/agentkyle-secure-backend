@@ -88,10 +88,10 @@ const funResponses = {
   ]
 };
 
-// Detect off-topic queries (unchanged)
+// Detect off-topic queries – FIXED & SAFE
 function detectOffTopicQuery(query) {
   const q = query.toLowerCase();
-  
+
   if (q.includes('joke') || q.includes('funny')) {
     return { type: 'joke', response: funResponses.joke[Math.floor(Math.random() * funResponses.joke.length)] };
   }
@@ -101,12 +101,13 @@ function detectOffTopicQuery(query) {
   if (q.includes('thank') || q.includes('thanks')) {
     return { type: 'thanks', response: funResponses.thanks[Math.floor(Math.random() * funResponses.thanks.length)] };
   }
-// Only catch real-time weather requests, NOT "weather testing" etc.
-if (q.match(/\b(weather|temperature|rain|snow|hot|cold|forecast)\b/i) &&
-    !q.includes('test') && !q.includes('testing') && !q.includes('scenario')) {
-  return { type: 'weather', response: funResponses.weather[0] };
-}
+
+  // FIXED WEATHER: only trigger on real-time weather, NOT testing/scenarios
+  if (q.match(/\b(weather|temperature|rain|snow|hot|cold|forecast)\b/i) &&
+      !q.includes('test') && !q.includes('testing') && !q.includes('scenario') && !q.includes('weather tests')) {
+    return { type: 'weather', response: "I don't track live weather data, but Kyle did track thousands of autonomous vehicle test scenarios in various conditions and preformed various weather related vehicle and preception tests! };
   }
+
   if (q.match(/how are you|how're you|how r u/i)) {
     return { type: 'howAreYou', response: funResponses.howAreYou[Math.floor(Math.random() * funResponses.howAreYou.length)] };
   }
@@ -116,7 +117,7 @@ if (q.match(/\b(weather|temperature|rain|snow|hot|cold|forecast)\b/i) &&
   if (q.includes('meaning of life') || q.includes('purpose of life')) {
     return { type: 'meaning', response: funResponses.meaning[0] };
   }
-  
+
   return null;
 }
 
