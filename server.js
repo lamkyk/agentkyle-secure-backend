@@ -113,7 +113,7 @@ function detectOffTopicQuery(query) {
   const isAboutTesting = /test|testing|scenario|weather tests/i.test(q);
 
   if (isRealTimeWeather && !isAboutTesting) {
-    return { type: 'weather', response: "I don't track live weather data, but Kyle did track thousands of autonomous vehicle test scenarios in various conditions! Want to hear about his field operations experience?" };
+    return { type: 'weather', response: "I don't track live weather data, but Kyle did track thousands of autonomous vehicle test scenarios in various conditions, and preformed several weather related perception tests.};
   }
 
   // How are you
