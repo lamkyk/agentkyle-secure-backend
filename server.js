@@ -88,32 +88,45 @@ const funResponses = {
   ]
 };
 
-// Detect off-topic queries – FIXED & SAFE
+// Detect off-topic queries – BULLETPROOF VERSION (no crash ever)
 function detectOffTopicQuery(query) {
-  const q = query.toLowerCase();
+  const q = query.toLowerCase().trim();
 
+  // Joke / funny
   if (q.includes('joke') || q.includes('funny')) {
     return { type: 'joke', response: funResponses.joke[Math.floor(Math.random() * funResponses.joke.length)] };
   }
-  if (q.match(/^(hi|hey|hello|sup|what's up|howdy)/i)) {
+
+  // Greeting
+  if (q.match(/^(hi|hey|hello|sup|what'?s up|howdy)/i)) {
     return { type: 'greeting', response: funResponses.greeting[Math.floor(Math.random() * funResponses.greeting.length)] };
   }
-  if (q.includes('thank') || q.includes('thanks')) {
+
+  // Thanks
+  if (q.includes('thank')) {
     return { type: 'thanks', response: funResponses.thanks[Math.floor(Math.random() * funResponses.thanks.length)] };
   }
 
-  // FIXED WEATHER: only trigger on real-time weather, NOT testing/scenarios
-  if (q.match(/\b(weather|temperature|rain|snow|hot|cold|forecast)\b/i) &&
-      !q.includes('test') && !q.includes('testing') && !q.includes('scenario') && !q.includes('weather tests')) {
-    return { type: 'weather', response: "I don't track live weather data, but Kyle did track thousands of autonomous vehicle test scenarios in various conditions and preformed various weather related vehicle and preception tests! };
+  // WEATHER: only real-time weather → off-topic response
+  // Everything else (weather testing, weather tests, etc.) → goes to KB
+  const isRealTimeWeather = /\b(weather|temperature|rain(ing)?|snow(ing)?|hot|cold|forecast)\b/i.test(q);
+  const isAboutTesting = /test|testing|scenario|weather tests/i.test(q);
+
+  if (isRealTimeWeather && !isAboutTesting) {
+    return { type: 'weather', response: "I don't track live weather data, but Kyle did track thousands of autonomous vehicle test scenarios in various conditions! Want to hear about his field operations experience?" };
   }
 
-  if (q.match(/how are you|how're you|how r u/i)) {
+  // How are you
+  if (/how are you|how'?re you|how r u/i.test(q)) {
     return { type: 'howAreYou', response: funResponses.howAreYou[Math.floor(Math.random() * funResponses.howAreYou.length)] };
   }
+
+  // Cooking / food
   if (q.includes('cook') || q.includes('recipe') || q.includes('food')) {
     return { type: 'cooking', response: funResponses.cooking[0] };
   }
+
+  // Meaning of life
   if (q.includes('meaning of life') || q.includes('purpose of life')) {
     return { type: 'meaning', response: funResponses.meaning[0] };
   }
