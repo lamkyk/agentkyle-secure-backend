@@ -21,9 +21,51 @@ function formatParagraphs(text) {
   if (!text) return text;
   return text
     .replace(/\r\n/g, '\n')
-    .replace(/([.?!])\s+(?=[A-Z])/g, '$1\n')     // break sentences to new lines
-    .replace(/\n{3,}/g, '\n\n')                 // compress excessive breaks
+    .replace(/([.?!])\s+(?=[A-Z])/g, '$1\n') // break sentences to new lines
+    .replace(/\n{3,}/g, '\n\n')              // compress excessive breaks
     .trim();
+}
+
+// Light typo normalization (Option A)
+function normalizeQuery(text) {
+  if (!text) return text;
+  let fixed = text;
+
+  const replacements = [
+    { pattern: /\bautonmous\b/gi, repl: 'autonomous' },
+    { pattern: /\bautonnomous\b/gi, repl: 'autonomous' },
+    { pattern: /\bautonamous\b/gi, repl: 'autonomous' },
+    { pattern: /\bautopliot\b/gi, repl: 'autopilot' },
+    { pattern: /\bvaldiation\b/gi, repl: 'validation' },
+    { pattern: /\bvalidaton\b/gi, repl: 'validation' },
+    { pattern: /\bstrenghening\b/gi, repl: 'strengthening' },
+    { pattern: /\bstrenghtening\b/gi, repl: 'strengthening' },
+    { pattern: /\bstrenthening\b/gi, repl: 'strengthening' },
+    { pattern: /\bscrpting\b/gi, repl: 'scripting' },
+    { pattern: /\bscriptting\b/gi, repl: 'scripting' },
+    { pattern: /\bskritping\b/gi, repl: 'scripting' },
+    { pattern: /\bskripting\b/gi, repl: 'scripting' },
+    { pattern: /\bprogarm\b/gi, repl: 'program' },
+    { pattern: /\bproram\b/gi, repl: 'program' },
+    { pattern: /\bprogramm\b/gi, repl: 'program' },
+    { pattern: /\bmangament\b/gi, repl: 'management' },
+    { pattern: /\bmangement\b/gi, repl: 'management' },
+    { pattern: /\bmanagment\b/gi, repl: 'management' },
+    { pattern: /\boperatons\b/gi, repl: 'operations' },
+    { pattern: /\bperseption\b/gi, repl: 'perception' },
+    { pattern: /\bpercpetion\b/gi, repl: 'perception' },
+    { pattern: /\bperceptionn\b/gi, repl: 'perception' },
+    { pattern: /\bcustmer\b/gi, repl: 'customer' },
+    { pattern: /\bcusotmer\b/gi, repl: 'customer' },
+    { pattern: /\bsucess\b/gi, repl: 'success' },
+    { pattern: /\bsucces\b/gi, repl: 'success' }
+  ];
+
+  for (const { pattern, repl } of replacements) {
+    fixed = fixed.replace(pattern, repl);
+  }
+
+  return fixed;
 }
 
 // Extract simple keywords from a string
@@ -177,7 +219,9 @@ app.post('/query', async (req, res) => {
     let { q, lastBotMessage = '' } = req.body;
     if (!q) return res.status(400).json({ error: 'Query required' });
 
-    const originalQuery = q.trim();
+    // Normalize typos first (Option A)
+    const rawQuery = q.trim();
+    const originalQuery = normalizeQuery(rawQuery);
     const lower = originalQuery.toLowerCase();
     const isAboutKyle = /\bkyle\b/i.test(lower);
 
@@ -199,7 +243,7 @@ app.post('/query', async (req, res) => {
     if (fullInfoQuery.test(lower)) {
       return res.json({
         answer: formatParagraphs(
-          "Here is a consolidated overview of Kyle's experience. Kyle has worked across autonomous systems validation, field operations, scenario and perception testing, and data-focused program execution. He has managed structured test workflows, aligned engineering and operations teams, and supported large-scale training data programs. He also has experience in SaaS customer success, onboarding, account management, and applied AI development using Node.js, Express, and external APIs. If you want deeper detail in any specific area, such as autonomy, SaaS, operations, customer success, or AI tools, I can break it down further."
+          "Here is a consolidated overview of Kyle's experience. Kyle has worked across autonomous systems validation, field operations, scenario and perception testing, and data-focused program execution. He has managed structured test workflows, aligned engineering and operations teams, and supported large-scale training data programs. He also has experience in SaaS customer success, onboarding, account management, and applied AI development using Node.js, Express, and external APIs. If you want deeper detail in any specific area, such as autonomy, SaaS, operations, customer success, or AI tools, this can be expanded."
         )
       });
     }
@@ -209,7 +253,7 @@ app.post('/query', async (req, res) => {
     if (capabilityQuery.test(lower)) {
       return res.json({
         answer: formatParagraphs(
-          "Yes. Kyle has experience handling complex technical programs end-to-end, taking on new domains, driving alignment across engineering and operations, and delivering predictable execution. He is comfortable working in ambiguity, learning unfamiliar systems quickly, and structuring work so that cross-functional teams can move with clarity."
+          "Kyle has experience handling complex technical programs end-to-end, taking on new domains, driving alignment across engineering and operations, and delivering predictable execution. He is comfortable working in ambiguity, learning unfamiliar systems quickly, and structuring work so that cross-functional teams can move with clarity."
         )
       });
     }
@@ -229,7 +273,7 @@ app.post('/query', async (req, res) => {
     if (whatKnow.test(lower)) {
       return res.json({
         answer: formatParagraphs(
-          "I can summarize Kyle’s experience across autonomous systems, structured testing and operations, SaaS workflows and customer success, and applied AI tools. If you specify a domain or type of work, I can provide more detail based on available information."
+          "Available information covers Kyle’s work in autonomous systems, structured testing and operations, SaaS workflows and customer success, and applied AI tools. If you specify a domain or type of work, the answer can go deeper and stay precise."
         )
       });
     }
@@ -239,7 +283,7 @@ app.post('/query', async (req, res) => {
     if (winsQuery.test(lower)) {
       return res.json({
         answer: formatParagraphs(
-          "Some of Kyle’s key wins include leading structured testing programs that improved consistency, aligning engineering and operations teams around clear execution frameworks, improving scenario and label quality for training data, and building applied AI tools that reduced manual effort for teams. If you want examples in a specific area—autonomy, SaaS, or AI tools—I can walk through them."
+          "Some of Kyle’s key wins include leading structured testing programs that improved consistency, aligning engineering and operations teams around clear execution frameworks, improving scenario and label quality for training data, and building applied AI tools that reduced manual effort for teams. If you want examples in a specific area—autonomy, SaaS, or AI tools—those can be walked through in more detail."
         )
       });
     }
@@ -249,7 +293,7 @@ app.post('/query', async (req, res) => {
     if (sopQuery.test(lower)) {
       return res.json({
         answer: formatParagraphs(
-          "Kyle has written structured SOPs that define steps, signals, required conditions, and acceptance criteria. These documents improved repeatability, reduced execution variance, and helped cross-functional teams align on how work should be performed in testing and operational contexts."
+          "Kyle has written structured SOPs that define steps, signals, required conditions, and acceptance criteria. These documents improved repeatability, reduced execution variance, and helped cross-functional teams align on how testing and operational work should be performed."
         )
       });
     }
@@ -259,17 +303,17 @@ app.post('/query', async (req, res) => {
     if (weaknessQuery.test(lower)) {
       return res.json({
         answer: formatParagraphs(
-          "Kyle’s development areas are professional rather than personal. He sometimes leans into structure because he values predictable execution, and he has learned to balance structure with flexibility based on the situation. He also sets a high bar for himself, and he has improved by prioritizing impact and involving stakeholders earlier. These adjustments have strengthened his effectiveness over time."
+          "Kyle’s development areas are professional rather than personal. He sometimes leans into structure because he values predictable execution, and he has learned to balance structure with flexibility based on the situation. He also sets a high bar for himself and has improved by prioritizing impact and involving stakeholders earlier. These adjustments have strengthened his effectiveness over time."
         )
       });
     }
 
-    // 9. Challenge / persona triggers (block “Same energy. Your move.” style)
+    // 9. Challenge / persona triggers
     const challengeTriggers = /\b(your move|same energy|prove it|go on then|what you got|come on)\b/i;
     if (challengeTriggers.test(lower)) {
       return res.json({
         answer: formatParagraphs(
-          "If you share what you want to understand about Kyle—his technical experience, program work, systems background, or AI development—I can walk through it clearly and directly."
+          "If you share what you want to understand about Kyle—his technical experience, program work, systems background, or AI development—responses can be anchored directly to those areas."
         )
       });
     }
@@ -279,7 +323,7 @@ app.post('/query', async (req, res) => {
     if (vagueTriggers.test(lower)) {
       return res.json({
         answer: formatParagraphs(
-          "I can cover Kyle’s experience in autonomous systems, structured testing, operations, SaaS workflows, customer success, or AI tools. Which area would you like to explore?"
+          "Kyle’s background spans autonomous systems, structured testing, operations, SaaS workflows, customer success, and applied AI tools. Indicating which domain or type of question is most relevant will produce a more targeted answer."
         )
       });
     }
@@ -289,7 +333,7 @@ app.post('/query', async (req, res) => {
     if (confusedTriggers.test(lower)) {
       return res.json({
         answer: formatParagraphs(
-          "I can walk through any part of Kyle’s background. Are you interested in his autonomous systems work, his program and operations experience, his customer-facing roles, or his AI projects?"
+          "There are several areas that can be covered about Kyle’s work, including autonomous systems, program execution, customer-facing roles, and AI projects. Indicate which one you are most interested in."
         )
       });
     }
@@ -303,7 +347,7 @@ app.post('/query', async (req, res) => {
       } else {
         return res.json({
           answer: formatParagraphs(
-            "I can expand. Are you looking for more detail on Kyle’s autonomous systems background, his structured test work, his SaaS and customer success experience, or his AI tools?"
+            "More detail can be provided on Kyle’s autonomous systems work, his structured test programs, his SaaS and customer success background, or his AI tools. Indicate which thread to continue."
           )
         });
       }
@@ -318,22 +362,12 @@ app.post('/query', async (req, res) => {
     }
 
     // ==================================================================
-    // KB SEARCH + UNIVERSAL EDGE-CASE FALLBACK + LLM PIPELINE
+    // KB SEARCH + LLM PIPELINE WITH AMBIGUOUS FALLBACK
     // ==================================================================
 
-    const relevantQAs = searchKnowledgeBase(q, 5);
+    const relevantQAs = searchKnowledgeBase(originalQuery, 5);
     console.log(`Query: "${originalQuery.substring(0, 50)}${originalQuery.length > 50 ? '...' : ''}"`);
     console.log(`Found ${relevantQAs.length} relevant Q&As`);
-
-    // Universal professional fallback for short / edge-case queries with no KB hit
-    const tokenCount = lower.split(/\s+/).filter(Boolean).length;
-    if (relevantQAs.length === 0 && tokenCount <= 3) {
-      return res.json({
-        answer: formatParagraphs(
-          "To give a useful answer about Kyle, I need a little more detail. His background covers autonomous systems validation, structured testing, operations, SaaS customer success, and applied AI tools. You can ask about key wins, challenges, weaknesses, specific projects, or how his experience maps to a role you have in mind."
-        )
-      });
-    }
 
     if (relevantQAs.length > 0 && relevantQAs[0].score >= 12) {
       console.log(`KB direct hit! Score: ${relevantQAs[0].score}`);
@@ -351,8 +385,20 @@ app.post('/query', async (req, res) => {
     const isSTAR = detectSTARQuery(originalQuery);
     const isMulti = detectMultiPartQuery(originalQuery);
 
+    const tokenCount = originalQuery.split(/\s+/).filter(Boolean).length;
+    const isShortAmbiguous = (relevantQAs.length === 0 && tokenCount <= 3);
+
     let userMessage = originalQuery;
-    if (isSTAR && isMulti) {
+    if (isShortAmbiguous) {
+      userMessage = `[AMBIGUOUS, SHORT QUERY]
+The user query was: "${originalQuery}".
+
+The question is short and under-specified, and it does not match existing Q&A entries. You must still answer in a professional, third-person way about Kyle.
+
+Begin your reply with: "The question is not fully clear, but based on Kyle's experience in autonomous systems, validation, program management, and AI tools, he has..." and then continue with the closest useful context about Kyle that could reasonably match the query. Do not use first person for Kyle, and do not talk about yourself.
+
+User query: ${originalQuery}`;
+    } else if (isSTAR && isMulti) {
       userMessage = `[STAR FORMAT + MULTI-PART]\n${originalQuery}\n\nAnswer using STAR and address all parts clearly.`;
     } else if (isSTAR) {
       userMessage = `[STAR FORMAT]\n${originalQuery}\n\nAnswer using Situation, Task, Action, Result with labeled sections.`;
@@ -382,6 +428,11 @@ CONTENT RULES:
 - For STAR questions, respond with labeled Situation, Task, Action, Result paragraphs.
 - For multi-part questions, answer each part explicitly and clearly.
 - Do not invent companies, titles, or achievements not grounded in Kyle's actual experience.
+
+AMBIGUOUS QUERY HANDLING:
+- If a query is vague or under-specified and does not match existing Q&A entries, you must still provide a helpful answer.
+- In those cases, it is acceptable to begin with: "The question is not fully clear, but based on Kyle's experience in autonomous systems, validation, program management, and AI tools, he has..." and then continue with the closest relevant context.
+- Do not speak in the first person about Kyle, and do not revert to meta-comments like "I'm here" or "Try asking."
 
 BACKGROUND SUMMARY:
 Kyle’s experience spans autonomous systems validation, field operations, perception behavior analysis, structured testing, large-scale training data programs, SaaS customer success, technical onboarding, and applied AI tools using Node.js and APIs.
