@@ -79,12 +79,12 @@ function searchKnowledgeBase(query, limit = 5) {
 }
 
 // ======================================================================
-// LIGHT OFF-TOPIC RESPONSES (STRICTLY PROFESSIONAL, NO ROASTS)
+// LIGHT OFF-TOPIC RESPONSES (STRICTLY PROFESSIONAL)
 // ======================================================================
 
 const funResponses = {
   joke: [
-    "I focus on Kyle's professional background. If you share what you’re interested in, I can walk through his experience. But since you asked, Why did the autonomous vehicle go to therapy...? It had too many unresolved issues with object detection."
+    "I focus on Kyle's professional background. If you share what you’re interested in, I can walk through his experience."
   ],
   greeting: [
     "Hello. I am Agent K, an AI assistant focused on Kyle’s background in autonomous systems, program management, and customer-facing work. How can I help?"
@@ -234,7 +234,37 @@ app.post('/query', async (req, res) => {
       });
     }
 
-    // 6. Challenge / persona triggers (block “Same energy. Your move.” style)
+    // 6. Key wins / accomplishments
+    const winsQuery = /\b(win|wins|key wins|accomplish|accomplishment|accomplishments|achievement|achievements|results|notable)\b/i;
+    if (winsQuery.test(lower)) {
+      return res.json({
+        answer: formatParagraphs(
+          "Some of Kyle’s key wins include leading structured testing programs that improved consistency, aligning engineering and operations teams around clear execution frameworks, improving scenario and label quality for training data, and building applied AI tools that reduced manual effort for teams. If you want examples in a specific area—autonomy, SaaS, or AI tools—I can walk through them."
+        )
+      });
+    }
+
+    // 7. SOPs / processes
+    const sopQuery = /\b(sop\b|sops\b|standard operating|process\b|processes\b|workflow\b|workflows\b|procedure\b|procedures\b)/i;
+    if (sopQuery.test(lower)) {
+      return res.json({
+        answer: formatParagraphs(
+          "Kyle has written structured SOPs that define steps, signals, required conditions, and acceptance criteria. These documents improved repeatability, reduced execution variance, and helped cross-functional teams align on how work should be performed in testing and operational contexts."
+        )
+      });
+    }
+
+    // 8. Weaknesses / failures (professional framing only)
+    const weaknessQuery = /\b(weak|weakness|weakest|failure|failures|mistake|mistakes|shortcoming|shortcomings)\b/i;
+    if (weaknessQuery.test(lower)) {
+      return res.json({
+        answer: formatParagraphs(
+          "Kyle’s development areas are professional rather than personal. He sometimes leans into structure because he values predictable execution, and he has learned to balance structure with flexibility based on the situation. He also sets a high bar for himself, and he has improved by prioritizing impact and involving stakeholders earlier. These adjustments have strengthened his effectiveness over time."
+        )
+      });
+    }
+
+    // 9. Challenge / persona triggers (block “Same energy. Your move.” style)
     const challengeTriggers = /\b(your move|same energy|prove it|go on then|what you got|come on)\b/i;
     if (challengeTriggers.test(lower)) {
       return res.json({
@@ -244,7 +274,7 @@ app.post('/query', async (req, res) => {
       });
     }
 
-    // 7. Generic vague queries
+    // 10. Generic vague queries
     const vagueTriggers = /\b(help|idk|not sure|what else|explain more|more info|continue|go on)\b/i;
     if (vagueTriggers.test(lower)) {
       return res.json({
@@ -254,7 +284,7 @@ app.post('/query', async (req, res) => {
       });
     }
 
-    // 8. Confused / low-signal input
+    // 11. Confused / low-signal input (very short)
     const confusedTriggers = /^[a-z?!.]{1,3}$/i;
     if (confusedTriggers.test(lower)) {
       return res.json({
@@ -264,7 +294,7 @@ app.post('/query', async (req, res) => {
       });
     }
 
-    // 9. Affirmative follow-ups (“yes”, “ok”, “sure”)
+    // 12. Affirmative follow-ups (“yes”, “ok”, “sure”)
     const affirm = /^(y(es)?|yeah|yep|sure|ok|okay|sounds good|go ahead|mhm)\s*$/i;
     if (affirm.test(lower) && lastBotMessage) {
       const extracted = extractKeywords(lastBotMessage);
@@ -279,7 +309,7 @@ app.post('/query', async (req, res) => {
       }
     }
 
-    // 10. Off-topic (only if clearly not about Kyle)
+    // 13. Off-topic (only if clearly not about Kyle)
     if (!isAboutKyle) {
       const offTopicResponse = detectOffTopicQuery(originalQuery);
       if (offTopicResponse) {
@@ -288,12 +318,22 @@ app.post('/query', async (req, res) => {
     }
 
     // ==================================================================
-    // KB SEARCH + LLM PIPELINE
+    // KB SEARCH + UNIVERSAL EDGE-CASE FALLBACK + LLM PIPELINE
     // ==================================================================
 
     const relevantQAs = searchKnowledgeBase(q, 5);
     console.log(`Query: "${originalQuery.substring(0, 50)}${originalQuery.length > 50 ? '...' : ''}"`);
     console.log(`Found ${relevantQAs.length} relevant Q&As`);
+
+    // Universal professional fallback for short / edge-case queries with no KB hit
+    const tokenCount = lower.split(/\s+/).filter(Boolean).length;
+    if (relevantQAs.length === 0 && tokenCount <= 3) {
+      return res.json({
+        answer: formatParagraphs(
+          "To give a useful answer about Kyle, I need a little more detail. His background covers autonomous systems validation, structured testing, operations, SaaS customer success, and applied AI tools. You can ask about key wins, challenges, weaknesses, specific projects, or how his experience maps to a role you have in mind."
+        )
+      });
+    }
 
     if (relevantQAs.length > 0 && relevantQAs[0].score >= 12) {
       console.log(`KB direct hit! Score: ${relevantQAs[0].score}`);
