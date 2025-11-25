@@ -146,7 +146,7 @@ app.post('/query', async (req, res) => {
       return res.json({ answer: "To give you something genuinely useful, it helps to know what you're curious about in Kyle's background. For example, you can ask about his autonomous systems work, his technical program management experience, his enterprise customer success work, or the AI tools he has built. What would you like to focus on?" });
     }
 
-    const followUpPatterns = ["  ["what about that", "what about this", "clarify that", "explain that", "can you expand", "can you elaborate", "tell me more about that"];
+    const followUpPatterns = ["what about that", "what about this", "clarify that", "explain that", "can you expand", "can you elaborate", "tell me more about that"];
     if (followUpPatterns.some(t => lower === t || lower.includes(t))) {
       return res.json({ answer: "I can definitely expand—are you most interested in Kyle's work in autonomous systems, his program and operations experience, or his time in enterprise SaaS and customer success?" });
     }
