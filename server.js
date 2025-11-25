@@ -183,7 +183,7 @@ function detectOffTopicQuery(query) {
     return { type: 'joke', response: funResponses.joke[0] };
   }
   // Hardened greeting override
-  if (/^(hi|hey|hello|sup|what'?s up|howdy)\b/i.test(q)) {
+  if (/^(hi|hey|hello|sup|hi|yo|ji|what'?s up|howdy)\b/i.test(q)) {
     return {
       type: 'greeting',
       response: funResponses.greeting[0]
@@ -381,17 +381,16 @@ app.post('/query', async (req, res) => {
       'explain', 'explain?', 'more', 'continue', 'whatever'
     ];
 
-    if (
-      vagueLowSignalList.includes(lower) ||
-      /^[\s?.!]{1,5}$/.test(lower) ||
-      (lower.split(' ').length <= 4 && !isAboutKyle)
-    ) {
-      return res.json({
-        answer: formatParagraphs(
-          "The question is not fully clear. Kyle’s background includes autonomous systems validation, structured testing, operations, SaaS workflows, customer success, and applied AI tools. If you indicate which area or type of question is most relevant, this assistant can give a direct and focused answer."
-        )
-      });
-    }
+   if (
+  vagueLowSignalList.includes(lower) ||
+  /^[\s?.!]{1,3}$/.test(lower)
+) {
+  return res.json({
+    answer: formatParagraphs(
+      "The question is not fully clear. If you specify what part of Kyle’s work you want to understand—autonomous systems, validation, program management, customer workflows, or AI tools—this assistant can give a direct answer."
+    )
+  });
+}
 
     // 12. Affirmative follow ups
     const affirm = /^(y(es)?|yeah|yep|sure|ok|okay|sounds good|go ahead|mhm)\s*$/i;
