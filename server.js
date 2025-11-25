@@ -88,47 +88,39 @@ const funResponses = {
   ]
 };
 
-// Detect off-topic queries – BULLETPROOF VERSION (no crash ever)
+// Detect off-topic queries – 100% SAFE & WORKING
 function detectOffTopicQuery(query) {
   const q = query.toLowerCase().trim();
 
-  // Joke / funny
   if (q.includes('joke') || q.includes('funny')) {
     return { type: 'joke', response: funResponses.joke[Math.floor(Math.random() * funResponses.joke.length)] };
   }
-
-  // Greeting
   if (q.match(/^(hi|hey|hello|sup|what'?s up|howdy)/i)) {
     return { type: 'greeting', response: funResponses.greeting[Math.floor(Math.random() * funResponses.greeting.length)] };
   }
-
-  // Thanks
   if (q.includes('thank')) {
     return { type: 'thanks', response: funResponses.thanks[Math.floor(Math.random() * funResponses.thanks.length)] };
   }
-
-  // WEATHER: only real-time weather → off-topic response
-  // Everything else (weather testing, weather tests, etc.) → goes to KB
-  const isRealTimeWeather = /\b(weather|temperature|rain(ing)?|snow(ing)?|hot|cold|forecast)\b/i.test(q);
-  const isAboutTesting = /test|testing|scenario|weather tests/i.test(q);
-
-  if (isRealTimeWeather && !isAboutTesting) {
-    return { type: 'weather', response: "I don't track live weather data, but Kyle did track thousands of autonomous vehicle test scenarios in various conditions, and preformed several weather related perception tests.};
-  }
-
-  // How are you
   if (/how are you|how'?re you|how r u/i.test(q)) {
     return { type: 'howAreYou', response: funResponses.howAreYou[Math.floor(Math.random() * funResponses.howAreYou.length)] };
   }
-
-  // Cooking / food
   if (q.includes('cook') || q.includes('recipe') || q.includes('food')) {
     return { type: 'cooking', response: funResponses.cooking[0] };
   }
-
-  // Meaning of life
   if (q.includes('meaning of life') || q.includes('purpose of life')) {
     return { type: 'meaning', response: funResponses.meaning[0] };
+  }
+
+  // ONLY real-time weather → off-topic response
+  // Everything with "test", "testing", "scenario", "weather tests" → goes to KB
+  const realWeather = /\b(weather|temperature|rain|snow|hot|cold|forecast)\b/i.test(q);
+  const aboutTesting = /\b(test|testing|scenario|weather tests)\b/i.test(q);
+
+  if (realWeather && !aboutTesting) {
+    return {
+      type: 'weather',
+      response: "I don't track live weather data, but Kyle did track thousands of autonomous vehicle test scenarios in various conditions, and preformed weather related preception tests."
+    };
   }
 
   return null;
