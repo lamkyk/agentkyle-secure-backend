@@ -6,9 +6,12 @@
 An always-on AI that can answer any question about my professional experience — accurately, professionally, and in full third-person voice.
 
 What it doesn't tell:
-It's my first coding project; took hundreds of hours, dozens of failed versions, countless redeploys, and way too many late-night debugging sessions. Rebuilt from scratch at least 4 times.
-I’ve broken production at 2 a.m., watched the bot say “I’m Kyle” 47 different ways, fought Render cold starts, wrestled with LLM rate limits, rewritten the context-carryover logic 9 times, and redeployed more than 120 times.
-These lines of code you see is the survivor of trial, error, rage-quits, and “why won’t this just work” moments.
+- It's my first coding project; took hundreds of hours, dozens of failed versions, countless redeploys, and way too many late-night debugging sessions. 
+- Rebuilt from scratch at least 4 times.
+- I’ve broken production at 2 a.m. 
+- Watched the bot say “I’m Kyle” 47 different ways 
+- Fought Render cold starts, wrestled with LLM rate limits, rewritten the context-carryover logic 9 times, and redeployed more than 120 times.
+- These lines of code you see is the survivor of trial, error, rage-quits, and “why won’t this just work” moments.
 
 It handles:
 - Behavioral / STAR questions with proper structure
