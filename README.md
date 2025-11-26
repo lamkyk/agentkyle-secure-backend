@@ -1,6 +1,6 @@
 # Agent K – Kyle's AI Professional Representative
 
-**Live Demo:** sites.google.com/view/kylelam/chat
+**Live Demo:** [sites.google.com/view/kylelam/chat](https://sites.google.com/view/kylelam/chat)
 
 ### What this is
 An always-on AI that can answer any question about my professional experience — accurately, professionally, and in full third-person voice.
