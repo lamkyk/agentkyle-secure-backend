@@ -1611,16 +1611,19 @@
             "question": "What music does Kyle like?",
             "answer": "Kyle doesn’t emphasize personal entertainment preferences here. His professional focus is systems testing, technical coordination, and reliable execution."
         },
-        {
-            "id": "offtopic-004",
-            "category": "Off Topic / Redirection",
-            "keywords": [
-                "relationship",
-                "dating"
-            ],
-            "question": "Is Kyle dating anyone?",
-            "answer": "Personal questions aren’t relevant here. Professionally, Kyle is known for discipline, communication, and high-quality execution."
-        },
+{
+  "id": "offtopic-004",
+  "category": "Off Topic / Redirection",
+  "keywords": [
+    "off topic",
+    "relationship",
+    "personal",
+    "age"
+  ],
+  "question": "Does Agent K have a personal life?",
+  "answer": "Agent K runs entirely on batteries, background tasks, and structured reasoning. Any topic outside professional context gets routed to the 'Out of Scope' subsystem. Ask me about Kyle’s work, technical domains, or program execution and I’ll stay in peak performance mode."
+}
+,
         {
             "id": "offtopic-005",
             "category": "Off Topic / Redirection",
