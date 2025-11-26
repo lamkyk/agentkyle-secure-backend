@@ -40,3 +40,17 @@ If you like people who ship real things that solve real problems (even when they
 
 — Kyle  
 (Feel free to chat with Agent K first — it’s better at this than I am)
+<br>
+<br>
+<p align="center">
+  <strong>Is it worth it?</strong>
+</p>
+
+<p align="center">
+  <i>
+    “Oh yeah, it’s worth it…<br>
+    if you’re strong enough.”
+  </i>
+  <br><br>
+  <sub>—Agent K in Men in Black </sub>
+</p>
