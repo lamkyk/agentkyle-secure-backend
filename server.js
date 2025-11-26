@@ -24,11 +24,25 @@ let EMBEDDINGS_ENABLED = false;
 
 function formatParagraphs(text) {
   if (!text) return text;
-  return text
-    .replace(/\r\n/g, '\n')
-    .replace(/([.?!])\s+(?=[A-Z])/g, '$1\n')
-    .replace(/\n{3,}/g, '\n\n')
-    .trim();
+
+  let out = text;
+
+  // Normalize Windows line breaks
+  out = out.replace(/\r\n/g, '\n');
+
+  // Ensure bullet points always start on new lines
+  out = out.replace(/(\S)\s*[\*•]\s+/g, '$1\n* ');
+
+  // Ensure numbered lists start on new lines
+  out = out.replace(/(\S)\s*(\d+)\.\s+/g, '$1\n$2. ');
+
+  // Add paragraph breaks after sentence endings when next sentence begins with capital letter
+  out = out.replace(/([.?!])\s+(?=[A-Z])/g, '$1\n');
+
+  // Prevent triple or more line breaks
+  out = out.replace(/\n{3,}/g, '\n\n');
+
+  return out.trim();
 }
 
 // Enforce third person specifically for Kyle-related sentences
@@ -1023,6 +1037,9 @@ OUTPUT QUALITY:
 - Avoid one-line or dismissive answers. Provide at least one strong paragraph for simple questions, and multiple paragraphs for deeper questions.
 - For experience, capability, or fit questions: use at least two paragraphs that cover scope, responsibilities, and impact.
 - For STAR / behavioral questions: use four labeled sections (Situation, Task, Action, Result), with enough detail to feel concrete.
+- Always structure long answers with multiple short paragraphs.
+- When listing steps, techniques, pros/cons, workflows, or validation processes, use line breaks with either bullet points (*) or numbered lists (1., 2., 3.).
+- Never return one continuous block of text; separate conceptual sections with blank lines.
 
 INTERNAL REASONING (DO NOT SHOW):
 1) Silently identify the most relevant facts from the RELEVANT BACKGROUND section (if present) or from the general background summary.
