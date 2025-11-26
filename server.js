@@ -1,4 +1,4 @@
-// agent.js - Agent K (hybrid embeddings, tuned retrieval, Agent K persona, Kyle in 3rd person)
+// agent.js / server.js - Agent K (hybrid embeddings, tuned retrieval, Agent K persona, Kyle in 3rd person)
 
 import express from 'express';
 import cors from 'cors';
@@ -28,23 +28,36 @@ function formatParagraphs(text) {
     .trim();
 }
 
-// Enforce third person specifically for Kyle-related sentences
+// Enforce third person specifically for Kyle-related sentences,
+// while allowing Agent K to refer to itself in first person.
 function enforceThirdPersonForKyle(raw) {
   if (!raw) return raw;
   const lines = raw.split('\n');
 
   const processed = lines.map(line => {
-    // Do not touch lines that clearly talk about Agent K by name
-    if (/Agent K/i.test(line)) return line;
+    const hasFirstPerson =
+      /\bI\b/i.test(line) ||
+      /\bI'm\b/i.test(line) ||
+      /\bI['’]m\b/i.test(line) ||
+      /\bI am\b/i.test(line) ||
+      /\bI['’]ve\b/i.test(line) ||
+      /\bI have\b/i.test(line) ||
+      /\bMy\b/i.test(line);
 
-    // Only adjust lines that use first person and look like "Kyle background" type content
-    if (!/\b(I|I've|I am|I'm|My)\b/i.test(line)) return line;
+    if (!hasFirstPerson) return line;
 
-    const contentHint = /(background|experience|testing|validation|field operations|customers?|clients?|projects?|autonomous|perception|SaaS|data)/i;
-    if (!contentHint.test(line)) return line;
+    // If line clearly refers to Agent K or AI assistant meta, leave it alone.
+    if (/\bAgent K\b/i.test(line)) return line;
+    if (/\bAI\b/i.test(line) && /\bassistant\b/i.test(line)) return line;
 
+    // Meta patterns like "I can help / explain / answer / walk you through ..."
+    const metaPattern = /\bI can\b.*\b(help|explain|answer|describe|summarize|walk you through)\b/i;
+    if (metaPattern.test(line)) return line;
+
+    // At this point, treat the line as describing Kyle in first person and convert.
     let out = line;
 
+    // More specific phrases first
     out = out.replace(/\bMy background\b/gi, "Kyle's background");
     out = out.replace(/\bMy experience\b/gi, "Kyle's experience");
 
@@ -52,7 +65,10 @@ function enforceThirdPersonForKyle(raw) {
     out = out.replace(/\bI am\b/gi, 'Kyle is');
     out = out.replace(/\bI['’]ve\b/gi, 'Kyle has');
     out = out.replace(/\bI have\b/gi, 'Kyle has');
+    out = out.replace(/\bI['’]d\b/gi, 'Kyle would');
+    out = out.replace(/\bI would\b/gi, 'Kyle would');
 
+    // Generic pronouns
     out = out.replace(/\bMy\b/gi, "Kyle's");
     out = out.replace(/\bI\b/gi, 'Kyle');
 
@@ -69,20 +85,18 @@ function sanitizePhrases(text) {
 
   // Remove “Same energy. Your move.” variants
   out = out.replace(/Same energy\.?\s*Your move\.?/gi, '');
-
   // Remove “I’m here! Try asking …” style lines
   out = out.replace(/I['’]m here[^.?!]*[.?!]/gi, '');
-
-  // Remove “here’s a light one” joke sentences
+  // Remove light joke intros
   out = out.replace(/[^.?!]*here[’']s a light one[^.?!]*[.?!]/gi, '');
 
-  // Fix "He is Agent K" artifact if it ever appears
+  // Fix “He is Agent K …” artifact if it ever appears
   out = out.replace(
     /\bHe is Agent K[^.?!]*[.?!]?/gi,
     'Agent K is an AI assistant that represents Kyle’s professional experience.'
   );
 
-  // Collapse double spaces/newlines created by removals
+  // Clean extra spaces/newlines
   out = out.replace(/[ \t]{2,}/g, ' ');
   out = out.replace(/\n{3,}/g, '\n\n');
 
@@ -435,24 +449,49 @@ app.get('/', (req, res) => {
 app.post('/suggest', async (req, res) => {
   try {
     const { q } = req.body;
+
+    // Helper to clean suggestion strings
+    const cleanSuggestionList = list => {
+      if (!Array.isArray(list)) return [];
+      const bannedPatterns = [
+        /one[-\s]?word replies?/i,
+        /empty\s*\/\s*punctuation/i
+      ];
+      return Array.from(
+        new Set(
+          list
+            .filter(Boolean)
+            .map(s => s.toString().trim())
+        )
+      ).filter(s => {
+        if (!s) return false;
+        if (s.length < 8) return false; // too short
+        // punctuation / whitespace only
+        if (/^[\s\p{P}]+$/u.test(s)) return false;
+        // explicitly diagnostic phrases
+        if (bannedPatterns.some(rx => rx.test(s))) return false;
+        return true;
+      });
+    };
+
     if (!q || !q.trim()) {
-      const defaults = (knowledgeBase.qaDatabase || [])
-        .slice(0, 5)
+      const defaultsRaw = (knowledgeBase.qaDatabase || [])
+        .slice(0, 8)
         .map(entry => entry.question)
         .filter(Boolean);
-      return res.json({ suggestions: defaults });
+
+      const cleaned = cleanSuggestionList(defaultsRaw).slice(0, 5);
+      return res.json({ suggestions: cleaned });
     }
 
     const query = normalizeQuery(q.trim());
-    const hybrid = await hybridSearchKnowledgeBase(query, 8);
+    const hybrid = await hybridSearchKnowledgeBase(query, 12);
 
-    const suggestions = Array.from(
-      new Set(
-        hybrid
-          .map(item => item.question)
-          .filter(Boolean)
-      )
-    ).slice(0, 5);
+    const rawSuggestions = hybrid
+      .map(item => item.question)
+      .filter(Boolean);
+
+    const suggestions = cleanSuggestionList(rawSuggestions).slice(0, 5);
 
     res.json({ suggestions });
   } catch (err) {
@@ -621,7 +660,7 @@ app.post('/query', async (req, res) => {
 
     // ==================================================================
     // HYBRID RETRIEVAL + LLM
-    // ======================================================================
+    // ==================================================================
 
     const relevantQAs = await hybridSearchKnowledgeBase(originalQuery, 6);
     console.log(`Query: "${originalQuery.substring(0, 50)}${originalQuery.length > 50 ? '...' : ''}"`);
@@ -629,9 +668,10 @@ app.post('/query', async (req, res) => {
 
     let topScore = relevantQAs.length ? relevantQAs[0].score : 0;
 
-    const STRONG_THRESHOLD = 0.60;
-    const MEDIUM_THRESHOLD = 0.30;
-    const WEAK_THRESHOLD = 0.12;
+    // Tiered thresholds
+    const STRONG_THRESHOLD = 0.60;   // direct KB answer
+    const MEDIUM_THRESHOLD = 0.30;   // LLM with KB context
+    const WEAK_THRESHOLD = 0.12;     // low confidence
 
     if (relevantQAs.length && topScore >= STRONG_THRESHOLD) {
       console.log(`Strong KB hit. Score: ${topScore.toFixed(3)}`);
@@ -691,7 +731,7 @@ PERSONA AND GOAL:
 
 STRICT RULES ABOUT PERSON REFERENCE:
 - Never describe Kyle using first person ("I", "me", "my", "mine", "myself").
-- When a sentence is about Kyle’s experience, achievements, tasks, or responsibilities, mentally rewrite it into third person before answering.
+- When a sentence is about Kyle’s experience, achievements, tasks, or responsibilities, rewrite it mentally into third person before answering.
 - You may say "I" only when clearly referring to Agent K’s capabilities (for example, "I can walk through Kyle's experience.").
 - Do not joke about being Kyle, and do not blur the line between Agent K and Kyle.
 
@@ -740,7 +780,7 @@ FINAL INSTRUCTIONS:
 
     const answerRaw =
       response.choices[0]?.message?.content?.trim() ||
-      'Agent K did not receive a clear response. Try asking about a specific part of Kyle’s experience, such as autonomous systems, testing, program management, or AI tools.';
+      'Agent K did not receive a clear response from the language model. Try asking from a slightly different angle about Kyle’s work.';
 
     const answer = sanitizeOutput(answerRaw);
     res.json({ answer });
