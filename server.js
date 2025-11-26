@@ -34,36 +34,46 @@ function formatParagraphs(text) {
 // Enforce third person specifically for Kyle-related sentences
 function enforceThirdPersonForKyle(raw) {
   if (!raw) return raw;
-  const lines = raw.split('\n');
+
+  const lines = raw.split("\n");
 
   const processed = lines.map(line => {
-    // Do not touch lines that clearly talk about Agent K by name
-    if (/Agent K/i.test(line)) return line;
-
-    // Only adjust lines that use first person
-    if (!/\b(I|I've|I am|I'm|My)\b/i.test(line)) return line;
-
-    // Heuristics: only convert if it looks like "work / background / behavior" content
-    const contentHint = /(background|experience|testing|validation|field operations|customers?|clients?|projects?|autonomous|perception|SaaS|data|priorit(y|ies)|trade[- ]?offs?|deadlines?|cross[- ]functional|multi[- ]team)/i;
-    if (!contentHint.test(line)) return line;
+    // Do not rewrite if the sentence explicitly references Agent K
+    if (/agent k\b/i.test(line)) return line;
 
     let out = line;
 
-    out = out.replace(/\bMy background\b/gi, "Kyle's background");
-    out = out.replace(/\bMy experience\b/gi, "Kyle's experience");
+    // Strongest-first replacement order to avoid double transforms
 
-    out = out.replace(/\bI['’]m\b/gi, 'Kyle is');
-    out = out.replace(/\bI am\b/gi, 'Kyle is');
-    out = out.replace(/\bI['’]ve\b/gi, 'Kyle has');
-    out = out.replace(/\bI have\b/gi, 'Kyle has');
+    // I am / I'm -> Kyle is
+    out = out.replace(/\bI['’]m\b/gi, "Kyle is");
+    out = out.replace(/\bI am\b/gi, "Kyle is");
 
+    // I’d / I'd -> Kyle would
+    out = out.replace(/\bI['’]d\b/gi, "Kyle would");
+
+    // I’ll / I'll -> Kyle will
+    out = out.replace(/\bI['’]ll\b/gi, "Kyle will");
+
+    // I’ve / I've -> Kyle has
+    out = out.replace(/\bI['’]ve\b/gi, "Kyle has");
+
+    // My -> Kyle's
     out = out.replace(/\bMy\b/gi, "Kyle's");
-    out = out.replace(/\bI\b/gi, 'Kyle');
+
+    // Me -> Kyle
+    out = out.replace(/\bMe\b/gi, "Kyle");
+
+    // I (standalone) -> Kyle
+    out = out.replace(/\bI\b/g, "Kyle");
+
+    // myself -> himself
+    out = out.replace(/\bmyself\b/gi, "himself");
 
     return out;
   });
 
-  return processed.join('\n');
+  return processed.join("\n");
 }
 
 // Remove unwanted phrases and jokes
