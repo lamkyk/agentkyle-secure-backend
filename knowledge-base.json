@@ -3344,6 +3344,21 @@
   "keywords": ["challenges", "overcame", "difficult", "time when", "validation", "test coverage"],
   "question": "Tell me about a time Kyle faced a significant challenge and how he overcame it",
   "answer": "Situation: Kyle was supporting a major validation cycle where inconsistent test coverage was jeopardizing the release timeline. Multiple teams were executing tests differently, creating gaps and redundancy.\n\nTask: His responsibility was to design a clearer execution framework that would stabilize coverage across teams and restore confidence in the validation process.\n\nAction: Kyle built a comprehensive coverage matrix that mapped scenarios to system requirements. He organized daily checkpoint meetings to track progress, introduced standardized reporting dashboards that made gaps visible immediately, and worked directly with each team to align their execution approach.\n\nResult: Test coverage increased by 40%, milestone predictability improved significantly, and the release landed on schedule. The framework Kyle created became the standard approach for future validation cycles."
+},
+{
+  "id": "pm-14",
+  "category": "Program Management",
+  "keywords": ["scope creep", "changing priorities", "shifting priorities", "program risk", "alignment", "tradeoffs", "stakeholders"],
+  "question": "How does Kyle deal with scope creep and shifting priorities?",
+  "answer": "Kyle manages scope creep by establishing clear acceptance criteria, confirming ownership early, and ensuring each change request is tied to an objective outcome. When priorities shift, he reassesses the plan against constraints, provides options and tradeoffs to stakeholders, and re-sequences work so execution remains predictable. His approach emphasizes transparency, controlled adjustments, and protecting the critical path."
+},
+{
+  "id": "pm-15",
+  "category": "Program Management",
+  "keywords": ["STAR", "risk", "mitigated risk", "project risk", "example", "challenge", "issue"],
+  "question": "Tell me about a time Kyle mitigated a project risk.",
+  "answer": "Situation: Kyle supported a testing program where a shift in sensor calibration behaviors created uncertainty in scheduled validation milestones.\n\nTask: He needed to prevent delays, ensure reliable data collection, and align engineering and operations on a unified mitigation plan.\n\nAction: Kyle identified where the calibration drift had the highest operational impact, isolated affected workflows, and coordinated rapid cross-team reviews. He established a short-term workaround for data capture and a parallel path for root-cause analysis.\n\nResult: The mitigation prevented schedule slip, preserved data integrity, and gave engineering clear signals that accelerated the long-term fix. The program stayed on track, and the testing teams regained predictable execution."
 }
+
 ]
 }
