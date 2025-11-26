@@ -5,6 +5,11 @@
 ### What this is
 An always-on AI that can answer any question about my professional experience — accurately, professionally, and in full third-person voice.
 
+What it doesn't tell:
+It's my first coding project; took hundreds of hours, dozens of failed versions, countless redeploys, and way too many late-night debugging sessions. Rebuilt from scratch at least 4 times.
+I’ve broken production at 2 a.m., watched the bot say “I’m Kyle” 47 different ways, fought Render cold starts, wrestled with LLM rate limits, rewritten the context-carryover logic 9 times, and redeployed more than 120 times.
+These lines of code you see is the survivor of trial, error, rage-quits, and “why won’t this just work” moments.
+
 It handles:
 - Behavioral / STAR questions with proper structure
 - Deep dives into autonomous systems validation, perception testing, escalations, and large-scale data programs
@@ -18,8 +23,8 @@ Zero human needed after deployment.
 - Backend: Node.js + Express + Groq (Llama 3.1 8B)
 - Frontend: Pure HTML + vanilla JavaScript (no React, no frameworks, no node_modules)
 - Fully stateless — no sessions, no database, no Redis
-- ~350 lines of code total
-- Deploys in one click on Render (free tier)
+- ~3000+ lines of code total
+- Deploys in one click
 
 ### Why I built it
 As a fun project and for recruiters and engineering teams.
@@ -31,4 +36,4 @@ It took way longer than I expected and is still a work in progress… but it wor
 If you like people who ship real things that solve real problems (even when they’re messy and take forever), let’s talk.
 
 — Kyle  
-(Feel free to chat with Agent K first — he’s better at this than I am)
+(Feel free to chat with Agent K first — it’s better at this than I am)
