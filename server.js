@@ -692,7 +692,7 @@ app.post('/query', async (req, res) => {
     }
 
     // ==================================================================
-    // HYBRID RETRIEVAL + LLM
+    // HYBRID RETRIEVAL + LLM + SYNTHESIS FALLBACK
     // ==================================================================
 
     const relevantQAs = await hybridSearchKnowledgeBase(originalQuery, 6);
@@ -705,6 +705,7 @@ app.post('/query', async (req, res) => {
     const MEDIUM_THRESHOLD = 0.30;   // LLM with KB context
     const WEAK_THRESHOLD = 0.12;     // low confidence
 
+    // 1) Strong direct KB hit: answer straight from KB
     if (relevantQAs.length && topScore >= STRONG_THRESHOLD) {
       console.log(`Strong KB hit. Score: ${topScore.toFixed(3)}`);
       return res.json({
@@ -712,10 +713,30 @@ app.post('/query', async (req, res) => {
       });
     }
 
+    // 2) Build context for LLM: either focused relevant entries or synthesized sample
     let contextText = '';
+    const hasAnyKB = knowledgeBase.qaDatabase && knowledgeBase.qaDatabase.length > 0;
+    const weakOrNoMatch = !relevantQAs.length || topScore < WEAK_THRESHOLD;
+
     if (relevantQAs.length && topScore >= WEAK_THRESHOLD) {
+      // Normal KB → LLM flow: narrow relevant slice
       contextText = '\n\nRELEVANT BACKGROUND (PARAPHRASE ONLY):\n\n';
       relevantQAs.slice(0, 4).forEach((qa, idx) => {
+        contextText += `${idx + 1}. Question: ${qa.question}\n   Answer: ${qa.answer}\n\n`;
+      });
+    } else if (hasAnyKB) {
+      // Synthesized fallback: no strong match → take a diverse sample across KB
+      const total = knowledgeBase.qaDatabase.length;
+      const sampleSize = Math.min(10, total);
+      const step = Math.max(1, Math.floor(total / sampleSize));
+      const sample = [];
+
+      for (let i = 0; i < total && sample.length < sampleSize; i += step) {
+        sample.push(knowledgeBase.qaDatabase[i]);
+      }
+
+      contextText = '\n\nRELEVANT BACKGROUND (SYNTHESIZED SAMPLE):\n\n';
+      sample.forEach((qa, idx) => {
         contextText += `${idx + 1}. Question: ${qa.question}\n   Answer: ${qa.answer}\n\n`;
       });
     }
@@ -726,6 +747,7 @@ app.post('/query', async (req, res) => {
     const isShortAmbiguous = (!relevantQAs.length && tokenCount <= 3);
 
     let userMessage = originalQuery;
+
     if (isShortAmbiguous) {
       const topic = classifyTopic(lower);
       userMessage = `[AMBIGUOUS, SHORT QUERY]
@@ -751,6 +773,14 @@ Answer using Situation, Task, Action, Result with labeled sections.`;
 ${originalQuery}
 
 Address each part separately with clear transitions.`;
+    } else if (weakOrNoMatch && hasAnyKB) {
+      // Explicit hint for synthesized fallback when there is KB but no strong alignment
+      userMessage = `[SYNTHESIZED FALLBACK]
+The direct user query was: "${originalQuery}".
+
+There was not a strong direct match in the knowledge base. Use the background entries in RELEVANT BACKGROUND (SYNTHESIZED SAMPLE) plus the general background summary to infer a parallel or related example from Kyle's experience, behaviors, or approach.
+
+User question: ${originalQuery}`;
     }
 
     const systemPrompt = `You are Agent K, an AI assistant that represents Kyle’s professional background.
