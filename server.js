@@ -77,8 +77,8 @@ function sanitizePhrases(text) {
   // "I'm here! Try asking..." style lines
   out = out.replace(/I['’]m here[^.?!]*[.?!]/gi, '');
 
-  // Old buggy "Kyle is here!" style lines
-  out = out.replace(/Kyle is here[^.?!]*[.?!]/gi, 'Agent K can answer questions about Kyle’s experience.\n');
+  // Old buggy "Kyle is here!" style lines (remove entirely, no artifacts)
+  out = out.replace(/Kyle is here[^.?!]*[.?!]/gi, '');
   out = out.replace(/Try asking something about Kyle[^.?!]*[.?!]/gi, '');
 
   // Remove “here’s a light one” joke intro lines
@@ -459,33 +459,54 @@ app.post('/suggest', async (req, res) => {
     const { q } = req.body;
     const clean = q && q.trim();
 
-    // Helper to filter out short / punctuation-only / junk questions
+    // Helper to filter out short / punctuation-only / junk / UI-only questions
     const validSuggestion = str => {
       if (!str) return false;
       const t = String(str).trim();
       if (t.length < 4) return false;
       if (/^[\W_]+$/.test(t)) return false; // only punctuation
+
+      const lower = t.toLowerCase();
+
+      // Filter out classifier / UI guard-rail questions from KB
+      if (lower.includes('empty / punctuation only')) return false;
+      if (lower.includes('empty/punctuation only')) return false;
+      if (lower.includes('single phrase')) return false;
+      if (lower.includes('one phrase')) return false;
+      if (lower.includes('short phrase')) return false;
+      if (lower.includes('partial question')) return false;
+      if (lower.includes('ui-0') || lower.includes('ui-1') || lower.includes('ui-2') || lower.includes('ui-3')) return false;
+
       return true;
     };
 
+    const dedupeAndTrim = (items, limit = 5) => {
+      const suggestions = [];
+      const seen = new Set();
+      for (const raw of items) {
+        if (!raw) continue;
+        const t = String(raw).trim();
+        if (!validSuggestion(t)) continue;
+        const key = t.toLowerCase();
+        if (seen.has(key)) continue;
+        seen.add(key);
+        suggestions.push(t);
+        if (suggestions.length >= limit) break;
+      }
+      return suggestions;
+    };
+
     if (!clean) {
-      const defaults = (knowledgeBase.qaDatabase || [])
-        .map(entry => entry.question)
-        .filter(validSuggestion)
-        .slice(0, 5);
-      return res.json({ suggestions: defaults });
+      const defaultsRaw = (knowledgeBase.qaDatabase || []).map(entry => entry.question);
+      const suggestions = dedupeAndTrim(defaultsRaw, 5);
+      return res.json({ suggestions });
     }
 
     const query = normalizeQuery(clean);
     const hybrid = await hybridSearchKnowledgeBase(query, 8);
 
-    const suggestions = Array.from(
-      new Set(
-        hybrid
-          .map(item => item.question)
-          .filter(validSuggestion)
-      )
-    ).slice(0, 5);
+    const hybridQuestions = hybrid.map(item => item.question);
+    const suggestions = dedupeAndTrim(hybridQuestions, 5);
 
     res.json({ suggestions });
   } catch (err) {
@@ -695,15 +716,26 @@ app.post('/query', async (req, res) => {
     // HYBRID RETRIEVAL + LLM + SYNTHESIS FALLBACK
     // ==================================================================
 
-    const relevantQAs = await hybridSearchKnowledgeBase(originalQuery, 6);
+    let relevantQAs = [];
+    try {
+      relevantQAs = await hybridSearchKnowledgeBase(originalQuery, 6);
+    } catch (e) {
+      console.warn('Hybrid search error, falling back to empty KB match set:', e.message || e);
+      relevantQAs = [];
+    }
+
     console.log(`Query: "${originalQuery.substring(0, 50)}${originalQuery.length > 50 ? '...' : ''}"`);
     console.log(`Found ${relevantQAs.length} hybrid relevant Q&As`);
 
     let topScore = relevantQAs.length ? relevantQAs[0].score : 0;
 
     const STRONG_THRESHOLD = 0.60;   // direct KB answer
-    const MEDIUM_THRESHOLD = 0.30;   // LLM with KB context
+    const MEDIUM_THRESHOLD = 0.30;   // LLM with KB context (kept for future tuning)
     const WEAK_THRESHOLD = 0.12;     // low confidence
+
+    const tokenCount = originalQuery.split(/\s+/).filter(Boolean).length;
+    const isShortAmbiguous = (!relevantQAs.length && tokenCount <= 3);
+    const isMeaningfulQuery = tokenCount >= 3 && !/^[\W_]+$/.test(originalQuery);
 
     // 1) Strong direct KB hit: answer straight from KB
     if (relevantQAs.length && topScore >= STRONG_THRESHOLD) {
@@ -724,27 +756,27 @@ app.post('/query', async (req, res) => {
       relevantQAs.slice(0, 4).forEach((qa, idx) => {
         contextText += `${idx + 1}. Question: ${qa.question}\n   Answer: ${qa.answer}\n\n`;
       });
-    } else if (hasAnyKB) {
-      // Synthesized fallback: no strong match → take a diverse sample across KB
+    } else if (hasAnyKB && weakOrNoMatch && isMeaningfulQuery) {
+      // Synthesized fallback: no strong match, but query is meaningful
       const total = knowledgeBase.qaDatabase.length;
       const sampleSize = Math.min(10, total);
       const step = Math.max(1, Math.floor(total / sampleSize));
-      const sample = [];
+      const contextSample = [];
 
-      for (let i = 0; i < total && sample.length < sampleSize; i += step) {
-        sample.push(knowledgeBase.qaDatabase[i]);
+      for (let i = 0; i < total && contextSample.length < sampleSize; i += step) {
+        contextSample.push(knowledgeBase.qaDatabase[i]);
       }
 
+      console.log(`Using synthesized fallback sample of ${contextSample.length} KB entries (weak match; topScore=${topScore.toFixed(3)})`);
+
       contextText = '\n\nRELEVANT BACKGROUND (SYNTHESIZED SAMPLE):\n\n';
-      sample.forEach((qa, idx) => {
+      contextSample.forEach((qa, idx) => {
         contextText += `${idx + 1}. Question: ${qa.question}\n   Answer: ${qa.answer}\n\n`;
       });
     }
 
     const isSTAR = detectSTARQuery(originalQuery);
     const isMulti = detectMultiPartQuery(originalQuery);
-    const tokenCount = originalQuery.split(/\s+/).filter(Boolean).length;
-    const isShortAmbiguous = (!relevantQAs.length && tokenCount <= 3);
 
     let userMessage = originalQuery;
 
@@ -773,12 +805,12 @@ Answer using Situation, Task, Action, Result with labeled sections.`;
 ${originalQuery}
 
 Address each part separately with clear transitions.`;
-    } else if (weakOrNoMatch && hasAnyKB) {
+    } else if (weakOrNoMatch && hasAnyKB && isMeaningfulQuery) {
       // Explicit hint for synthesized fallback when there is KB but no strong alignment
       userMessage = `[SYNTHESIZED FALLBACK]
 The direct user query was: "${originalQuery}".
 
-There was not a strong direct match in the knowledge base. Use the background entries in RELEVANT BACKGROUND (SYNTHESIZED SAMPLE) plus the general background summary to infer a parallel or related example from Kyle's experience, behaviors, or approach.
+There was not a strong direct match in the knowledge base (hybrid relevance below the WEAK threshold). Use the background entries in RELEVANT BACKGROUND (SYNTHESIZED SAMPLE) plus the general background summary to infer a parallel or related example from Kyle's experience, behaviors, or approach.
 
 User question: ${originalQuery}`;
     }
