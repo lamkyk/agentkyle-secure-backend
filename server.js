@@ -475,6 +475,14 @@ app.post('/suggest', async (req, res) => {
       if (lower.includes('one phrase')) return false;
       if (lower.includes('short phrase')) return false;
       if (lower.includes('partial question')) return false;
+
+      // Remove KB classifier entries & concepts around "one word"
+      if (lower.includes('one-word')) return false;
+      if (lower.includes('one word')) return false;
+      if (lower.includes('one-word replies')) return false;
+      if (lower.includes('one word replies')) return false;
+
+      // Remove classifier UIs like ui-03
       if (lower.includes('ui-0') || lower.includes('ui-1') || lower.includes('ui-2') || lower.includes('ui-3')) return false;
 
       return true;
@@ -496,9 +504,19 @@ app.post('/suggest', async (req, res) => {
       return suggestions;
     };
 
+    // default suggestions if no query string
     if (!clean) {
       const defaultsRaw = (knowledgeBase.qaDatabase || []).map(entry => entry.question);
-      const suggestions = dedupeAndTrim(defaultsRaw, 5);
+      let suggestions = dedupeAndTrim(defaultsRaw, 5);
+
+      // ensure at least one suggestion (Option 4)
+      if (!suggestions.length) {
+        suggestions = [
+          "Ask about Kyle's experience in autonomous systems.",
+          "Ask for a STAR example about a project risk."
+        ];
+      }
+
       return res.json({ suggestions });
     }
 
@@ -506,12 +524,30 @@ app.post('/suggest', async (req, res) => {
     const hybrid = await hybridSearchKnowledgeBase(query, 8);
 
     const hybridQuestions = hybrid.map(item => item.question);
-    const suggestions = dedupeAndTrim(hybridQuestions, 5);
+    let suggestions = dedupeAndTrim(hybridQuestions, 5);
+
+    // If hybrid is low/no relevance, fall back to general KB defaults (Option 4)
+    if (!suggestions.length) {
+      const defaultsRaw = (knowledgeBase.qaDatabase || []).map(entry => entry.question);
+      suggestions = dedupeAndTrim(defaultsRaw, 5);
+    }
+
+    // Absolute guarantee: always return at least one suggestion
+    if (!suggestions.length) {
+      suggestions = [
+        "Ask about Kyle's experience in autonomous systems.",
+        "Ask for a STAR example about a project risk."
+      ];
+    }
 
     res.json({ suggestions });
   } catch (err) {
     console.error('Suggestion error:', err);
-    res.status(500).json({ suggestions: [] });
+    res.status(500).json({
+      suggestions: [
+        "Ask about Kyle's experience in autonomous systems."
+      ]
+    });
   }
 });
 
@@ -730,12 +766,18 @@ app.post('/query', async (req, res) => {
     let topScore = relevantQAs.length ? relevantQAs[0].score : 0;
 
     const STRONG_THRESHOLD = 0.60;   // direct KB answer
-    const MEDIUM_THRESHOLD = 0.30;   // LLM with KB context (kept for future tuning)
-    const WEAK_THRESHOLD = 0.12;     // low confidence
+    const MEDIUM_THRESHOLD = 0.30;   // reserved if needed
+    const WEAK_THRESHOLD = 0.12;     // low confidence (fallback trigger)
 
     const tokenCount = originalQuery.split(/\s+/).filter(Boolean).length;
     const isShortAmbiguous = (!relevantQAs.length && tokenCount <= 3);
     const isMeaningfulQuery = tokenCount >= 3 && !/^[\W_]+$/.test(originalQuery);
+
+    const hasAnyKB = knowledgeBase.qaDatabase && knowledgeBase.qaDatabase.length > 0;
+    const weakOrNoMatch = !relevantQAs.length || topScore < WEAK_THRESHOLD;
+
+    // Strengthened synthesized fallback flag (Option 5)
+    const fallbackWasUsed = hasAnyKB && weakOrNoMatch && isMeaningfulQuery;
 
     // 1) Strong direct KB hit: answer straight from KB
     if (relevantQAs.length && topScore >= STRONG_THRESHOLD) {
@@ -747,16 +789,13 @@ app.post('/query', async (req, res) => {
 
     // 2) Build context for LLM: either focused relevant entries or synthesized sample
     let contextText = '';
-    const hasAnyKB = knowledgeBase.qaDatabase && knowledgeBase.qaDatabase.length > 0;
-    const weakOrNoMatch = !relevantQAs.length || topScore < WEAK_THRESHOLD;
-
     if (relevantQAs.length && topScore >= WEAK_THRESHOLD) {
       // Normal KB → LLM flow: narrow relevant slice
       contextText = '\n\nRELEVANT BACKGROUND (PARAPHRASE ONLY):\n\n';
       relevantQAs.slice(0, 4).forEach((qa, idx) => {
         contextText += `${idx + 1}. Question: ${qa.question}\n   Answer: ${qa.answer}\n\n`;
       });
-    } else if (hasAnyKB && weakOrNoMatch && isMeaningfulQuery) {
+    } else if (fallbackWasUsed) {
       // Synthesized fallback: no strong match, but query is meaningful
       const total = knowledgeBase.qaDatabase.length;
       const sampleSize = Math.min(10, total);
@@ -805,7 +844,7 @@ Answer using Situation, Task, Action, Result with labeled sections.`;
 ${originalQuery}
 
 Address each part separately with clear transitions.`;
-    } else if (weakOrNoMatch && hasAnyKB && isMeaningfulQuery) {
+    } else if (fallbackWasUsed) {
       // Explicit hint for synthesized fallback when there is KB but no strong alignment
       userMessage = `[SYNTHESIZED FALLBACK]
 The direct user query was: "${originalQuery}".
@@ -832,7 +871,7 @@ STRICT RULES ABOUT PERSON REFERENCE:
 OUTPUT QUALITY:
 - Avoid one-line or dismissive answers. Provide at least one strong paragraph for simple questions, and multiple paragraphs for deeper questions.
 - For experience, capability, or fit questions: use at least two paragraphs that cover scope, responsibilities, and impact.
-- For STAR / behavioral questions: use four labeled sections (Situation, Task, Action, Result), each 2–4 sentences, written as a cohesive narrative.
+- For STAR / behavioral questions: use four labeled sections (Situation,
 
 INTERNAL REASONING (DO NOT SHOW):
 1) Silently identify the most relevant facts from the RELEVANT BACKGROUND section (if present) or from the general background summary.
