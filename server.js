@@ -668,9 +668,24 @@ app.post('/query', async (req, res) => {
 
     const looksLikeAcronym = /\b[A-Z]{2,6}\b/.test(q) && !mentionsKyle;
 
+    // NEW: Detect experience-based questions so they route to KYLE mode
+    const experienceQuestion =
+      /\b(experience|worked with|work with|background with|used|hands-on|what is his experience with|what's his experience with|what is your experience with|what's your experience with)\b/i
+        .test(lower);
+
     const intent = (() => {
-      if (mentionsKyle || isInterviewy) return 'kyle';
-      if (hasTechnicalKeywords || looksLikeAcronym || (isConceptQuestion && !mentionsKyle)) return 'technical';
+      // Always Kyle mode when:
+      // - explicitly about Kyle
+      // - interview-style
+      // - OR asking about experience with a technical topic
+      if (mentionsKyle || isInterviewy || experienceQuestion) return 'kyle';
+
+      // Pure technical mode only when:
+      // - no Kyle triggers
+      // - AND not an experience question
+      if (hasTechnicalKeywords || looksLikeAcronym || (isConceptQuestion && !mentionsKyle))
+        return 'technical';
+
       return 'mixed';
     })();
 
