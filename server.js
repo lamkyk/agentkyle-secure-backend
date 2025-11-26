@@ -767,7 +767,7 @@ app.post('/query', async (req, res) => {
 
     const STRONG_THRESHOLD = 0.60;   // direct KB answer
     const MEDIUM_THRESHOLD = 0.30;   // reserved if needed
-    const WEAK_THRESHOLD = 0.12;     // low confidence (fallback trigger)
+    const WEAK_THRESHOLD = 0.05;     // low confidence (fallback trigger)
 
     const tokenCount = originalQuery.split(/\s+/).filter(Boolean).length;
     const isShortAmbiguous = (!relevantQAs.length && tokenCount <= 3);
