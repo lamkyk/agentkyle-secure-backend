@@ -32,6 +32,8 @@
                 "technical pm",
                 "tpm",
                 "program management",
+                "pm",
+                "pgm",
                 "why pm",
                 "career change"
             ],
@@ -165,7 +167,10 @@
                 "run program",
                 "manage program",
                 "end-to-end",
-                "program management"
+                "program management",
+                "project management",
+                "pm"
+    
             ],
             "question": "How do you run a program end-to-end?",
             "answer": "I start by defining requirements, constraints, and success metrics. Then I build the execution plan, coordinate resources, run field operations, analyze results, and present findings with clear recommendations."
@@ -499,7 +504,8 @@
                 "manage",
                 "complex programs",
                 "technical programs",
-                "execution"
+                "execution",
+                "pm"
             ],
             "question": "How does Kyle manage complex technical programs?",
             "answer": "Kyle manages complex programs by establishing structured execution workflows, clarifying dependencies, and aligning technical and operational stakeholders. He ensures consistent communication, clear expectations, and measurable milestones that keep progress predictable."
