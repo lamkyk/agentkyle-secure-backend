@@ -1255,7 +1255,7 @@ FINAL INSTRUCTIONS:
             : relevantQAs.length && intent !== 'technical'
             ? 0.25
             : 0.4,
-        max_tokens: isSTAR ? 900 : 700
+        max_tokens: isSTAR ? 1500 : 1200
       });
 
       return response.choices[0]?.message?.content?.trim() || '';
