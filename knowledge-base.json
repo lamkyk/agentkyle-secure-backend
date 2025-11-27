@@ -3376,7 +3376,147 @@
   "keywords": ["STAR", "risk", "mitigated risk", "project risk", "example", "challenge", "issue"],
   "question": "Tell me about a time Kyle mitigated a project risk.",
   "answer": "Situation: Kyle supported a testing program where a shift in sensor calibration behaviors created uncertainty in scheduled validation milestones.\n\nTask: He needed to prevent delays, ensure reliable data collection, and align engineering and operations on a unified mitigation plan.\n\nAction: Kyle identified where the calibration drift had the highest operational impact, isolated affected workflows, and coordinated rapid cross-team reviews. He established a short-term workaround for data capture and a parallel path for root-cause analysis.\n\nResult: The mitigation prevented schedule slip, preserved data integrity, and gave engineering clear signals that accelerated the long-term fix. The program stayed on track, and the testing teams regained predictable execution."
-}
-
+},
+{
+    "id": "tech-001",
+    "category": "Technical Background",
+    "keywords": ["languages", "coding", "programming", "tech stack", "skills"],
+    "question": "What programming languages does Kyle work with?",
+    "answer": "Kyle primarily uses JavaScript and Python for applied AI tools, automation, and operational workflows. He also works with Node.js and Express for backend utilities, and he uses Python for scripting, data handling, and lightweight ML or analysis tasks."
+  },
+  {
+    "id": "tech-002",
+    "category": "Technical Background",
+    "keywords": ["coding", "python", "javascript", "ai", "tools"],
+    "question": "Does Kyle know how to code?",
+    "answer": "Kyle codes in Python and JavaScript, focusing on building practical tools that automate work, connect APIs, or simplify repetitive processes. He uses Python for scripting and operational analysis, and JavaScript for web utilities, agent frameworks, and backend services."
+  },
+  {
+    "id": "tech-003",
+    "category": "Technical Background",
+    "keywords": ["programming", "developer", "software", "scripts", "node"],
+    "question": "How technical is Kyle when it comes to software development?",
+    "answer": "Kyle is not positioned as a full-time software engineer but has strong scripting and automation skills. He uses Python and JavaScript to build tools that reduce manual overhead, validate data, connect APIs, and support operational testing. His strength is applying code directly to real problems."
+  },
+  {
+    "id": "tech-004",
+    "category": "Technical Background",
+    "keywords": ["coding", "autonomy", "python", "javascript", "tools", "pm"],
+    "question": "How does Kyle use coding in autonomy or ML programs?",
+    "answer": "Kyle uses coding to support engineering and operations through Python-based log parsing, dataset tooling, automated checks, and scenario analysis. He also builds lightweight Node.js utilities that connect APIs and streamline testing workflows. His coding accelerates the work of autonomy, ML, and data teams."
+  },
+  {
+    "id": "tech-005",
+    "category": "Technical Background",
+    "keywords": ["api", "integration", "scripting", "automation", "node"],
+    "question": "Has Kyle worked with APIs or system integrations?",
+    "answer": "Kyle has built API-driven tools using Node.js, Express, and Python. He has created integrations for data pulls, automation triggers, annotation tools, and applied AI agents. His focus is rapid utility development that supports operational, data, or customer workflows."
+  },
+  {
+    "id": "tech-006",
+    "category": "Technical Background",
+    "keywords": ["debugging", "logs", "triage", "analysis", "autonomous systems"],
+    "question": "Is Kyle comfortable working with logs or debugging tools?",
+    "answer": "Kyle has experience analyzing logs, reviewing scenario failures, validating perception outputs, and identifying inconsistent behaviors in autonomous systems. He often uses Python scripts to inspect patterns, automate parsing, or highlight anomalies to speed up engineering triage."
+  },
+  {
+    "id": "tech-007",
+    "category": "Technical Background",
+    "keywords": ["tools", "automation", "internal tools", "workflow"],
+    "question": "Has Kyle built internal tools?",
+    "answer": "Kyle has built internal tools that automate workflows, reduce manual work, and streamline testing or data operations. These utilities typically involve Python scripts or Node.js services that interact with APIs, summarize information, or run validation checks. His tools focus on high-leverage, real-world impact."
+  },
+  {
+    "id": "tech-008",
+    "category": "Technical Background",
+    "keywords": ["systems thinking", "technical depth", "engineering collaboration"],
+    "question": "How does Kyle approach technical problem solving?",
+    "answer": "Kyle approaches technical problems by breaking them into structured parts, validating assumptions, and building lightweight tools when needed to generate clarity. He collaborates closely with engineering, uses logs and scenario data to understand system behavior, and iterates quickly toward practical solutions."
+  },
+  {
+    "id": "tech-009",
+    "category": "Technical Background",
+    "keywords": ["learning", "growth", "technical development"],
+    "question": "How does Kyle stay current with technical tools or trends?",
+    "answer": "Kyle keeps up with technical trends through hands-on experimentation, rapid prototyping, and building small utilities to test new ideas. He learns tools quickly when they improve workflows, especially in AI, scripting, and automation. His learning style is applied, fast-moving, and grounded in shipping real improvements."
+  },
+  {
+    "id": "tech-010",
+    "category": "Technical Background",
+    "keywords": ["frameworks", "libraries", "stack", "tech tools"],
+    "question": "What frameworks or libraries has Kyle used?",
+    "answer": "Kyle has worked with Node.js, Express, and browser-based JavaScript for utility services and AI agent interfaces. In Python, he regularly uses libraries for data handling, process automation, and analysis. His selections are always driven by practicality and the fastest path to delivering useful functionality."
+  },
+  {
+    "id": "auto-001",
+    "category": "Autonomous Systems",
+    "keywords": ["perception", "sensors", "triage", "anomalies", "validation"],
+    "question": "How does Kyle support perception testing in autonomous systems?",
+    "answer": "Kyle supports perception testing by reviewing sensor outputs, validating object tracks, and analyzing failure cases. He uses structured test plans and scenario analysis to ensure coverage across lighting, weather, and edge-case environments."
+  },
+  {
+    "id": "auto-002",
+    "category": "Autonomous Systems",
+    "keywords": ["scenario testing", "edge cases", "field validation", "structured testing"],
+    "question": "What role has Kyle played in scenario and edge-case testing?",
+    "answer": "Kyle has contributed to scenario-based validation that targets rare or safety-critical behaviors. He works with engineering to design scenarios, analyze mismatches between expected and actual behavior, and document findings with clear acceptance criteria."
+  },
+  {
+    "id": "auto-003",
+    "category": "Autonomous Systems",
+    "keywords": ["sensor fusion", "evaluation", "multi-sensor", "operations"],
+    "question": "Does Kyle have experience with sensor fusion workflows?",
+    "answer": "Yes. Kyle has supported logs and evaluations involving camera, LiDAR, and radar fusion outputs. He reviews alignment issues, missed detections, and temporal inconsistencies that impact perception reliability."
+  },
+  {
+    "id": "auto-004",
+    "category": "Autonomous Systems",
+    "keywords": ["vru", "vulnerable road users", "safety", "testing"],
+    "question": "Has Kyle worked on VRU-focused testing?",
+    "answer": "Kyle has worked on VRU-related programs where reliability around pedestrians, cyclists, and scooters was critical. He used structured validation to identify perception blind spots and improve consistency in complex, crowded environments."
+  },
+  {
+    "id": "auto-005",
+    "category": "Autonomous Systems",
+    "keywords": ["occlusion", "blind spots", "scenarios", "camera"],
+    "question": "Has Kyle analyzed occlusion or blind-spot behavior in AV systems?",
+    "answer": "Kyle has worked on occlusion-focused testing involving obstructed camera views, partial detections, and temporary loss of tracking. He reviews logs, annotates problem sequences, and collaborates with engineering teams to isolate root causes."
+  },
+  {
+    "id": "auto-006",
+    "category": "Autonomous Systems",
+    "keywords": ["motion planning", "controls", "trajectory", "decision-making"],
+    "question": "How does Kyle support motion planning evaluations?",
+    "answer": "Kyle supports motion planning validation by reviewing planned trajectories, identifying hesitation or aggressive maneuvers, and verifying that behavior aligns with route, safety, and comfort expectations. He documents deviations and provides structured feedback."
+  },
+  {
+    "id": "auto-007",
+    "category": "Autonomous Systems",
+    "keywords": ["regression testing", "quality", "consistency", "tooling"],
+    "question": "What is Kyle’s experience with regression testing?",
+    "answer": "Kyle has executed structured regression programs that test reliability across releases. He uses predefined scenarios, environmental variations, and expected-behavior baselines to catch unintended changes early in the development cycle."
+  },
+  {
+    "id": "auto-008",
+    "category": "Autonomous Systems",
+    "keywords": ["label quality", "training data", "dataset", "annotation"],
+    "question": "Has Kyle worked on training data quality programs?",
+    "answer": "Kyle has supported large-scale labeling programs focused on accuracy, consistency, and scenario coverage. He has contributed to improving annotation guidelines and identifying systematic issues impacting perception model performance."
+  },
+  {
+    "id": "auto-009",
+    "category": "Autonomous Systems",
+    "keywords": ["field testing", "road tests", "on-road", "operations"],
+    "question": "What field testing experience does Kyle have?",
+    "answer": "Kyle has conducted on-road autonomous vehicle tests covering day, night, rain, fog, and dense urban environments. He evaluates perception events, anomalous behavior, and safety margins while documenting reproducible findings for engineering."
+  },
+  {
+    "id": "auto-010",
+    "category": "Autonomous Systems",
+    "keywords": ["safety", "safety case", "structured testing", "validation"],
+    "question": "How does Kyle contribute to safety-focused validation?",
+    "answer": "Kyle contributes to safety validation by creating structured test procedures, reviewing edge-case failures, and ensuring adherence to acceptance criteria. His work supports predictable execution and consistent behavior across environments and releases."
+  }
 ]
 }
+
