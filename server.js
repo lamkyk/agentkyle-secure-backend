@@ -894,17 +894,18 @@ if (isBehavioral) {
     // ==================================================================
 
     let relevantQAs = [];
-    try {
-      relevantQAs = await hybridSearchKnowledgeBase(originalQuery, 6);
-    } catch (e) {
-      console.warn('Hybrid search error, falling back to empty KB match set:', e.message || e);
-      relevantQAs = [];
-    }
+try {
+  relevantQAs = await hybridSearchKnowledgeBase(originalQuery, 6);
+} catch {}
+console.log(`Found ${relevantQAs.length} hybrid relevant Q&As`);
 
-    console.log(`Query: "${originalQuery.substring(0, 50)}${originalQuery.length > 50 ? '...' : ''}"`);
-    console.log(`Found ${relevantQAs.length} hybrid relevant Q&As`);
+let topScore = relevantQAs.length ? relevantQAs[0].score : 0;
 
-    let topScore = relevantQAs.length ? relevantQAs[0].score : 0;
+// Behavioral override
+if (isBehavioral) {
+  console.log("Behavioral or PM/CX scenario detected; bypassing direct KB matching.");
+  topScore = 0;
+}
 
     const STRONG_THRESHOLD = 0.90;   // direct KB answer (only for Kyle/mixed)
     const MEDIUM_THRESHOLD = 0.60;   // reserved if needed
