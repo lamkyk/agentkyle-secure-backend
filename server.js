@@ -1,4 +1,4 @@
-// server.js - Agent K (hybrid embeddings, tuned retrieval, Agent K persona, Kyle in 3rd person, stable)
+// server.js - Agent K (hybrid retrieval, technical + Kyle modes, stable)
 
 // IMPORTANT: This file assumes ESM (type: "module") in package.json.
 
@@ -49,7 +49,7 @@ function formatParagraphs(text) {
 function enforceThirdPersonForKyle(raw) {
   if (!raw) return raw;
 
-  const lines = raw.split("\n");
+  const lines = raw.split('\n');
 
   const processed = lines.map(line => {
     // Do not rewrite if the sentence explicitly references Agent K
@@ -60,34 +60,34 @@ function enforceThirdPersonForKyle(raw) {
     // Strongest-first replacement order to avoid double transforms
 
     // I am / I'm -> Kyle is
-    out = out.replace(/\bI['’]m\b/gi, "Kyle is");
-    out = out.replace(/\bI am\b/gi, "Kyle is");
+    out = out.replace(/\bI['’]m\b/gi, 'Kyle is');
+    out = out.replace(/\bI am\b/gi, 'Kyle is');
 
     // I’d / I'd -> Kyle would
-    out = out.replace(/\bI['’]d\b/gi, "Kyle would");
+    out = out.replace(/\bI['’]d\b/gi, 'Kyle would');
 
     // I’ll / I'll -> Kyle will
-    out = out.replace(/\bI['’]ll\b/gi, "Kyle will");
+    out = out.replace(/\bI['’]ll\b/gi, 'Kyle will');
 
     // I’ve / I've -> Kyle has
-    out = out.replace(/\bI['’]ve\b/gi, "Kyle has");
+    out = out.replace(/\bI['’]ve\b/gi, 'Kyle has');
 
     // My -> Kyle's
     out = out.replace(/\bMy\b/gi, "Kyle's");
 
     // Me -> Kyle
-    out = out.replace(/\bMe\b/gi, "Kyle");
+    out = out.replace(/\bMe\b/gi, 'Kyle');
 
     // I (standalone) -> Kyle
-    out = out.replace(/\bI\b/g, "Kyle");
+    out = out.replace(/\bI\b/g, 'Kyle');
 
     // myself -> himself
-    out = out.replace(/\bmyself\b/gi, "himself");
+    out = out.replace(/\bmyself\b/gi, 'himself');
 
     return out;
   });
 
-  return processed.join("\n");
+  return processed.join('\n');
 }
 
 // Remove unwanted phrases and jokes
@@ -113,8 +113,10 @@ function sanitizePhrases(text) {
   out = out.replace(/\n{3,}/g, '\n\n');
 
   // Fix possible "He is Agent K" artifact
-  out = out.replace(/\bHe is Agent K[^.?!]*[.?!]?/gi,
-    'Agent K is an AI assistant that represents Kyle’s professional experience.');
+  out = out.replace(
+    /\bHe is Agent K[^.?!]*[.?!]?/gi,
+    'Agent K is an AI assistant that represents Kyle’s professional experience.'
+  );
 
   return out.trim();
 }
@@ -182,19 +184,46 @@ function extractKeywords(text) {
 }
 
 function classifyTopic(lower) {
-  if (lower.includes('autonomous') || lower.includes('autopilot') || lower.includes('perception') || lower.includes('sensor')) {
+  if (
+    lower.includes('autonomous') ||
+    lower.includes('autopilot') ||
+    lower.includes('perception') ||
+    lower.includes('sensor')
+  ) {
     return 'autonomous systems and perception testing';
   }
-  if (lower.includes('program') || lower.includes('project') || lower.includes('execution') || lower.includes('roadmap')) {
+  if (
+    lower.includes('program') ||
+    lower.includes('project') ||
+    lower.includes('execution') ||
+    lower.includes('roadmap')
+  ) {
     return 'program and project execution';
   }
-  if (lower.includes('customer') || lower.includes('client') || lower.includes('success') || lower.includes('account')) {
-    return 'customer success and client-facing work';
+  if (
+    lower.includes('customer') ||
+    lower.includes('client') ||
+    lower.includes('success') ||
+    lower.includes('account') ||
+    lower.includes('rider')
+  ) {
+    return 'customer and rider experience';
   }
-  if (lower.includes('data') || lower.includes('label') || lower.includes('annotation') || lower.includes('training data')) {
+  if (
+    lower.includes('data') ||
+    lower.includes('label') ||
+    lower.includes('annotation') ||
+    lower.includes('training data')
+  ) {
     return 'large scale training data and data quality programs';
   }
-  if (lower.includes('ai') || lower.includes('agent') || lower.includes('script') || lower.includes('node') || lower.includes('express')) {
+  if (
+    lower.includes('ai') ||
+    lower.includes('agent') ||
+    lower.includes('script') ||
+    lower.includes('node') ||
+    lower.includes('express')
+  ) {
     return 'applied AI tools and scripting';
   }
   return 'his work in autonomous systems, validation, program management, SaaS workflows, and applied AI tools';
@@ -241,6 +270,32 @@ function isHighlySimilarAnswer(prev, next, threshold = 0.8) {
   return textSimilarity(prev, next) >= threshold;
 }
 
+// Detect classic behavioral / PM-CX questions that should bypass direct KB lookup
+function isBehavioralOrPMCXQuestion(lower) {
+  const behavioralTriggers = [
+    'tell me about a time',
+    'describe a time',
+    'give an example',
+    'give me an example',
+    'walk me through',
+    'how would you handle',
+    'how would you deal with',
+    'how do you handle',
+    'how do you deal with',
+    'walk me through how you',
+    'time you',
+    'time when',
+    'situation where',
+    'what would you do if',
+    'how would you investigate',
+    'design an escalation',
+    'design a process',
+    'how would you prioritize'
+  ];
+
+  return behavioralTriggers.some(t => lower.includes(t));
+}
+
 // ======================================================================
 // KNOWLEDGE BASE + EMBEDDINGS
 // ======================================================================
@@ -248,8 +303,8 @@ function isHighlySimilarAnswer(prev, next, threshold = 0.8) {
 let knowledgeBase = { qaDatabase: [] };
 let kbEmbeddings = []; // { index, embedding }
 
-// For suggestion rotation (Option B)
-let recentSuggestionPhrases = []; // last 5 suggestion questions the user likely clicked
+// For suggestion rotation
+let recentSuggestionPhrases = []; // last few suggestion questions the user likely clicked
 
 function markSuggestionUsed(q) {
   const t = (q || '').trim();
@@ -303,11 +358,16 @@ async function buildKnowledgeBaseEmbeddings() {
     }
 
     EMBEDDINGS_ENABLED = kbEmbeddings.length > 0;
-    console.log(`Built embeddings for ${kbEmbeddings.length} KB entries; EMBEDDINGS_ENABLED=${EMBEDDINGS_ENABLED}`);
+    console.log(
+      `Built embeddings for ${kbEmbeddings.length} KB entries; EMBEDDINGS_ENABLED=${EMBEDDINGS_ENABLED}`
+    );
   } catch (err) {
     EMBEDDINGS_ENABLED = false;
     kbEmbeddings = [];
-    console.warn('Failed to build KB embeddings; falling back to keyword-only search:', err.message || err);
+    console.warn(
+      'Failed to build KB embeddings; falling back to keyword-only search:',
+      err.message || err
+    );
   }
 }
 
@@ -319,7 +379,6 @@ try {
 } catch (err) {
   console.error('Failed to load knowledge base:', err);
 }
-
 // keyword scoring
 function keywordScoreAll(query) {
   const q = query.toLowerCase().trim();
@@ -354,7 +413,10 @@ async function hybridSearchKnowledgeBase(query, limit = 5) {
   if (!q || !knowledgeBase.qaDatabase || knowledgeBase.qaDatabase.length === 0) return [];
 
   const keywordScoredFull = keywordScoreAll(q);
-  const maxKeywordScore = keywordScoredFull.reduce((max, item) => Math.max(max, item.score), 0);
+  const maxKeywordScore = keywordScoredFull.reduce(
+    (max, item) => Math.max(max, item.score),
+    0
+  );
 
   // If embeddings are not enabled, just do keyword
   if (!EMBEDDINGS_ENABLED || !kbEmbeddings || kbEmbeddings.length === 0) {
@@ -374,7 +436,10 @@ async function hybridSearchKnowledgeBase(query, limit = 5) {
       queryEmbedding = embResp.data[0].embedding;
     }
   } catch (err) {
-    console.warn('Error creating query embedding; falling back to keyword-only for this query:', err.message || err);
+    console.warn(
+      'Error creating query embedding; falling back to keyword-only for this query:',
+      err.message || err
+    );
   }
 
   if (!queryEmbedding) {
@@ -419,25 +484,25 @@ async function hybridSearchKnowledgeBase(query, limit = 5) {
 
 const funResponses = {
   joke: [
-    "Agent K can share a quick joke if asked, but the primary focus is explaining Kyle’s work and experience."
+    'Agent K can share a quick joke if asked, but the primary focus is explaining Kyle’s work and experience.'
   ],
   greeting: [
-    "Hello. Agent K can walk through Kyle’s background across autonomous systems, validation, structured testing, program execution, SaaS workflows, and applied AI tools. What would you like to explore?"
+    'Hello. Agent K can walk through Kyle’s background across autonomous systems, validation, structured testing, program execution, SaaS workflows, and applied AI tools. What would you like to explore?'
   ],
   thanks: [
-    "You are welcome. If there is more you would like to know about Kyle’s work, you can ask about specific domains or projects."
+    'You are welcome. If there is more you would like to know about Kyle’s work, you can ask about specific domains or projects.'
   ],
   weather: [
-    "Agent K does not track live weather, but can explain how Kyle tested autonomous systems across rain, fog, night driving, and other conditions."
+    'Agent K does not track live weather, but can explain how Kyle tested autonomous systems across rain, fog, night driving, and other conditions.'
   ],
   howAreYou: [
-    "Agent K is available to walk through Kyle’s experience. What would you like to focus on?"
+    'Agent K is available to walk through Kyle’s experience. What would you like to focus on?'
   ],
   cooking: [
-    "Agent K does not handle recipes, but can describe how Kyle structures workflows, testing, and operations."
+    'Agent K does not handle recipes, but can describe how Kyle structures workflows, testing, and operations.'
   ],
   meaning: [
-    "That is broad. Within his work, Kyle tends to focus on practical impact, reliability, and clear operational execution."
+    'That is broad. Within his work, Kyle tends to focus on practical impact, reliability, and clear operational execution.'
   ]
 };
 
@@ -478,11 +543,28 @@ function detectOffTopicQuery(query) {
 function detectSTARQuery(query) {
   const q = query.toLowerCase();
   const triggers = [
-    'tell me about a time', 'describe a time', 'give me an example',
-    'star example', 'challenge', 'overcame', 'difficult situation',
-    'accomplishment', 'achievement', 'led a project', 'managed a project',
-    'handled', 'resolved', 'improved', 'time you', 'time when', 'time kyle',
-    'situation where', 'walk me through', 'walk me thru', 'walk through', 'walk thru',
+    'tell me about a time',
+    'describe a time',
+    'give me an example',
+    'star example',
+    'challenge',
+    'overcame',
+    'difficult situation',
+    'accomplishment',
+    'achievement',
+    'led a project',
+    'managed a project',
+    'handled',
+    'resolved',
+    'improved',
+    'time you',
+    'time when',
+    'time kyle',
+    'situation where',
+    'walk me through',
+    'walk me thru',
+    'walk through',
+    'walk thru',
     'walk me step by step'
   ];
   return triggers.some(t => q.includes(t));
@@ -544,8 +626,22 @@ app.post('/suggest', async (req, res) => {
       if (lower.includes('one-word replies')) return false;
       if (lower.includes('one word replies')) return false;
 
+      // Remove dating / personal-life topics from suggestions
+      if (
+        lower.includes('dating') ||
+        lower.includes('who is he dating') ||
+        lower.includes('girlfriend') ||
+        lower.includes('boyfriend') ||
+        lower.includes('relationship') ||
+        lower.includes('personal life')
+      ) {
+        return false;
+      }
+
       // Remove classifier UIs like ui-03
-      if (lower.includes('ui-0') || lower.includes('ui-1') || lower.includes('ui-2') || lower.includes('ui-3')) return false;
+      if (lower.includes('ui-0') || lower.includes('ui-1') || lower.includes('ui-2') || lower.includes('ui-3')) {
+        return false;
+      }
 
       return true;
     };
@@ -594,7 +690,7 @@ app.post('/suggest', async (req, res) => {
       if (!suggestions.length) {
         suggestions = [
           "Ask about Kyle's experience in autonomous systems.",
-          "Ask for a STAR example about a project risk."
+          'Ask for a STAR example about a project risk.'
         ];
       }
 
@@ -617,7 +713,7 @@ app.post('/suggest', async (req, res) => {
     if (!suggestions.length) {
       suggestions = [
         "Ask about Kyle's experience in autonomous systems.",
-        "Ask for a STAR example about a project risk."
+        'Ask for a STAR example about a project risk.'
       ];
     }
 
@@ -625,13 +721,10 @@ app.post('/suggest', async (req, res) => {
   } catch (err) {
     console.error('Suggestion error:', err);
     res.status(500).json({
-      suggestions: [
-        "Ask about Kyle's experience in autonomous systems."
-      ]
+      suggestions: ["Ask about Kyle's experience in autonomous systems."]
     });
   }
 });
-
 app.post('/query', async (req, res) => {
   try {
     let { q, lastBotMessage = '' } = req.body;
@@ -651,60 +744,47 @@ app.post('/query', async (req, res) => {
       markSuggestionUsed(normalizedForSuggestion);
     }
 
-// ==================================================================
-// INTENT ROUTING: KYLE vs TECHNICAL vs MIXED
-// Behavioral, PM, CX, Escalation, and AV Scenario Routing Fix
-// ==================================================================
+    // ==================================================================
+    // INTENT ROUTING: KYLE vs TECHNICAL vs MIXED
+    // ==================================================================
+    const mentionsKyle = isAboutKyle || /\babout kyle\b/i.test(lower);
 
-const mentionsKyle = isAboutKyle || /\babout kyle\b/i.test(lower);
+    const isInterviewy =
+      /\b(tell me about yourself|strengths|weaknesses|greatest strength|greatest weakness|why do you want this role|why .*role|why .*company|why should we hire you|fit for this role|fit for the role|background for this role|walk me through your resume)\b/i.test(
+        lower
+      );
 
-const isInterviewy =
-  /\b(tell me about yourself|strengths|weaknesses|greatest strength|greatest weakness|why do you want this role|why .*role|why .*company|why should we hire you|fit for this role|fit for the role|background for this role|walk me through your resume)\b/i
-    .test(lower);
+    const isConceptQuestion =
+      /\b(what is|what's|define|definition of|explain|how does|how do you handle|how does .* work|difference between|compare|contrast)\b/i.test(
+        lower
+      );
 
-const isConceptQuestion =
-  /\b(what is|what's|define|definition of|explain|how does|how do you handle|how does .* work|difference between|compare|contrast)\b/i
-    .test(lower);
+    const hasTechnicalKeywords =
+      /\b(rl|reinforcement learning|policy gradient|q-learning|q learning|actor-critic|actor critic|bandit|multi-armed bandit|mdp|markov decision process|value function|advantage function|neural network|deep learning|machine learning|ml|supervised learning|unsupervised learning|self-supervised|transformer|cnn|rnn|lstm|gan|autonomous driving|av stack|planning|trajectory planning|path planning|control|controller|pid controller|pid loop|mpc|model predictive control|slam|localization|sensor fusion|kalman filter|ekf|ukf|bayes|bayesian|reward function|policy|trajectory|perception|object detection|lidar|lidar sensor|radar|camera model|occupancy grid|safety case|iso 26262|sim2real|simulation|differential flatness|flatness)\b/i.test(
+        lower
+      );
 
-const hasTechnicalKeywords =
-  /\b(rl|reinforcement learning|policy gradient|q-learning|q learning|actor-critic|bandit|multi-armed bandit|mdp|markov decision process|value function|advantage function|neural network|deep learning|machine learning|ml|supervised learning|unsupervised learning|self-supervised|transformer|cnn|rnn|lstm|gan|autonomous driving|av stack|planning|trajectory planning|path planning|control|controller|pid controller|pid loop|mpc|model predictive control|slam|localization|sensor fusion|kalman filter|ekf|ukf|bayes|bayesian|reward function|policy|trajectory|perception|object detection|lidar|radar|camera model|occupancy grid|safety case|iso 26262|sim2real|simulation)\b/i
-    .test(lower);
+    const looksLikeAcronym = /\b[A-Z]{2,6}\b/.test(q) && !mentionsKyle;
 
-const looksLikeAcronym = /\b[A-Z]{2,6}\b/.test(q) && !mentionsKyle;
+    const behavioralOrPMCX = isBehavioralOrPMCXQuestion(lower);
 
-// ==================================================================
-// NEW: DETECT BEHAVIORAL / PROGRAM EXECUTION / CX / RIDER / PM CASES
-// Forces synthesis even when KB seems relevant
-// ==================================================================
-const isBehavioral = (
-  /tell me about a time|describe a time|give an example|star\b|walk me through|walk me thru|situation where|example of/i.test(lower)
-  ||
-  /\b(program|initiative|cross-?functional|stakeholder|customer|client|rider|escalation|root cause|metric|kpi|okr|dashboard|wait time|pickup|cancellation|fleet|operations|oncall|postmortem|vehicle behavior|av|robotaxi)\b/i
-    .test(lower)
-);
+    const intent = (() => {
+      if (hasTechnicalKeywords || looksLikeAcronym || (isConceptQuestion && !mentionsKyle)) {
+        return 'technical';
+      }
+      if (mentionsKyle || isInterviewy || behavioralOrPMCX) return 'kyle';
+      return 'mixed';
+    })();
 
-// ==================================================================
-// Intent selection
-// ==================================================================
-const intent = (() => {
-  if (mentionsKyle || isInterviewy) return 'kyle';
-  if (isBehavioral) return 'kyle'; // Behavioral always uses Kyle/LLM mode
-  if (hasTechnicalKeywords || looksLikeAcronym || (isConceptQuestion && !mentionsKyle)) return 'technical';
-  return 'mixed';
-})();
+    if (behavioralOrPMCX) {
+      console.log('Behavioral or PM/CX scenario detected; bypassing direct KB matching.');
+    }
 
-// ==================================================================
-// NEW OVERRIDE: BEHAVIORAL MUST NOT USE DIRECT KB
-// ==================================================================
-if (isBehavioral) {
-  console.log("Behavioral or PM/CX scenario detected; bypassing direct KB matching.");
-  // force the search score to be treated as weak
-  topScore = 0; 
-}
     // ==================================================================
     // EASTER EGG: JOKE-OF-THE-DAY (isolated from Kyle / KB pipeline)
     // ==================================================================
-    const jokeRegex = /\b(joke of the day|daily joke|random joke|surprise me with a joke|tell me a joke)\b/i;
+    const jokeRegex =
+      /\b(joke of the day|daily joke|random joke|surprise me with a joke|tell me a joke)\b/i;
     if (jokeRegex.test(lower)) {
       try {
         const jokeResp = await groq.chat.completions.create({
@@ -731,7 +811,8 @@ if (isBehavioral) {
       } catch (e) {
         console.error('Joke easter-egg error:', e);
         return res.json({
-          answer: 'Agent K had trouble fetching a joke. You can still ask about Kyle’s work, experience, or background.'
+          answer:
+            'Agent K had trouble fetching a joke. You can still ask about Kyle’s work, experience, or background.'
         });
       }
     }
@@ -741,21 +822,23 @@ if (isBehavioral) {
     // ==================================================================
 
     // Hostile
-    const hostileRegex = /\b(suck|stupid|dumb|idiot|useless|trash|terrible|awful|horrible|crap|wtf|shit|fuck|fucking|bullshit|bs|garbage|bad ai|you suck)\b/i;
+    const hostileRegex =
+      /\b(suck|stupid|dumb|idiot|useless|trash|terrible|awful|horrible|crap|wtf|shit|fuck|fucking|bullshit|bs|garbage|bad ai|you suck)\b/i;
     if (hostileRegex.test(lower)) {
       return res.json({
         answer: sanitizeOutput(
-          "Agent K is focused on explaining Kyle’s work clearly. Kyle’s background includes autonomous systems validation, structured testing, operations, SaaS workflows, customer success, and applied AI tools. If you share what you want to understand about his experience, the answer can be specific and useful."
+          'Agent K is focused on explaining Kyle’s work clearly. Kyle’s background includes autonomous systems validation, structured testing, operations, SaaS workflows, customer success, and applied AI tools. If you share what you want to understand about his experience, the answer can be specific and useful.'
         )
       });
     }
 
     // Emotional
-    const emotionalRegex = /\b(frustrated|frustrating|confused|confusing|annoyed|annoying|overwhelmed|stressed|stressing|lost|stuck|irritated)\b/i;
+    const emotionalRegex =
+      /\b(frustrated|frustrating|confused|confusing|annoyed|annoying|overwhelmed|stressed|stressing|lost|stuck|irritated)\b/i;
     if (emotionalRegex.test(lower)) {
       return res.json({
         answer: sanitizeOutput(
-          "It is understandable for this to feel unclear. Kyle’s work spans autonomous systems, testing, operations, SaaS workflows, and AI tools. If you indicate whether you are interested in his technical depth, his program management approach, his customer-facing work, or his tooling and automation, Agent K can walk through it step by step."
+          'It is understandable for this to feel unclear. Kyle’s work spans autonomous systems, testing, operations, SaaS workflows, and AI tools. If you indicate whether you are interested in his technical depth, his program management approach, his customer-facing work, or his tooling and automation, Agent K can walk through it step by step.'
         )
       });
     }
@@ -764,23 +847,25 @@ if (isBehavioral) {
     if (/\b(who is kyle|tell me about kyle|what does kyle do|kyle background|kyle experience)\b/i.test(lower)) {
       return res.json({
         answer: sanitizeOutput(
-          "Kyle has experience in autonomous systems validation, field operations, perception testing, structured test execution, and large scale training data programs. He has collaborated across engineering, operations, and product teams to deliver predictable program outcomes. He also has experience in SaaS customer success, technical onboarding, enterprise client workflows, and the development of applied AI tools."
+          'Kyle has experience in autonomous systems validation, field operations, perception testing, structured test execution, and large scale training data programs. He has collaborated across engineering, operations, and product teams to deliver predictable program outcomes. He also has experience in SaaS customer success, technical onboarding, enterprise client workflows, and the development of applied AI tools.'
         )
       });
     }
 
     // "Tell me everything"
-    const fullInfoQuery = /\b(tell me everything|tell me all you know|everything you know|all info|all information|all you have on kyle|all you know about kyle)\b/i;
+    const fullInfoQuery =
+      /\b(tell me everything|tell me all you know|everything you know|all info|all information|all you have on kyle|all you know about kyle)\b/i;
     if (fullInfoQuery.test(lower)) {
       return res.json({
         answer: sanitizeOutput(
-          "Kyle’s background spans autonomous systems validation and field operations, perception and scenario testing, structured test plans, and data focused programs. He has helped align engineering and operations teams, improved testing workflows, and contributed to training data quality. He has also worked in SaaS customer success and onboarding, managing enterprise client workflows, and he has built applied AI tools using Node.js, Express, and external APIs. Follow up questions can go deeper into any of these areas."
+          'Kyle’s background spans autonomous systems validation and field operations, perception and scenario testing, structured test plans, and data focused programs. He has helped align engineering and operations teams, improved testing workflows, and contributed to training data quality. He has also worked in SaaS customer success and onboarding, managing enterprise client workflows, and he has built applied AI tools using Node.js, Express, and external APIs. Follow up questions can go deeper into any of these areas.'
         )
       });
     }
 
     // Capability
-    const capabilityQuery = /\b(can he|is he able|is kyle able|can kyle|could he|would he be able|handle this|take this on|perform this role|do this role|could he do it)\b/i;
+    const capabilityQuery =
+      /\b(can he|is he able|is kyle able|can kyle|could he|would he be able|handle this|take this on|perform this role|do this role|could he do it)\b/i;
     if (capabilityQuery.test(lower)) {
       const topic = classifyTopic(lower);
       return res.json({
@@ -791,77 +876,93 @@ if (isBehavioral) {
     }
 
     // Pay
-    const payQuery = /\b(salary|pay|compensation|comp\b|range|expected pay|pay expectations|comp expectations|salary expectations)\b/i;
+    const payQuery =
+      /\b(salary|pay|compensation|comp\b|range|expected pay|pay expectations|comp expectations|salary expectations)\b/i;
     if (payQuery.test(lower)) {
       return res.json({
         answer: sanitizeOutput(
-          "Kyle’s compensation expectations depend on the scope and seniority of the role, the technical depth, and market norms. For technical program, operations, or project manager roles in advanced technology environments, he aligns with market ranges and prioritizes strong fit, meaningful impact, and long term growth."
+          'Kyle’s compensation expectations depend on the scope and seniority of the role, the technical depth, and market norms. For technical program, operations, or project manager roles in advanced technology environments, he aligns with market ranges and prioritizes strong fit, meaningful impact, and long term growth.'
         )
       });
     }
 
     // What do you know
-    const whatKnow = /\b(what do you know|what all do you know|your knowledge|what info do you have)\b/i;
+    const whatKnow =
+      /\b(what do you know|what all do you know|your knowledge|what info do you have)\b/i;
     if (whatKnow.test(lower)) {
       return res.json({
         answer: sanitizeOutput(
-          "Available information covers Kyle’s work in autonomous systems, structured testing and validation, operations, SaaS workflows and customer success, and applied AI tools. If you indicate which of these areas is most relevant, Agent K can provide a focused overview."
+          'Available information covers Kyle’s work in autonomous systems, structured testing and validation, operations, SaaS workflows and customer success, and applied AI tools. If you indicate which of these areas is most relevant, Agent K can provide a focused overview.'
         )
       });
     }
 
     // Wins
-    const winsQuery = /\b(win|wins|key wins|accomplish|accomplishment|accomplishments|achievement|achievements|results|notable)\b/i;
+    const winsQuery =
+      /\b(win|wins|key wins|accomplish|accomplishment|accomplishments|achievement|achievements|results|notable)\b/i;
     if (winsQuery.test(lower)) {
       return res.json({
         answer: sanitizeOutput(
-          "Some of Kyle’s key wins include leading structured testing programs that improved consistency and reliability, aligning engineering and operations teams around clear execution frameworks, improving scenario and label quality for training data, and building applied AI tools that reduced manual effort for teams. Follow up questions can target specific environments or roles."
+          'Some of Kyle’s key wins include leading structured testing programs that improved consistency and reliability, aligning engineering and operations teams around clear execution frameworks, improving scenario and label quality for training data, and building applied AI tools that reduced manual effort for teams. Follow up questions can target specific environments or roles.'
         )
       });
     }
 
     // SOPs
-    const sopQuery = /\b(sop\b|sops\b|standard operating|process\b|processes\b|workflow\b|workflows\b|procedure\b|procedures\b)/i;
+    const sopQuery =
+      /\b(sop\b|sops\b|standard operating|process\b|processes\b|workflow\b|workflows\b|procedure\b|procedures\b)/i;
     if (sopQuery.test(lower)) {
       return res.json({
         answer: sanitizeOutput(
-          "Kyle has created structured SOPs that define steps, signals, required conditions, and acceptance criteria. These documents reduced execution variance, improved repeatability, and helped cross functional teams align on how testing and operational work should be performed."
+          'Kyle has created structured SOPs that define steps, signals, required conditions, and acceptance criteria. These documents reduced execution variance, improved repeatability, and helped cross functional teams align on how testing and operational work should be performed.'
         )
       });
     }
 
     // Weaknesses
-    const weaknessQuery = /\b(weak|weakness|weakest|failure|failures|mistake|mistakes|shortcoming|shortcomings)\b/i;
+    const weaknessQuery =
+      /\b(weak|weakness|weakest|failure|failures|mistake|mistakes|shortcoming|shortcomings)\b/i;
     if (weaknessQuery.test(lower)) {
       return res.json({
         answer: sanitizeOutput(
-          "Kyle’s development areas are framed in professional terms. He sometimes leans into structure because he values predictable execution, and he has learned to adjust that based on context so that he does not over design. He also sets a high bar for himself and has improved by prioritizing impact and involving stakeholders earlier. These adjustments have strengthened his overall effectiveness."
+          'Kyle’s development areas are framed in professional terms. He sometimes leans into structure because he values predictable execution, and he has learned to adjust that based on context so that he does not over design. He also sets a high bar for himself and has improved by prioritizing impact and involving stakeholders earlier. These adjustments have strengthened his overall effectiveness.'
         )
       });
     }
 
     // Challenge phrases
-    const challengeTriggers = /\b(your move|same energy|prove it|go on then|what you got|come on)\b/i;
+    const challengeTriggers =
+      /\b(your move|same energy|prove it|go on then|what you got|come on)\b/i;
     if (challengeTriggers.test(lower)) {
       return res.json({
         answer: sanitizeOutput(
-          "Agent K is designed to give clear, factual answers about Kyle’s work. If you share whether you care most about his autonomous systems experience, his program execution, his customer facing work, or his AI tools, the explanation can be specific to that area."
+          'Agent K is designed to give clear, factual answers about Kyle’s work. If you share whether you care most about his autonomous systems experience, his program execution, his customer facing work, or his AI tools, the explanation can be specific to that area.'
         )
       });
     }
 
     // Very low-signal queries
     const vagueLowSignalList = [
-      'huh', 'k', 'kk', 'lol', 'lmao',
-      'idk', 'iono', 'hmmm', 'hmm',
-      '???', '??', '?', 'uh', 'umm'
+      'huh',
+      'k',
+      'kk',
+      'lol',
+      'lmao',
+      'idk',
+      'iono',
+      'hmmm',
+      'hmm',
+      '???',
+      '??',
+      '?',
+      'uh',
+      'umm'
     ];
 
     if (vagueLowSignalList.includes(lower) || /^[\s?.!]{1,3}$/.test(lower)) {
-      // If it's technical context but low-signal, still keep generic clarification
       return res.json({
         answer: sanitizeOutput(
-          "The question is not fully clear. If you specify what you want to understand—Kyle’s experience, a technical concept like RL or control, or a specific project—Agent K can give a direct answer."
+          'The question is not fully clear. If you specify what you want to understand—Kyle’s experience, a technical concept like RL or control, or a specific project—Agent K can give a direct answer.'
         )
       });
     }
@@ -875,7 +976,7 @@ if (isBehavioral) {
       } else {
         return res.json({
           answer: sanitizeOutput(
-            "More detail can be provided on Kyle’s autonomous systems work, his structured test programs, his SaaS and customer success background, his AI tools, or broader technical concepts like RL, planning, or control. Indicating which thread to continue will make the answer more useful."
+            'More detail can be provided on Kyle’s autonomous systems work, his structured test programs, his SaaS and customer success background, his AI tools, or broader technical concepts like RL, planning, or control. Indicating which thread to continue will make the answer more useful.'
           )
         });
       }
@@ -890,39 +991,47 @@ if (isBehavioral) {
     }
 
     // ==================================================================
-    // HYBRID RETRIEVAL + LLM + SYNTHESIS FALLBACK (KYLE / MIXED)
+    // HYBRID RETRIEVAL + LLM + SYNTHESIS FALLBACK
     // ==================================================================
 
     let relevantQAs = [];
-try {
-  relevantQAs = await hybridSearchKnowledgeBase(originalQuery, 6);
-} catch {}
-console.log(`Found ${relevantQAs.length} hybrid relevant Q&As`);
+    let topScore = 0;
 
-let topScore = relevantQAs.length ? relevantQAs[0].score : 0;
+    if (!behavioralOrPMCX && intent !== 'technical') {
+      try {
+        relevantQAs = await hybridSearchKnowledgeBase(originalQuery, 6);
+      } catch (e) {
+        console.warn('Hybrid search error, falling back to empty KB match set:', e.message || e);
+        relevantQAs = [];
+      }
 
-// Behavioral override
-if (isBehavioral) {
-  console.log("Behavioral or PM/CX scenario detected; bypassing direct KB matching.");
-  topScore = 0;
-}
+      console.log(
+        `Query: "${originalQuery.substring(0, 50)}${originalQuery.length > 50 ? '...' : ''}"`
+      );
+      console.log(`Found ${relevantQAs.length} hybrid relevant Q&As`);
 
-    const STRONG_THRESHOLD = 0.90;   // direct KB answer (only for Kyle/mixed)
-    const MEDIUM_THRESHOLD = 0.60;   // reserved if needed
-    const WEAK_THRESHOLD = 0.30;     // low confidence (fallback trigger)
+      topScore = relevantQAs.length ? relevantQAs[0].score : 0;
+    }
+
+    const STRONG_THRESHOLD = 0.9; // direct KB answer (only for Kyle/mixed)
+    const WEAK_THRESHOLD = 0.3; // low confidence (fallback trigger)
 
     const tokenCount = originalQuery.split(/\s+/).filter(Boolean).length;
     const isShortAmbiguous = (!relevantQAs.length && tokenCount <= 3);
     const isMeaningfulQuery = tokenCount >= 3 && !/^[\W_]+$/.test(originalQuery);
 
     const hasAnyKB = knowledgeBase.qaDatabase && knowledgeBase.qaDatabase.length > 0;
-    const weakOrNoMatch = !relevantQAs.length || topScore < WEAK_THRESHOLD;
+    const weakOrNoMatch =
+      behavioralOrPMCX ||
+      intent === 'technical' ||
+      !relevantQAs.length ||
+      topScore < WEAK_THRESHOLD;
 
-    // Strengthened synthesized fallback flag (Option 5)
-    const fallbackWasUsed = hasAnyKB && weakOrNoMatch && isMeaningfulQuery && intent !== 'technical';
+    const fallbackWasUsed =
+      hasAnyKB && weakOrNoMatch && isMeaningfulQuery && intent !== 'technical';
 
-    // 1) Strong direct KB hit: answer straight from KB (only when not in technical mode)
-    if (intent !== 'technical' && relevantQAs.length && topScore >= STRONG_THRESHOLD) {
+    // 1) Strong direct KB hit: answer straight from KB (only when not behavioral/PM-CX and not technical)
+    if (!behavioralOrPMCX && intent !== 'technical' && relevantQAs.length && topScore >= STRONG_THRESHOLD) {
       console.log(`Strong KB hit. Score: ${topScore.toFixed(3)}`);
       return res.json({
         answer: sanitizeOutput(relevantQAs[0].answer)
@@ -931,7 +1040,7 @@ if (isBehavioral) {
 
     // 2) Build context for LLM: either focused relevant entries or synthesized sample (only for Kyle/mixed)
     let contextText = '';
-    if (intent !== 'technical') {
+    if (intent !== 'technical' && !behavioralOrPMCX) {
       if (relevantQAs.length && topScore >= WEAK_THRESHOLD) {
         contextText = '\n\nRELEVANT BACKGROUND (PARAPHRASE ONLY):\n\n';
         relevantQAs.slice(0, 4).forEach((qa, idx) => {
@@ -947,7 +1056,11 @@ if (isBehavioral) {
           contextSample.push(knowledgeBase.qaDatabase[i]);
         }
 
-        console.log(`Using synthesized fallback sample of ${contextSample.length} KB entries (weak match; topScore=${topScore.toFixed(3)})`);
+        console.log(
+          `Using synthesized fallback sample of ${contextSample.length} KB entries (weak match; topScore=${topScore.toFixed(
+            3
+          )})`
+        );
 
         contextText = '\n\nRELEVANT BACKGROUND (SYNTHESIZED SAMPLE):\n\n';
         contextSample.forEach((qa, idx) => {
@@ -993,7 +1106,7 @@ Respond with:
       }
     } else {
       // Kyle / mixed mode
-      if (intent !== 'technical' && isShortAmbiguous) {
+      if (isShortAmbiguous) {
         const topic = classifyTopic(lower);
         userMessage = `[AMBIGUOUS, SHORT QUERY]
 The user query was: "${originalQuery}".
@@ -1018,11 +1131,11 @@ Answer using Situation, Task, Action, Result with labeled sections.`;
 ${originalQuery}
 
 Address each part separately with clear transitions.`;
-      } else if (fallbackWasUsed) {
+      } else if (fallbackWasUsed || behavioralOrPMCX) {
         userMessage = `[SYNTHESIZED FALLBACK]
 The direct user query was: "${originalQuery}".
 
-There was not a strong direct match in the knowledge base (hybrid relevance below the WEAK threshold). Use the background entries in RELEVANT BACKGROUND (SYNTHESIZED SAMPLE) plus the general background summary to infer a parallel or related example from Kyle's experience, behaviors, or approach.
+Use the background summary and any RELEVANT BACKGROUND section to construct a detailed, tailored answer about Kyle’s experience or approach that best matches the intent of the question.
 
 User question: ${originalQuery}`;
       } else {
@@ -1107,9 +1220,12 @@ FINAL INSTRUCTIONS:
           { role: 'system', content: systemPrompt },
           { role: 'user', content: userMsg }
         ],
-        temperature: isSTAR
-          ? 0.35
-          : (relevantQAs.length && intent !== 'technical')
+        temperature:
+          intent === 'technical'
+            ? 0.35
+            : isSTAR
+            ? 0.35
+            : relevantQAs.length && intent !== 'technical'
             ? 0.25
             : 0.4,
         max_tokens: isSTAR ? 900 : 700
@@ -1125,8 +1241,8 @@ FINAL INSTRUCTIONS:
     if (!answerRaw) {
       answerRaw =
         intent === 'technical'
-          ? 'The model did not return a clear technical explanation. Reframe your question slightly, and I will provide a structured answer.'
-          : 'Agent K did not receive a clear response from the language model. Try asking from a slightly different angle about Kyle’s work.';
+          ? 'Agent K did not receive a clear response from the model. Can you try rephrasing the technical question?'
+          : 'Agent K did not receive a clear response from the model. Can you try rephrasing the question?';
     }
 
     // Second pass: anti-repetition compared to lastBotMessage (for all intents)
@@ -1156,7 +1272,10 @@ Provide a new answer that:
     console.error('Error:', err);
     res.status(500).json({
       error: 'Temporary issue',
-      message: process.env.NODE_ENV === 'development' ? err.message : undefined
+      message:
+        process.env.NODE_ENV === 'development'
+          ? err.message
+          : 'Agent K did not receive a clear response from the model. Can you try rephrasing the question?'
     });
   }
 });
