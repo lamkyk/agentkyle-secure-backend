@@ -651,44 +651,56 @@ app.post('/query', async (req, res) => {
       markSuggestionUsed(normalizedForSuggestion);
     }
 
-    // ==================================================================
-    // INTENT ROUTING: KYLE vs TECHNICAL vs MIXED
-    // ==================================================================
-    const mentionsKyle = isAboutKyle || /\babout kyle\b/i.test(lower);
+// ==================================================================
+// INTENT ROUTING: KYLE vs TECHNICAL vs MIXED
+// Behavioral, PM, CX, Escalation, and AV Scenario Routing Fix
+// ==================================================================
 
-    const isInterviewy = /\b(tell me about yourself|strengths|weaknesses|greatest strength|greatest weakness|why do you want this role|why .*role|why .*company|why should we hire you|fit for this role|fit for the role|background for this role|walk me through your resume)\b/i
-      .test(lower);
+const mentionsKyle = isAboutKyle || /\babout kyle\b/i.test(lower);
 
-    const isConceptQuestion = /\b(what is|what's|define|definition of|explain|how does|how do you handle|how does .* work|difference between|compare|contrast)\b/i
-      .test(lower);
+const isInterviewy =
+  /\b(tell me about yourself|strengths|weaknesses|greatest strength|greatest weakness|why do you want this role|why .*role|why .*company|why should we hire you|fit for this role|fit for the role|background for this role|walk me through your resume)\b/i
+    .test(lower);
 
-    const hasTechnicalKeywords =
-      /\b(rl|reinforcement learning|policy gradient|q-learning|q learning|actor-critic|bandit|multi-armed bandit|mdp|markov decision process|value function|advantage function|neural network|deep learning|machine learning|ml|supervised learning|unsupervised learning|self-supervised|transformer|cnn|rnn|lstm|gan|autonomous driving|av stack|planning|trajectory planning|path planning|control|controller|pid controller|pid loop|mpc|model predictive control|slam|localization|sensor fusion|kalman filter|ekf|ukf|bayes|bayesian|reward function|policy|trajectory|perception|object detection|lidar|radar|camera model|occupancy grid|safety case|iso 26262|sim2real|simulation)\b/i
-        .test(lower);
+const isConceptQuestion =
+  /\b(what is|what's|define|definition of|explain|how does|how do you handle|how does .* work|difference between|compare|contrast)\b/i
+    .test(lower);
 
-    const looksLikeAcronym = /\b[A-Z]{2,6}\b/.test(q) && !mentionsKyle;
+const hasTechnicalKeywords =
+  /\b(rl|reinforcement learning|policy gradient|q-learning|q learning|actor-critic|bandit|multi-armed bandit|mdp|markov decision process|value function|advantage function|neural network|deep learning|machine learning|ml|supervised learning|unsupervised learning|self-supervised|transformer|cnn|rnn|lstm|gan|autonomous driving|av stack|planning|trajectory planning|path planning|control|controller|pid controller|pid loop|mpc|model predictive control|slam|localization|sensor fusion|kalman filter|ekf|ukf|bayes|bayesian|reward function|policy|trajectory|perception|object detection|lidar|radar|camera model|occupancy grid|safety case|iso 26262|sim2real|simulation)\b/i
+    .test(lower);
 
-    // NEW: Detect experience-based questions so they route to KYLE mode
-    const experienceQuestion =
-      /\b(experience|worked with|work with|background with|used|hands-on|what is his experience with|what's his experience with|what is your experience with|what's your experience with)\b/i
-        .test(lower);
+const looksLikeAcronym = /\b[A-Z]{2,6}\b/.test(q) && !mentionsKyle;
 
-    const intent = (() => {
-      // Always Kyle mode when:
-      // - explicitly about Kyle
-      // - interview-style
-      // - OR asking about experience with a technical topic
-      if (mentionsKyle || isInterviewy || experienceQuestion) return 'kyle';
+// ==================================================================
+// NEW: DETECT BEHAVIORAL / PROGRAM EXECUTION / CX / RIDER / PM CASES
+// Forces synthesis even when KB seems relevant
+// ==================================================================
+const isBehavioral = (
+  /tell me about a time|describe a time|give an example|star\b|walk me through|walk me thru|situation where|example of/i.test(lower)
+  ||
+  /\b(program|initiative|cross-?functional|stakeholder|customer|client|rider|escalation|root cause|metric|kpi|okr|dashboard|wait time|pickup|cancellation|fleet|operations|oncall|postmortem|vehicle behavior|av|robotaxi)\b/i
+    .test(lower)
+);
 
-      // Pure technical mode only when:
-      // - no Kyle triggers
-      // - AND not an experience question
-      if (hasTechnicalKeywords || looksLikeAcronym || (isConceptQuestion && !mentionsKyle))
-        return 'technical';
+// ==================================================================
+// Intent selection
+// ==================================================================
+const intent = (() => {
+  if (mentionsKyle || isInterviewy) return 'kyle';
+  if (isBehavioral) return 'kyle'; // Behavioral always uses Kyle/LLM mode
+  if (hasTechnicalKeywords || looksLikeAcronym || (isConceptQuestion && !mentionsKyle)) return 'technical';
+  return 'mixed';
+})();
 
-      return 'mixed';
-    })();
-
+// ==================================================================
+// NEW OVERRIDE: BEHAVIORAL MUST NOT USE DIRECT KB
+// ==================================================================
+if (isBehavioral) {
+  console.log("Behavioral or PM/CX scenario detected; bypassing direct KB matching.");
+  // force the search score to be treated as weak
+  topScore = 0; 
+}
     // ==================================================================
     // EASTER EGG: JOKE-OF-THE-DAY (isolated from Kyle / KB pipeline)
     // ==================================================================
