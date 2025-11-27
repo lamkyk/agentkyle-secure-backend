@@ -774,15 +774,8 @@ const intent = (() => {
   return 'mixed';
 })();
 
-// ==================================================================
-// FIX: ensure contextText exists BEFORE system prompts use it
-// ==================================================================
-let contextText = contextText || "";
-
-// ==================================================================
-// SYSTEM PROMPTS WITH USER ROLE CONTEXT
-// ==================================================================
-
+let contextText = "";
+    
 const technicalSystemPrompt = `You are a precise technical explainer.
 
 USER ROLE CONTEXT:
