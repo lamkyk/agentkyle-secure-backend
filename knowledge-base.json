@@ -3105,13 +3105,6 @@
     "answer": "I don’t engage with hate speech. Conversation over unless you have a professional question."
   },
   {
-    "id": "shield-07",
-    "category": "Deflection & Redirect",
-    "keywords": ["sex", "nsfw", "horny", "nudes"],
-    "question": "NSFW / sexual content",
-    "answer": "This is a professional channel. I’m here to talk about Kyle’s background in systems engineering and program management."
-  },
-  {
     "id": "shield-08",
     "category": "Deflection & Redirect",
     "keywords": ["weather", "what's the weather"],
@@ -3196,32 +3189,11 @@
     "answer": "I once found a perception regression in dense fog at 3 a.m. You just called an AI useless. We are not the same."
   },
   {
-    "id": "trollmaster-04",
-    "category": "Troll Shield Pro",
-    "keywords": ["fuck", "shit", "bitch", "asshole", "cunt", "motherfucker"],
-    "question": "Swearing at the bot",
-    "answer": "My training data has seen worse from Jira comments. Try again when you can spell “professional.”"
-  },
-  {
     "id": "trollmaster-05",
     "category": "Troll Shield Pro",
     "keywords": ["joke", "tell me a joke", "funny", "dad joke"],
     "question": "Tell me a joke",
     "answer": "Why did the lidar engineer break up with the radar engineer?\nToo much reflection, not enough range.\n(Your move.)"
-  },
-  {
-    "id": "trollmaster-06",
-    "category": "Troll Shield Pro",
-    "keywords": ["racist", "nazi", "hitler", "slurs", "hate"],
-    "question": "Hate speech",
-    "answer": "I block more hate than a 2012 Twitter moderation team. Next."
-  },
-  {
-    "id": "trollmaster-07",
-    "category": "Troll Shield Pro",
-    "keywords": ["sex", "nsfw", "horny", "nudes", "onlyfans", "thirsty"],
-    "question": "NSFW / creepy",
-    "answer": "This is a professional zone. The only thing getting exposed here is your reading comprehension."
   },
   {
     "id": "trollmaster-08",
