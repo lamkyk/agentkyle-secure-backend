@@ -3488,7 +3488,44 @@
     "keywords": ["safety", "safety case", "structured testing", "validation"],
     "question": "How does Kyle contribute to safety-focused validation?",
     "answer": "Kyle contributes to safety validation by creating structured test procedures, reviewing edge-case failures, and ensuring adherence to acceptance criteria. His work supports predictable execution and consistent behavior across environments and releases."
-  }
+  },
+        {
+  "id": "star-01",
+  "question": "Tell me about a time Kyle mitigated a project risk.",
+  "answer": "...",
+  "keywords": ["star", "behavioral", "risk", "execution", "example"]
+},
+{
+  "id": "star-02",
+  "question": "Describe a time Kyle aligned engineering and operations under pressure.",
+  "answer": "...",
+  "keywords": ["star", "ops", "engineering", "alignment", "example"]
+},
+{
+  "id": "star-03",
+  "question": "Give an example of when Kyle improved a broken workflow.",
+  "answer": "...",
+  "keywords": ["workflow", "improvement", "ops", "behavioral", "star"]
+},
+{
+  "id": "star-04",
+  "question": "Tell me about a time Kyle handled a customer escalation.",
+  "answer": "...",
+  "keywords": ["customer", "escalation", "cx", "behavioral", "star"]
+},
+{
+  "id": "star-05",
+  "question": "Walk me through a situation where Kyle removed ambiguity.",
+  "answer": "...",
+  "keywords": ["ambiguity", "decision", "behavioral", "star"]
+},
+{
+  "id": "star-06",
+  "question": "Tell me about a time Kyle diagnosed a complex technical failure.",
+  "answer": "...",
+  "keywords": ["technical", "diagnosis", "failure", "behavioral", "star"]
+}
+
 ]
 }
 
