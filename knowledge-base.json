@@ -3065,7 +3065,7 @@
   {
     "id": "shield-01",
     "category": "Deflection & Redirect",
-    "keywords": ["what are you", "who are you", "are you ai", "bot"],
+    "keywords": ["what are you", "who are you", "are you ai", "bot","AI"],
     "question": "What are you?",
     "answer": "I’m Agent K — Kyle’s AI assistant built to talk about his professional background. What would you like to know?"
   },
@@ -3074,7 +3074,7 @@
     "category": "Deflection & Redirect",
     "keywords": ["how was this built", "tech stack", "code", "groq","ai tools","ai"],
     "question": "How was this built?",
-    "answer": "Kyle built me with Node.js, Express, Groq API, and a custom knowledge base. Want to talk about his experience instead?"
+    "answer": "Kyle built Agent K with Node.js, Express, Groq API, and a custom knowledge base. Want to talk about his experience instead?"
   },
   {
     "id": "shield-03",
