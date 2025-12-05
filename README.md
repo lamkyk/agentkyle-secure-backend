@@ -12,6 +12,14 @@ What it doesn't tell:
 - Watched the bot say “I’m Kyle” 47 different ways 
 - Fought Render cold starts, wrestled with LLM rate limits, rewritten the context-carryover logic 9 times, and redeployed more than 120 times.
 - These lines of code you see is the survivor of trial, error, rage-quits, and “why won’t this just work” moments.
+- Pixel-perfect responsive layout that works flawlessly on mobile and desktop  
+- Enter vs Shift-Enter handling that behaves exactly as expected  
+- Real-time status colors, graceful messages, and clear model-skipping feedback  
+- Seamless markdown + emoji rendering so responses never look broken  
+- Aggressive throttling, exponential back-off, and batched reviews to stay safely under free-tier limits  
+- Dozens of prompt revisions, hundreds of test runs, and constant back-and-forth tweaking until everything felt right  
+- Every button press, every loading state, every line break was tested, re-tested, and polished
+- It only looks effortless because of a ridiculous amount of work to make it that way
 
 It handles:
 - Behavioral / STAR questions with proper structure
