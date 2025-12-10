@@ -706,25 +706,55 @@ app.post('/suggest', async (req, res) => {
       return res.json({ suggestions });
     }
 
-    const query = normalizeQuery(clean);
-    const hybrid = await hybridSearchKnowledgeBase(query, 8);
+const query = normalizeQuery(clean);
 
-    const hybridQuestions = hybrid.map(item => item.question);
-    let suggestions = dedupeAndTrim(hybridQuestions, 5, avoidSet);
+/* -------------------------------------------------------------
+   PARTIAL QUERY BOOSTER
+   Ensures suggestions continue updating as user types.
+   If user input is short OR ends in a partial word, bypass strict
+   hybrid reasoning and switch to relaxed fuzzy lookup.
+------------------------------------------------------------- */
 
-    if (!suggestions.length) {
-      const defaultsRaw = (knowledgeBase.qaDatabase || []).map(entry => entry.question);
-      suggestions = dedupeAndTrim(defaultsRaw, 5, avoidSet);
-    }
+const isPartial =
+  query.length <= 20 ||
+  /\w$/.test(query); // ends in an unfinished word
 
-    if (!suggestions.length) {
-      suggestions = [
-        "Ask about Kyle's experience in autonomous systems.",
-        'Ask for a STAR example about a project risk.'
-      ];
-    }
+let hybrid;
 
-    res.json({ suggestions });
+if (isPartial) {
+  // Relaxed suggestion mode: keyword-only across KB questions
+  const fuzzy = (knowledgeBase.qaDatabase || []).map(entry => ({
+    question: entry.question,
+    score: entry.question.toLowerCase().includes(query.toLowerCase()) ? 10 : 0
+  }));
+
+  hybrid = fuzzy
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 8);
+} else {
+  // Full hybrid search for complete queries
+  hybrid = await hybridSearchKnowledgeBase(query, 8);
+}
+
+// Now convert hybrid result to plain question list
+const hybridQuestions = hybrid.map(item => item.question);
+let suggestions = dedupeAndTrim(hybridQuestions, 5, avoidSet);
+
+// If still nothing, fallback to defaults
+if (!suggestions.length) {
+  const defaultsRaw = (knowledgeBase.qaDatabase || []).map(entry => entry.question);
+  suggestions = dedupeAndTrim(defaultsRaw, 5, avoidSet);
+}
+
+if (!suggestions.length) {
+  suggestions = [
+    "Ask about Kyle's experience in autonomous systems.",
+    "Ask for a STAR example about a project risk."
+  ];
+}
+
+return res.json({ suggestions });
+
   } catch (err) {
     console.error('Suggestion error:', err);
     res.status(500).json({
