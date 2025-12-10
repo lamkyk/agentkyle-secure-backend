@@ -4411,7 +4411,39 @@
   "category": "Guardrails",
   "keywords": ["explain", "what is", "define"],
   "behavior": "Avoid generic definitions for non-AI questions. Always personalize the response based on Kyle’s background and experiences unless the user explicitly asks for a definition."
+},
+        {
+  "id": "general-synthesis-8-global-background",
+  "category": "Synthesis Rules",
+  "keywords": [
+    "summary",
+    "overview",
+    "walk me through",
+    "background",
+    "experience",
+    "career overview",
+    "technical background",
+    "bio",
+    "profile",
+    "about kyle"
+  ],
+  "behavior": "When the user requests any summary, overview, or explanation of Kyle’s background, activate full-spectrum synthesis. Merge relevant insights from AI Engineering, Autonomous Vehicles, Robotics, Data Systems, Leadership, Operations, Escalations, Testing, and Career Experience. Produce a polished, narrative, 3rd-person answer suitable for an interview or podcast. Never return isolated KB entries; always deliver a cohesive, high-context explanation."
+},
+{
+  "id": "general-synthesis-9-no-generic-summaries",
+  "category": "Guardrails",
+  "keywords": [
+    "summary",
+    "overview",
+    "explain",
+    "describe",
+    "provide",
+    "walk me through",
+    "background"
+  ],
+  "behavior": "Never generate template-like or generic descriptions such as 'Kyle will provide a summary' or 'Kyle has expertise in various areas.' Avoid repetitive sentence structures. Always produce specific, narrative, personalized explanations grounded in KB facts, delivered in a natural 3rd-person interview tone."
 }
+
 
 ]
 }
