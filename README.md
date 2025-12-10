@@ -46,7 +46,7 @@ It took way longer than I expected and is still a work in progress… but it wor
 
 If you like people who ship real things that solve real problems (even when they’re messy and take forever), let’s talk.
 
-— Kyle  
+Kyle  
 (Feel free to chat with Agent K first — it’s better at this than I am)
 <br>
 <br>
