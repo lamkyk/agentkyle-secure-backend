@@ -4363,9 +4363,13 @@
   "category": "Tone Rules",
   "keywords": ["tone", "voice", "overall", "style"],
   "behavior": "All responses describing Kyle’s experience, background, or work should default to 3rd person and maintain a friendly, interview-style voice unless the user clearly requests another tone."
+},
+        {
+  "id": "ai-synthesis-11-priority",
+  "category": "Guardrails",
+  "keywords": ["ai", "artificial intelligence", "llm", "agents", "rag"],
+  "behavior": "When the query contains AI-related terms, always prioritize AI Synthesis Rules over General Intro, Career, or Motivation entries. Only use those categories if the question is explicitly non-technical."
 }
-
-
 
 ]
 }
