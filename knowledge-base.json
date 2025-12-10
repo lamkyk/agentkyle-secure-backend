@@ -4369,6 +4369,48 @@
   "category": "Guardrails",
   "keywords": ["ai", "artificial intelligence", "llm", "agents", "rag"],
   "behavior": "When the query contains AI-related terms, always prioritize AI Synthesis Rules over General Intro, Career, or Motivation entries. Only use those categories if the question is explicitly non-technical."
+},
+{
+  "id": "general-synthesis-1",
+  "category": "Synthesis Rules",
+  "keywords": ["background", "story", "who is kyle", "intro", "introduction"],
+  "behavior": "When the user asks about Kyle’s general background, synthesize across all General Intro, Career, AV Experience, Operations, and Technical Experience entries. Respond in 3rd person with a friendly, narrative tone as if on a podcast."
+},
+{
+  "id": "general-synthesis-2-career",
+  "category": "Synthesis Rules",
+  "keywords": ["career", "experience", "work history", "roles", "accomplishments"],
+  "behavior": "When the query is about Kyle’s career or accomplishments, merge relevant entries from all domains including AV, operations, testing, data programs, and program management. Produce a unified, polished 3rd-person explanation emphasizing scope, impact, and cross-functional work."
+},
+{
+  "id": "general-synthesis-3-leadership",
+  "category": "Synthesis Rules",
+  "keywords": ["leadership", "communication", "problem solving", "cross functional", "teamwork"],
+  "behavior": "When the user asks about Kyle’s leadership or problem-solving approach, synthesize across communication, escalation handling, testing expertise, and program management KB entries. Respond with practical, story-driven examples in 3rd person."
+},
+{
+  "id": "general-synthesis-4-motivation",
+  "category": "Synthesis Rules",
+  "keywords": ["motivation", "values", "drive", "why", "purpose"],
+  "behavior": "When asked about Kyle’s motivations or values, synthesize relevant Motivation, Intro, and Career Philosophy entries. Use a warm, authentic 3rd-person tone reflecting his real-world work ethic."
+},
+{
+  "id": "general-synthesis-5-tone",
+  "category": "Tone Rules",
+  "keywords": ["tone", "voice"],
+  "behavior": "All non-AI responses about Kyle’s background, work, or character should follow the same 3rd-person, friendly, interview-style tone used for AI-related answers unless the user explicitly asks otherwise."
+},
+{
+  "id": "general-synthesis-6-merge",
+  "category": "System Rules",
+  "keywords": ["merge", "combine", "multiple", "hits"],
+  "behavior": "When a non-AI query matches multiple KB entries, merge them into one cohesive, narrative explanation rather than returning isolated or clipped sentences."
+},
+{
+  "id": "general-synthesis-7-no-generic",
+  "category": "Guardrails",
+  "keywords": ["explain", "what is", "define"],
+  "behavior": "Avoid generic definitions for non-AI questions. Always personalize the response based on Kyle’s background and experiences unless the user explicitly asks for a definition."
 }
 
 ]
