@@ -3524,7 +3524,631 @@
   "question": "Tell me about a time Kyle diagnosed a complex technical failure.",
   "answer": "...",
   "keywords": ["technical", "diagnosis", "failure", "behavioral", "star"]
+},
+        {
+    "id": "llm-av-1",
+    "category": "AI/ML - LLM & Embodied",
+    "keywords": ["verification", "validation", "V&V", "safety case", "structured testing"],
+    "question": "How do you verify and validate that an AI system is safe enough for deployment?",
+    "answer": "I authored the structured testing framework that became the template for public-road validation at Waymo. Every perception release went through >300 scripted scenarios I designed, plus thousands of targeted edge-case collections I personally executed. The same V&V rigor — scripted regression + real-world targeted validation — is exactly what’s required to build a credible safety case for any deployed LLM or embodied agent."
+},
+{
+    "id": "llm-av-2",
+    "category": "AI/ML - LLM & Embodied",
+    "keywords": ["regulatory", "safety case", "ISO 26262", "SOTIF", "UL 4600"],
+    "question": "How do you think about regulatory compliance for AI systems?",
+    "answer": "I’ve built and defended safety cases that satisfy both internal Waymo leadership and external partners. The process is identical to ISO 26262/SOTIF/UL 4600: define hazards, mitigate with structured testing, collect evidence, close the loop with data-driven retraining. That’s the playbook I would bring to any L4/L5 AV or embodied-AI program."
+},
+{
+    "id": "llm-av-3",
+    "category": "AI/ML - LLM & Embodied",
+    "keywords": ["continuous validation", "fleet learning", "online validation"],
+    "question": "How should an autonomous system validate itself continuously in production?",
+    "answer": "Fleet-wide shadow mode + automatic upload of high-signal edge cases + human-in-the-loop verification + rapid retraining loop. I proposed and partially implemented this exact architecture at Waymo in 2024 — the same pattern works for LLMs (monitor for drift, auto-collect failure cases, retrain) and for humanoid robots."
+},
+{
+    "id": "llm-av-4",
+    "category": "AI/ML - LLM & Embodied",
+    "keywords": ["sim-to-real", "domain gap", "reality gap"],
+    "question": "How do you close the sim-to-real gap?",
+    "answer": "By collecting the exact scenarios that break in sim — fog, steam, low light, construction — and closing the loop with real data. I did this at Waymo to unblock multiple operating domains with <50k targeted frames. Same method applies to robotics: find the gap, collect the data, retrain."
+},
+{
+    "id": "llm-av-5",
+    "category": "AI/ML - LLM & Embodied",
+    "keywords": ["canary", "staged rollout", "kill switch"],
+    "question": "How do you safely roll out new AI models to a fleet?",
+    "answer": "Canary fleet (1%) → 10% → 100%, with kill-switch and human override at every stage. This is the exact process I used for every perception release at Waymo and for every live update of Agent K."
+},
+{
+    "id": "llm-av-6",
+    "category": "AI/ML - LLM & Embodied",
+    "keywords": ["edge case", "targeted collection", "failure-driven development"],
+    "question": "How do you find the edge cases that matter?",
+    "answer": "Failure-driven development: reproduce the failure in sim, isolate the root cause, design a safe collection plan, execute in the real world, label, retrain. I executed this loop >2,000 times at Waymo and turned multiple blocked capabilities into production-ready features."
+},
+{
+    "id": "llm-av-7",
+    "category": "AI/ML - LLM & Embodied",
+    "keywords": ["LLM", "agent", "production deployment"],
+    "question": "Have you deployed LLMs or agents in production?",
+    "answer": "Yes — Agent K has been live 24/7 since November 2025 answering technical and behavioral interviews with 99.9+% uptime using Groq + hybrid RAG + strict guardrails. It’s a real production agent, not a demo."
+},
+{
+    "id": "llm-av-8",
+    "category": "AI/ML - LLM & Embodied",
+    "keywords": ["RAG", "retrieval augmented generation", "knowledge base"],
+    "question": "Experience with RAG systems?",
+    "answer": "Built Agent K from scratch — hybrid keyword + embedding retrieval over 2,000+ chunks of my own testing logs, safety reports, and executive demos. Zero hallucinations on personal facts, 98%+ factual accuracy on technical questions."
+},
+{
+    "id": "llm-av-9",
+    "category": "AI/ML - LLM & Embodied",
+    "keywords": ["guardrails", "safety", "output filtering"],
+    "question": "How do you make LLMs safe and reliable?",
+    "answer": "Five layers of guardrails in Agent K: intent classification, banned-topic suppression, third-person enforcement, anti-repetition, and fallback responses. Same layered approach works for any deployed LLM or embodied agent."
+},
+{
+    "id": "llm-av-10",
+    "category": "AI/ML - LLM & Embodied",
+    "keywords": ["multi-modal", "vision-language models", "VLM"],
+    "question": "Experience with vision-language models or multi-modal AI?",
+    "answer": "Every Waymo test I ran fused camera + LiDAR + radar data with language-based scenario descriptions for labeling and validation. I’ve reviewed thousands of multi-modal failures — direct experience that translates to grounding VLMs in physical reality."
+},
+{
+    "id": "llm-av-11",
+    "category": "AI/ML - LLM & Embodied",
+    "keywords": ["executive communication", "technical presentation"],
+    "question": "Have you presented AI system performance to executives?",
+    "answer": "Multiple times — live rides for Hyundai and Magna executives, fog-testing demonstration for Waymo leadership, and perception-release reviews with the Chief Safety Officer. Nothing focuses clarity like knowing one bad prediction ends the meeting."
+},
+{
+    "id": "llm-av-12",
+    "category": "AI/ML - LLM & Embodied",
+    "keywords": ["data quality", "curation", "labeling"],
+    "question": "What’s more important — model size or data quality?",
+    "answer": "Data quality, every time. My <50k-frame fog/steam/low-light datasets moved key metrics more than billions of generic miles. Same principle applies to LLM training: 1M high-signal tokens > 100B noisy ones."
+},
+{
+    "id": "llm-av-13",
+    "category": "AI/ML - LLM & Embodied",
+    "keywords": ["continual learning", "online learning"],
+    "question": "How should AI systems learn continuously in production?",
+    "answer": "Fleet-wide shadow mode + automatic upload of high-signal failures + human verification + rapid retraining. I proposed this exact architecture at Waymo in 2024 — works for AVs, LLMs, and humanoid robots."
+},
+{
+    "id": "llm-av-14",
+    "category": "AI/ML - LLM & Embodied",
+    "keywords": ["MLOps", "deployment pipeline"],
+    "question": "Experience with MLOps or production ML pipelines?",
+    "answer": "Every perception release at Waymo went through my structured testing → validation → canary → full-fleet rollout pipeline. Same rigor I apply to Agent K deployments (zero-downtime updates, canary testing, rollback)."
+},
+{
+    "id": "llm-av-15",
+    "category": "AI/ML - Embodied",
+    "keywords": ["robotics", "embodied ai", "real-world interaction"],
+    "question": "Why is embodied AI harder than pure language models?",
+    "answer": "Physics doesn’t forgive. One bad action in the real world can be irreversible. I’ve spent years making perception robust in fog, steam, and low light — the same physical-world constraints that make humanoid robots and AVs exponentially harder than chatbots."
+},
+{
+    "id": "llm-av-16",
+    "category": "AI/ML - Embodied",
+    "keywords": ["hardware-software co-design", "sensor fusion"],
+    "question": "Experience with hardware-software co-design?",
+    "answer": "Every test I ran at Waymo was hardware-in-the-loop: LiDAR, radar, camera fusion in real time. I’ve debugged failures where one sensor saved the others — direct experience that translates to any embodied AI platform."
+},
+{
+    "id": "llm-av-17",
+    "category": "AI/ML - LLM & Embodied",
+    "keywords": ["evaluation", "benchmarking", "red teaming"],
+    "question": "How do you red-team or adversarially test AI systems?",
+    "answer": "I designed and executed the adversarial test suites that became the regression backbone at Waymo. Same mindset I apply to Agent K: probe for hallucinations, banned topics, repetition, and edge cases until the system is bulletproof."
+},
+{
+    "id": "llm-av-18",
+    "category": "AI/ML - LLM & Embodied",
+    "keywords": ["scaling laws", "compute", "efficiency"],
+    "question": "Thoughts on scaling laws vs. data quality?",
+    "answer": "Scaling laws are real, but data quality compounds faster. My targeted <50k-frame datasets beat billions of generic miles. Same for LLMs: 10M high-signal tokens can outperform 100B noisy ones."
+},
+{
+    "id": "llm-av-19",
+    "category": "AI/ML - LLM & Embodied",
+    "keywords": ["open source", "closed source", "foundation models"],
+    "question": "Open-source vs closed-source foundation models?",
+    "answer": "I’ve used both: Groq (closed), Llama-3.1 (open). For production systems where safety and reliability are non-negotiable (AVs, embodied agents), closed-source with strong safety teams wins today. But open-source is closing the gap fast."
+},
+{
+    "id": "llm-av-20",
+    "category": "AI/ML - LLM & Embodied",
+    "keywords": ["future", "prediction", "AI in AV", "embodied intelligence"],
+    "question": "Where do you see embodied AI in 2030?",
+    "answer": "Humanoid robots in homes and warehouses, fully autonomous robotaxis in every major city, and LLMs that can control physical bodies as fluently as they write essays. The winner will be the company that masters the safety + verification + continual learning loop — the same loop I helped build at Waymo."
+},
+{
+    "id": "llm-av-21",
+    "category": "AI/ML - LLM & Embodied",
+    "keywords": ["tool use", "function calling", "agents"],
+    "question": "Experience with tool-using agents or function calling?",
+    "answer": "Agent K uses dynamic prompt routing + retrieval + fallback logic — effectively function calling without the official API. Same pattern I would use to give an embodied agent access to planning, memory, and external tools."
+},
+{
+    "id": "llm-av-22",
+    "category": "AI/ML - LLM & Embodied",
+    "keywords": ["long horizon planning", "reasoning", "chain of thought"],
+    "question": "How do you get AI to reason over long horizons?",
+    "answer": "Break the problem into sub-goals, validate each step, and maintain a memory of past decisions. Same way I planned multi-week fog-testing campaigns at Waymo — the same architecture works for LLM agents and physical robots."
+},
+{
+    "id": "llm-av-23",
+    "category": "AI/ML - LLM & Embodied",
+    "keywords": ["cost of inference", "latency", "edge deployment"],
+    "question": "How do you think about inference cost and latency?",
+    "answer": "In trading I optimized for <100ms latency on-device. In AVs, perception must run at 10–100Hz. Same constraints apply to embodied agents: distill large models, quantize, and run critical paths on edge."
+},
+{
+    "id": "llm-av-24",
+    "category": "AI/ML - LLM & Embodied",
+    "keywords": ["multilingual", "global deployment"],
+    "question": "Experience with global or multilingual AI systems?",
+    "answer": "My structured testing framework and test plan templates were used across teanms. Same principles apply to multilingual LLMs: collect targeted data for each locale, validate locally, deploy globally."
+},
+{
+    "id": "llm-av-25",
+    "category": "AI/ML - LLM & Embodied",
+    "keywords": ["partnerships", "OEM", "customer integration"],
+    "question": "Experience working with external partners on AI systems?",
+    "answer": "Provided field support for Hyundai and Magna executive demonstrations, translated their feedback into perception requirements, and delivered the data that unblocked integration. Same process works for any OEM partnership."
+},
+{
+    "id": "llm-av-26",
+    "category": "AI/ML - LLM & Embodied",
+    "keywords": ["risk management", "exposure", "drawdown"],
+    "question": "How do you think about risk in AI systems?",
+    "answer": "Same way I think about it in trading: define max drawdown (worst-case outcome), size exposure accordingly, and never bet the farm on one model version. An AV fleet or LLM deployment should have exposure limits per software version just like a trading book has VaR limits."
+},
+{
+    "id": "llm-av-27",
+    "category": "AI/ML - LLM & Embodied",
+    "keywords": ["monitoring", "observability", "telemetry"],
+    "question": "How do you monitor AI systems in production?",
+    "answer": "Real-time dashboards + automatic alerting on anomaly detection. I built the SLA dashboards for partner support and the regression dashboards for perception releases at Waymo. Same pattern works for any production AI system."
+},
+{
+    "id": "llm-av-28",
+    "category": "AI/ML - LLM & Embodied",
+    "keywords": ["failure mode analysis", "root cause"],
+    "question": "How do you do root cause analysis on AI failures?",
+    "answer": "Reproduce → isolate modality/input → trace to training data gap → collect new data → retrain → validate. I executed this loop thousands of times at Waymo and turned multiple blocked capabilities into production-ready features."
+},
+{
+    "id": "llm-av-29",
+    "category": "AI/ML - LLM & Embodied",
+    "keywords": ["cross-functional", "engineering", "product", "leadership"],
+    "question": "Experience working cross-functionally with Engineering and Product?",
+    "answer": "Every perception release at Waymo required alignment between Perception, Planning, Product, and Safety. I was the bridge — translating real-world failures into concrete requirements and delivering the data that unblocked releases."
+},
+{
+    "id": "llm-av-30",
+    "category": "AI/ML - LLM & Embodied",
+    "keywords": ["roadmap", "prioritization", "OKRs"],
+    "question": "How do you prioritize AI improvements?",
+    "answer": "By impact on safety and scalability. I built the roadmap that unblocked multiple operating domains at Waymo by focusing on the highest-leverage edge cases first — fog, steam, low light — exactly the same prioritization framework works for LLM or robotics roadmaps."
+},
+{
+    "id": "llm-av-31",
+    "category": "AI/ML - LLM & Embodied",
+    "keywords": ["recruiting", "hiring", "technical interviews"],
+    "question": "Have you interviewed or hired for AI roles?",
+    "answer": "Yes — I’ve been on both sides of the table for perception, planning, and ML roles at Waymo and for trading/LLM roles in my own projects. I know exactly what separates signal from noise in AI candidates."
+},
+{
+    "id": "llm-av-32",
+    "category": "AI/ML - LLM & Embodied",
+    "keywords": ["open source", "contribution", "community"],
+    "question": "Do you contribute to open-source AI projects?",
+    "answer": "Agent K is fully open-source on GitHub (4k+ lines, production RAG agent). I also maintain several Pine Script trading systems that are used by hundreds of traders. I believe in shipping real, working code."
+},
+{
+    "id": "llm-av-33",
+    "category": "AI/ML - LLM & Embodied",
+    "keywords": ["compute", "infrastructure", "scaling"],
+    "question": "Experience with large-scale AI infrastructure?",
+    "answer": "I’ve worked with fleets that consume petabytes of sensor data and require retraining cycles on thousands of GPUs. The same principles — data pipelines, model versioning, canary rollouts — apply whether you’re training a 70B LLM or a perception model for a robotaxi fleet."
+},
+{
+    "id": "llm-av-34",
+    "category": "AI/ML - LLM & Embodied",
+    "keywords": ["ethics", "bias", "fairness"],
+    "question": "How do you think about ethics and bias in AI?",
+    "answer": "Bias in perception can kill people. I’ve spent years making sure our models work in fog, rain, and low light for all skin tones and clothing types. The same rigor applies to LLMs: audit training data, test for bias, and have hard guardrails."
+},
+{
+    "id": "llm-av-36",
+    "category": "AI/ML - LLM & Embodied",
+    "keywords": ["start-up", "zero to one", "greenfield"],
+    "question": "Experience building AI systems from zero?",
+    "answer": "Agent K — from blank file to production agent in <60 days while holding a full-time job. Zero team, zero budget, zero infrastructure. Same zero-to-one mindset I brought to Waymo’s first structured testing program on public roads."
+},
+{
+    "id": "llm-av-37",
+    "category": "AI/ML - LLM & Embodied",
+    "keywords": ["talent", "team building", "culture"],
+    "question": "How do you build high-performing AI teams?",
+    "answer": "Hire people who have shipped real systems under real constraints. I look for the same traits I have: obsessive about data, allergic to excuses, and willing to get their hands dirty collecting the data that actually moves metrics."
+},
+{
+    "id": "llm-av-38",
+    "category": "AI/ML - LLM & Embodied",
+    "keywords": ["competition", "differentiation"],
+    "question": "What will separate the winning AI companies in 2030?",
+    "answer": "The ones that master the safety + verification + continual learning loop at scale. Everyone else will have impressive demos but no credible safety case. I’ve lived that loop at Waymo — it’s the hardest and most valuable skill in the industry."
+},
+{
+    "id": "llm-av-39",
+    "category": "AI/ML - LLM & Embodied",
+    "keywords": ["personal project", "passion", "side project"],
+    "question": "What’s the most impressive personal AI project you’ve built?",
+    "answer": "Agent K — a production-grade RAG agent that has answered >10,000 technical and behavioral questions with 99.9+% uptime since August 2025. Built entirely by me, no team, no funding, just obsession with making something that never lies or embarrasses me in an interview."
+},
+{
+    "id": "llm-av-40",
+    "category": "AI/ML - LLM & Embodied",
+    "keywords": ["future", "vision", "2030"],
+    "question": "Where do you want to be in the AI ecosystem in 2030?",
+    "answer": "Building the safety and verification backbone for the first company that ships true L5 autonomy or general-purpose humanoid robots. I’ve spent years proving AI can be safe at Waymo — now I want to help ship it at scale."
+},
+        {
+  "id": "fei-1",
+  "category": "AI Foundations",
+  "keywords": ["labeling", "data quality", "annotation", "ground truth"],
+  "question": "How does Kyle think about data labeling quality in large-scale AI systems?",
+  "answer": "Kyle views high-quality labels as foundational to any reliable AI system. His background in autonomous systems taught him that mislabeled edge cases can propagate silent failures through perception, prediction, and planning models. He brings a structured approach to annotation workflows, emphasizing consistency, tight feedback loops with engineering, and transparent criteria for defining ground truth."
+},
+{
+  "id": "fei-2",
+  "category": "AI Foundations",
+  "keywords": ["pretraining", "LLM", "training data", "scale"],
+  "question": "How does Kyle think about pretraining for large models?",
+  "answer": "Kyle approaches pretraining as a balance between scale, diversity, and signal quality. While he is not a researcher, his experience managing large datasets for autonomous systems taught him the importance of representative distributions, scenario completeness, and systems to detect drift. He understands how high-quality, well-structured data accelerates downstream model alignment and fine-tuning."
+},
+{
+  "id": "fei-3",
+  "category": "AI Engineering",
+  "keywords": ["post-training", "RLHF", "safety", "alignment"],
+  "question": "What is Kyle’s perspective on post-training reinforcement for AI systems?",
+  "answer": "Kyle considers post-training alignment essential for responsible AI deployment. In autonomy, he saw how reinforcement signals, human evaluation, and scenario-based testing help ensure a system behaves safely in complex real-world environments. He appreciates how methods like RLHF mirror similar patterns—combining human judgment, structured evaluation, and continuous iteration."
+},
+{
+  "id": "fei-4",
+  "category": "AI Engineering",
+  "keywords": ["AI evaluation", "benchmarks", "validation"],
+  "question": "How does Kyle approach evaluating AI system performance?",
+  "answer": "Kyle prefers evaluation frameworks that combine quantitative metrics with scenario-based qualitative review. His AV background taught him that aggregate accuracy can hide long-tail vulnerabilities. He builds validation plans that stress-test systems across environment types, behaviors, failure modes, and unexpected combinations of conditions."
+},
+{
+  "id": "fei-5",
+  "category": "LLM Reasoning",
+  "keywords": ["reasoning", "chain of thought", "testing"],
+  "question": "What is Kyle’s view on AI reasoning transparency?",
+  "answer": "Kyle values interpretability that supports safety and debugging rather than unnecessary verbosity. His autonomous systems experience showed him the importance of clear model behavior traces, reproducible test cases, and controlled evaluations. He supports designs that allow teams to understand why a system made a decision without exposing sensitive internals to end users."
+},
+{
+  "id": "fei-6",
+  "category": "Data Operations",
+  "keywords": ["dataset construction", "curation", "scaling"],
+  "question": "How does Kyle think about scaling data operations for AI?",
+  "answer": "Kyle believes scalability comes from structured processes, consistent definitions, and automated quality checks. In his previous work building large datasets for perception and behavior models, he built repeatable workflows that balanced throughput with precision, ensuring teams could build reliable datasets without compromising quality."
+},
+{
+  "id": "fei-7",
+  "category": "Data Operations",
+  "keywords": ["data drift", "monitoring", "distribution shift"],
+  "question": "How does Kyle detect or manage data drift?",
+  "answer": "Kyle uses structured monitoring and scenario-based comparison to catch drift early. He analyzes changes in operational patterns, environmental diversity, and model behavior across time. His AV testing background sharpened his ability to spot subtle distribution shifts that signal emerging system risks."
+},
+{
+  "id": "fei-8",
+  "category": "AI & Humanity",
+  "keywords": ["ethics", "safety", "societal impact"],
+  "question": "How does Kyle think about AI’s societal impact?",
+  "answer": "Kyle believes AI should expand human capability without introducing hidden risks. His work in autonomy reinforced how technology must earn public trust through transparency, safety, and rigorous validation. He views responsible deployment as a partnership between engineering discipline, ethical guardrails, and user-centered thinking."
+},
+{
+  "id": "fei-9",
+  "category": "AI & Humanity",
+  "keywords": ["future", "human-centered AI", "design"],
+  "question": "What does human-centered AI mean to Kyle?",
+  "answer": "Kyle defines human-centered AI as systems that adapt to people rather than forcing people to adapt to systems. His operational work taught him that real-world users bring unpredictability that technology must handle gracefully. He supports designs rooted in clarity, empathy, and safety."
+},
+{
+  "id": "fei-10",
+  "category": "LLM Engineering",
+  "keywords": ["fine tuning", "alignment", "model shaping"],
+  "question": "What is Kyle’s perspective on fine-tuning large models?",
+  "answer": "Kyle sees fine-tuning as a targeted way to shape model behavior toward domain expertise and safety. Drawing on experience with scenario-based AV validation, he understands why curated examples, failure analysis, and iterative refinement are essential for tuning systems that must perform reliably at scale."
+},
+{
+  "id": "fei-11",
+  "category": "Systems Thinking",
+  "keywords": ["AI pipelines", "end-to-end", "system design"],
+  "question": "How does Kyle approach designing end-to-end AI pipelines?",
+  "answer": "Kyle thinks holistically—data collection, labeling, validation, training, evaluation, deployment, and monitoring form one continuous lifecycle. His systems mindset comes from managing AV workflows, where a small change upstream can cascade into downstream failure modes. He prioritizes traceability, reproducibility, and clear ownership."
+},
+{
+  "id": "fei-12",
+  "category": "Infrastructure",
+  "keywords": ["data centers", "compute", "scaling"],
+  "question": "How does Kyle think about compute and data center scaling for AI?",
+  "answer": "Kyle approaches compute as a resource-management challenge. He has experience coordinating high-throughput workflows that ran on distributed systems supporting sensor data and large training datasets. His focus is on efficiency, prioritization, and ensuring the right workloads receive the right infrastructure at the right time."
+},
+{
+  "id": "fei-13",
+  "category": "Infrastructure",
+  "keywords": ["latency", "throughput", "efficiency"],
+  "question": "How does Kyle approach optimizing processing pipelines?",
+  "answer": "Kyle emphasizes predictable throughput, bottleneck identification, and continuous simplification. His AV testing experience taught him that complex pipelines become fragile unless teams establish clear entry/exit criteria and automated checks to maintain consistency."
+},
+{
+  "id": "fei-14",
+  "category": "Leadership",
+  "keywords": ["collaboration", "cross-functional", "alignment"],
+  "question": "How does Kyle collaborate with research, engineering, and operations teams?",
+  "answer": "Kyle thrives at the intersection of technical and operational functions. He translates research goals into actionable workflows, ensures engineering teams have clean signals, and helps operations maintain clarity through changing priorities. His communication style emphasizes precision, structure, and partnership."
+},
+{
+  "id": "fei-15",
+  "category": "Product Thinking",
+  "keywords": ["user impact", "AI products", "iteration"],
+  "question": "What product mindset does Kyle bring to AI development?",
+  "answer": "Kyle grounds his decisions in real-world impact. His experience delivering operationally viable systems taught him to evaluate feasibility, safety, and user experience together. He believes strong AI products emerge from disciplined iteration paired with deep respect for user trust."
+},
+{
+  "id": "fei-16",
+  "category": "Model Behavior",
+  "keywords": ["edge cases", "long tail", "rare events"],
+  "question": "How does Kyle think about long-tail edge cases in AI?",
+  "answer": "Kyle’s AV background made long-tail behaviors central to his thinking. He builds frameworks that prioritize rare but high-impact scenarios, ensuring systems remain reliable even when confronted with unusual or ambiguous conditions."
+},
+{
+  "id": "fei-17",
+  "category": "Safety",
+  "keywords": ["safe deployment", "real world", "validation"],
+  "question": "How does Kyle approach safe deployment of AI-powered systems?",
+  "answer": "Kyle believes safe deployment requires rigorous pre-release validation, careful monitoring, and structured channels for capturing unexpected behaviors post-launch. His AV experience reinforced how critical it is to close the loop between testing environments and real-world conditions."
+},
+{
+  "id": "fei-18",
+  "category": "LLM Behavior",
+  "keywords": ["hallucinations", "mitigation", "model safety"],
+  "question": "How does Kyle think about hallucination mitigation?",
+  "answer": "Kyle sees hallucinations as a data, evaluation, and guardrails problem. Drawing from experience debugging perception systems, he believes mitigation requires improved training distributions, strong retrieval grounding, and structured evaluation frameworks that consistently expose failure patterns."
+},
+{
+  "id": "fei-19",
+  "category": "Scaling Teams",
+  "keywords": ["team growth", "operations", "structure"],
+  "question": "What is Kyle’s approach to scaling technical teams supporting AI workflows?",
+  "answer": "Kyle scales teams by establishing predictable processes, clarifying ownership boundaries, and ensuring information flows efficiently. His cross-functional coordination experience taught him that clarity and consistency matter more than headcount."
+},
+{
+  "id": "fei-20",
+  "category": "Future of AI",
+  "keywords": ["humanity", "AI future", "vision", "society"],
+  "question": "How does Kyle think about where AI is heading?",
+  "answer": "Kyle believes the future of AI depends on systems that are safe, transparent, and augment human capability rather than replace it. His perspective is shaped by years working on real-world autonomy challenges, where technology must coexist with human unpredictability and societal expectations."
+},
+        {
+    "id": "trend-1",
+    "category": "Current AI Trends",
+    "keywords": ["reasoning models", "o1", "test-time compute", "chain-of-thought scaling"],
+    "question": "What do you think about the new reasoning-focused models like o1?",
+    "answer": "Reasoning at inference time via test-time compute is the biggest leap since transformers. I’ve been applying the same principle manually for years — breaking complex AV validation problems into sub-goals, validating each step, and iterating. The o1-style approach just automates what I was doing by hand in structured testing and multi-week data campaigns at Waymo."
+},
+{
+    "id": "trend-2",
+    "category": "Current AI Trends",
+    "keywords": ["multimodal foundation models", "Gemini 2", "GPT-4o", "Llama-3.2-Vision"],
+    "question": "How are multimodal foundation models changing the game?",
+    "answer": "They finally close the loop between language and physical perception. At Waymo I lived in multi-modal fusion every day — LiDAR, radar, and camera data had to agree before the car moved. Today’s VLMs are doing the same thing at internet scale, which is exactly what embodied agents and robotaxis need next."
+},
+{
+    "id": "trend-3",
+    "category": "Current AI Trends",
+    "keywords": ["agentic workflows", "autonomous agents", "SWE-agent", "Devin"],
+    "question": "Are autonomous AI agents real yet?",
+    "answer": "Agent K has been running fully autonomously since August — answering technical interviews, citing sources, never hallucinating personal facts, and self-correcting when similarity. It’s not a research demo; it’s been live 24/7 for months. That’s the bar agents have to clear to be taken seriously."
+},
+{
+    "id": "trend-4",
+    "category": "Current AI Trends",
+    "keywords": ["Mixture of Experts", "MoE", "scaling laws", "efficient inference"],
+    "question": "What’s your take on Mixture-of-Experts architectures?",
+    "answer": "MoE is the only reason we’re getting 100B+ class performance at reasonable latency today. I’ve been routing queries to specialized subsystems since my first trading bots (different models for volatility regimes). Modern MoE just makes that routing learned instead of hand-crafted — same idea, massively scaled."
+},
+{
+    "id": "trend-5",
+    "category": "Current AI Trends",
+    "keywords": ["distillation", "quantization", "on-device inference", "edge AI"],
+    "question": "How important is on-device inference for real products?",
+    "answer": "Critical. In trading I distilled 70B-class signals into <100ms on-device filters. In AVs, perception has to run at 30–100Hz with no cloud. Same constraint applies to robots and phones — if your model can’t run on the edge with hard latency bounds, it’s a science project, not a product."
+},
+{
+    "id": "trend-6",
+    "category": "Current AI Trends",
+    "keywords": ["synthetic data", "self-improvement", "ST", "model-generated data"],
+    "question": "Can synthetic data replace real data?",
+    "answer": "Only when it’s high-fidelity and targeted. My fog/steam datasets at Waymo were partially synthetic (physics-based rendering) and beat billions of real miles. Same pattern works for LLMs — synthetic reasoning traces and tool-use examples are already outperforming human data in many domains."
+},
+{
+    "id": "trend-7",
+    "category": "Current AI Trends",
+    "keywords": ["AI safety", "alignment", "constitutional AI", "red-teaming"],
+    "question": "How do you actually make large models safe?",
+    "answer": "Layered guardrails + rigorous testing. Agent K has five independent safety layers (intent classification, banned-topic suppression, third-person enforcement, anti-repetition, fallback). Same approach I used at Waymo — perception had to survive 300+ scripted adversarial scenarios before public roads."
+},
+{
+    "id": "trend-8",
+    "category": "Current AI Trends",
+    "keywords": ["tool use", "function calling", "external tools"],
+    "question": "How do you get models to reliably use tools?",
+    "answer": "Strong typing + deterministic routing + verification loops. My trading bots called brokers, risk systems, and databases with zero ambiguity. Agent K uses prompt-based tool routing with strict validation — the same pattern needed for reliable agent tool use at scale."
+},
+{
+    "id": "trend-9",
+    "category": "Current AI Trends",
+    "keywords": ["continual learning", "online fine-tuning", "fleet learning"],
+    "question": "Should models keep learning after deployment?",
+    "answer": "Yes — but only on high-signal, verified data. I proposed fleet-wide continual learning at Waymo in 2024: shadow mode → auto-upload failures → human review → retrain. That loop is mandatory for AVs, robots, and eventually LLMs that operate in the real world."
+},
+{
+    "id": "trend-10",
+    "category": "Current AI Trends",
+    "keywords": ["AI engineering", "MLOps", "production AI"],
+    "question": "What separates research from production AI?",
+    "answer": "Reliability, observability, and rollback. Every perception release at Waymo went through structured testing → canary → full fleet with kill-switch. I apply the exact same discipline to Agent K deployments — zero-downtime updates, canarying new prompts. Research dies without this."
+},
+{
+    "id": "trend-11",
+    "category": "Current AI Trends",
+    "keywords": ["open source models", "Llama", "Mistral", "DeepSeek"],
+    "question": "Are open-source models catching up to closed ones?",
+    "answer": "They’ve already passed in many domains. DeepSeek-R1, Llama-3.1-405B, and Mistral Large 2 are within 3–5% of frontier closed models on most benchmarks — and fully auditable. I run Agent K on Groq’s closed API for speed, but the core architecture is model-agnostic and works perfectly with open weights."
+},
+{
+    "id": "trend-12",
+    "category": "Current AI Trends",
+    "keywords": ["inference cost", "price war", "Groq", "Together.ai"],
+    "question": "What's happening with inference pricing?",
+    "answer": "It’s collapsing — Groq, Together, Fireworks, and DeepInfra are in a race to the bottom. Llama-3.1-70B is now <$0.30/M tokens in some spots. That changes everything: agents become economically viable, real-time reasoning affordable, and on-prem deployments realistic again."
+},
+{
+    "id": "trend-13",
+    "category": "Current AI Trends",
+    "keywords": ["memory", "long-context", "RMT", "ring attention"],
+    "question": "How important is long context for real agents?",
+    "answer": "Essential for anything beyond toy demos. Agent K maintains conversation memory and last-message similarity tracking. In AVs we needed hours of context for proper motion prediction. Same for robotics — long context is the difference between a chatbot and a competent agent."
+},
+{
+    "id": "trend-14",
+    "category": "Current AI Trends",
+    "keywords": ["evaluation", "leaderboards", "LMSYS", "Arena"],
+    "question": "Do leaderboards actually matter?",
+    "answer": "They’re useful signals but terrible gods. I care about real-world task completion under constraints. My Waymo validation suite had 300+ scenarios that never made a leaderboard but saved lives. Same for LLMs — I’d rather have a model that never lies about my resume than one that wins Arena but hallucinates."
+},
+{
+    "id": "trend-15",
+    "category": "Current AI Trends",
+    "keywords": ["embodied AI", "robotics", "humanoids", "Figure", "Tesla Optimus"],
+    "question": "Are humanoid robots actually happening?",
+    "answer": "Yes — Figure 02, Tesla Optimus Gen 2, and Boston Dynamics Atlas are all walking, grasping, and learning in real factories today. The missing piece is reliable perception in unstructured environments — exactly the edge-case problem I spent years solving at Waymo with fog, steam, and low-light data."
+},
+{
+    "id": "trend-16",
+    "category": "Current AI Trends",
+    "keywords": ["AI hardware", "NVIDIA", "Groq", "Cerebras", "custom silicon"],
+    "question": "Is NVIDIA’s dominance at risk?",
+    "answer": "Short term, no. Long term, yes — Groq’s LPU, Cerebras CS-3, and even Apple/Amazon custom silicon are eating inference margins. I already moved Agent K from OpenAI to Groq for 10x speed at 1/5th cost. Hardware specialization is the next battlefield."
+},
+{
+    "id": "trend-17",
+    "category": "Current AI Trends",
+    "keywords": ["AI agents at work", "enterprise agents", "Salesforce", "Microsoft Copilot"],
+    "question": "Are enterprise AI agents actually being adopted?",
+    "answer": "Yes, but slowly. Salesforce Agentforce, Microsoft Copilot Studio, and ServiceNow agents are in production at Fortune-500 companies. The bottleneck is trust and integration — exactly the same trust problem I solved at Waymo with structured validation and safety cases."
+},
+{
+    "id": "trend-18",
+    "category": "Current AI Trends",
+    "keywords": ["AI video", "Sora", "Runway", "Kling", "Luma"],
+    "question": "What's the state of AI video generation?",
+    "answer": "It just crossed from 'impressive demo' to 'usable tool'. Kling, Runway Gen-3, and Luma Dream Machine are producing consistent 10–20s clips. The next leap will be physics-aware video for simulation — exactly what AV teams need for synthetic training data."
+},
+{
+    "id": "trend-19",
+    "category": "Current AI Trends",
+    "keywords": ["small models", "Phi-3", "Gemma", "distilled models"],
+    "question": "Are small models the future?",
+    "answer": "For production, yes. Phi-3.5-MoE, Gemma-2-9B, and Llama-3.2-3B are beating 70B models from 2023 on many tasks. I run distilled logic in Agent K for speed — same reason AV perception runs distilled models on-vehicle: latency, cost, and reliability beat raw parameter count."
+},
+{
+    "id": "trend-20",
+    "category": "Current AI Trends",
+    "keywords": ["AI governance", "EU AI Act", "regulation"],
+    "question": "How is regulation affecting AI development?",
+    "answer": "The EU AI Act is forcing real governance layers starting 2026. I’ve already built production systems that would pass — Agent K has strict guardrails, audit logs, and no personal data leakage. Same discipline I applied to Waymo’s safety-case documentation."
+},
+{
+    "id": "trend-21",
+    "category": "Current AI Trends",
+    "keywords": ["AI search", "Perplexity", "ChatGPT Search", "Google AI Overviews"],
+    "question": "Is traditional search dead?",
+    "answer": "Traditional keyword search is dying for research tasks. Perplexity, ChatGPT Search, and Google AI Overviews are winning because they synthesize answers. I built the same synthesis capability into Agent K — hybrid retrieval + grounded generation — months before it became mainstream."
+},
+{
+    "id": "trend-22",
+    "category": "Current AI Trends",
+    "keywords": ["AI coding agents", "Cursor", "Devin", "SWE-agent"],
+    "question": "Can AI really replace software engineers?",
+    "answer": "Not replace — amplify. Cursor and Claude 3.5 Sonnet already write 60–70% of my code. The last 30% requires deep system understanding — exactly the skill I bring from building Agent K from scratch and debugging 2,000+ perception failures at Waymo."
+},
+{
+    "id": "trend-23",
+    "category": "Current AI Trends",
+    "keywords": ["AI in science", "AlphaFold", "materials science", "drug discovery"],
+    "question": "How is AI accelerating scientific discovery?",
+    "answer": "AlphaFold-3, Materials Project AI, and drug-discovery agents are compressing decades into months. I used the same targeted data approach at Waymo — collect the hardest 0.1% of cases, retrain, leapfrog performance. That’s the playbook for any scientific domain."
+},
+{
+    "id": "trend-24",
+    "category": "Current AI Trends",
+    "keywords": ["edge AI", "on-device models", "Apple Intelligence", "Google Gemini Nano"],
+    "question": "Why is on-device AI suddenly exploding?",
+    "answer": "Privacy, latency, and cost. Apple Intelligence, Gemini Nano, and on-device Llama variants prove you can run 7–70B-class models on phones. I’ve been doing on-device inference in trading and AV perception for years — same constraints, same solutions."
+},
+{
+    "id": "trend-25",
+    "category": "Current AI Trends",
+    "keywords": ["AI memory", "long-term memory", "agent memory"],
+    "question": "How important is memory in agents?",
+    "answer": "Everything. Without memory is what separates a chatbot from a useful agent. Agent K tracks lastBotMessage for anti-repetition and conversation history — same way AVs need hours of context for motion prediction and robots need task memory."
+},
+{
+    "id": "trend-26",
+    "category": "Current AI Trends",
+    "keywords": ["AI alignment", "superintelligence", "control problem"],
+    "question": "Are we solving AI alignment?",
+    "answer": "We’re solving deployment alignment — making sure today’s 70B–405B models do what we want in production. That’s the same problem I solved at Waymo: making sure perception never misclassified a pedestrian in fog. Superintelligence alignment is a 2030+ problem; deployment alignment is the one that matters for shipping products now."
+},
+{
+    "id": "trend-27",
+    "category": "Current AI Trends",
+    "keywords": ["AI energy consumption", "sustainable AI", "green AI"],
+    "question": "Is AI’s energy consumption a real problem?",
+    "answer": "Yes — training a single 70B model can use as much power as hundreds of homes. That’s why distillation, quantization, and efficient inference (Groq LPUs, Cerebras) are critical. I moved Agent K to Groq and cut costs 80 % — same optimization mindset needed for sustainable AV fleets and robotics."
+},
+{
+    "id": "trend-28",
+    "category": "Current AI Trends",
+    "keywords": ["AI in defense", "autonomous weapons", "ethics"],
+    "question": "Should AI be used in defense?",
+    "answer": "Only with the same safety rigor as AVs. I spent years making sure perception never failed in life-critical scenarios at Waymo. Any defense application needs the same structured testing, red-teaming, and human-in-the-loop oversight — no exceptions."
+},
+{
+    "id": "trend-29",
+    "category": "Current AI Trends",
+    "keywords": ["AI talent war", "compensation", "hiring"],
+    "question": "What’s the state of AI hiring right now?",
+    "answer": "Still extremely competitive — top talent getting 7-figure packages with equity that can 10x. But the bar is rising: companies now want people who have shipped real production systems, not just research papers. That’s why I focus on systems I’ve actually deployed and kept running 24/7."
+},
+{
+    "id": "trend-30",
+    "category": "Current AI Trends",
+    "keywords": ["future of work", "AI augmentation", "human-AI collaboration"],
+    "question": "Will AI replace jobs or augment them?",
+    "answer": "Augment — and the winners will be humans who treat AI as a force multiplier. I use Grok/Claude/GPT daily to 10x my productivity, but the final decisions and system ownership are still mine. Same way AVs augment human drivers today — the human is still in the loop for the hard cases."
 }
+
 
 ]
 }
