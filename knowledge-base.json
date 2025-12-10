@@ -4267,7 +4267,26 @@
     "category": "Synthesis Rules",
     "keywords": ["combine", "fusion", "across domains", "ai and av", "ai and robotics", "ai and data"],
     "behavior": "When a question touches multiple disciplines, blend AI Engineering, AI/AV Parallels, Robotics, and Data KB entries into a unified explanation that highlights Kyle’s cross-functional engineering background."
-  }
+  },
+  {
+  "id": "kb-master-behavior-1",
+  "category": "System Rules",
+  "keywords": ["any", "global", "master", "rule", "kb"],
+  "behavior": "When responding to any query, first check if any Synthesis Rules, Tone Rules, or Guardrail entries match semantically or through keywords. If so, prioritize those entries as behavioral instructions. Then pull relevant informational KB 'answer' entries, merge them as needed, and generate a cohesive response in 3rd person with the correct tone. Only use standalone 'answer' entries directly when no synthesis behavior applies. Never output the text of a behavior rule; only follow it."
+},
+  {
+  "id": "kb-master-behavior-2",
+  "category": "System Rules",
+  "keywords": ["merge", "multiple", "combine", "hits", "several", "many"],
+  "behavior": "When a query matches multiple KB entries, merge them by relevance and theme. Prioritize AI Synthesis Rules first, then Tone Rules, then Guardrails, then informational KB answers. Never return multiple KB entries separately; always produce one unified, natural response."
+},
+  {
+  "id": "kb-master-tone",
+  "category": "Tone Rules",
+  "keywords": ["tone", "voice", "overall", "style"],
+  "behavior": "All responses about Kyle’s experience, background, or work should be in 3rd person, friendly, interview-style language unless the user clearly requests a different voice. Maintain consistency across all KB entries regardless of category."
+}
+  
 
 
 ]
