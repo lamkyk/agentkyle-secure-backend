@@ -709,28 +709,49 @@ app.post('/suggest', async (req, res) => {
 const query = normalizeQuery(clean);
 
 /* -------------------------------------------------------------
-   PARTIAL QUERY BOOSTER
-   Ensures suggestions continue updating as user types.
-   If user input is short OR ends in a partial word, bypass strict
-   hybrid reasoning and switch to relaxed fuzzy lookup.
+   PARTIAL QUERY BOOSTER (SAFER VERSION)
+   Ensures suggestions always show after 2+ chars, and refine as user types.
+   - Partial mode triggers when query < 20 chars OR ends mid-word.
+   - Uses graded fuzzy scoring so suggestions narrow as typing continues.
+   - No regression: hybrid still runs for completed queries.
 ------------------------------------------------------------- */
 
 const isPartial =
-  query.length <= 20 ||
-  /\w$/.test(query); // ends in an unfinished word
+  query.length > 2 && (
+    query.length <= 20 ||
+    /\w$/.test(query)   // ends in an unfinished word
+  );
 
 let hybrid;
 
 if (isPartial) {
-  // Relaxed suggestion mode: keyword-only across KB questions
-  const fuzzy = (knowledgeBase.qaDatabase || []).map(entry => ({
-    question: entry.question,
-    score: entry.question.toLowerCase().includes(query.toLowerCase()) ? 10 : 0
-  }));
+  // Graded fuzzy scoring: more characters = more specific narrowing
+  const lowerQ = query.toLowerCase();
+
+  const fuzzy = (knowledgeBase.qaDatabase || []).map(entry => {
+    const qLower = entry.question.toLowerCase();
+
+    // Scoring tiers for narrowing effect
+    let score = 0;
+
+    // Strong: question starts with the typed fragment
+    if (qLower.startsWith(lowerQ)) score += 20;
+
+    // Medium: question contains fragment anywhere
+    if (qLower.includes(lowerQ)) score += 10;
+
+    // Weak: partial word match (prefix match on each word)
+    const partialMatch = qLower.split(/\s+/).some(w => w.startsWith(lowerQ));
+    if (partialMatch) score += 5;
+
+    return { question: entry.question, score };
+  });
 
   hybrid = fuzzy
+    .filter(item => item.score > 0) // ensures narrowing
     .sort((a, b) => b.score - a.score)
     .slice(0, 8);
+
 } else {
   // Full hybrid search for complete queries
   hybrid = await hybridSearchKnowledgeBase(query, 8);
