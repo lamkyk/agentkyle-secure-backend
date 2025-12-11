@@ -270,24 +270,7 @@ function isHighlySimilarAnswer(prev, next, threshold = 0.8) {
   return textSimilarity(prev, next) >= threshold;
 }
 
-// Deduplicate and cap suggestions, avoid recently used
-function dedupeAndTrim(list, max, avoidSet = new Set()) {
-  const out = [];
-  const seen = new Set();
-  for (const raw of list) {
-    const t = (raw || '').trim();
-    if (!t) continue;
-    const key = t.toLowerCase();
-    if (avoidSet.has(key)) continue;
-    if (seen.has(key)) continue;
-    seen.add(key);
-    out.push(t);
-    if (out.length >= max) break;
-  }
-  return out;
-}
-
-// Detect classic behavioral / PM-CX questions that should bypass direct KB lookup
+// Detect classic behavioral / PM-CX questions that should bypass naive patterns
 function isBehavioralOrPMCXQuestion(lower) {
   const behavioralTriggers = [
     'tell me about a time',
@@ -403,8 +386,8 @@ function keywordScoreAll(query) {
   if (!q) return [];
 
   return (knowledgeBase.qaDatabase || []).map((qa, idx) => {
-    const question = (qa.question || "").toLowerCase();
-    const answer   = (qa.answer   || "").toLowerCase();
+    const question = (qa.question || '').toLowerCase();
+    const answer = (qa.answer || '').toLowerCase();
     const keywords = qa.keywords || [];
 
     let score = 0;
@@ -430,7 +413,6 @@ function keywordScoreAll(query) {
     return { ...qa, score, index: idx };
   });
 }
-
 
 // tuned hybrid search
 async function hybridSearchKnowledgeBase(query, limit = 5) {
@@ -611,7 +593,7 @@ function detectMultiPartQuery(query) {
 }
 
 // ======================================================================
-// USER ROLE CLASSIFIER (NEW)
+// USER ROLE CLASSIFIER
 // ======================================================================
 
 function classifyUserRole(lower) {
@@ -631,6 +613,26 @@ function classifyUserRole(lower) {
 }
 
 // ======================================================================
+// SUGGESTION HELPERS
+// ======================================================================
+
+function dedupeAndTrim(candidates, limit, avoidSet = new Set()) {
+  const seen = new Set();
+  const out = [];
+  for (const q of candidates) {
+    if (!q) continue;
+    const trimmed = q.trim();
+    if (!trimmed) continue;
+    const lower = trimmed.toLowerCase();
+    if (avoidSet.has(lower) || seen.has(lower)) continue;
+    seen.add(lower);
+    out.push(trimmed);
+    if (out.length >= limit) break;
+  }
+  return out;
+}
+
+// ======================================================================
 // ROUTES
 // ======================================================================
 
@@ -642,14 +644,37 @@ app.get('/', (req, res) => {
   });
 });
 
-// Suggestions route (fixed, uses existing partial booster logic, 1+ chars)
+app.get('/health', (req, res) => {
+  res.json({
+    status: 'ok',
+    service: 'Agent K',
+    entries: knowledgeBase.qaDatabase.length,
+    embeddings: EMBEDDINGS_ENABLED ? 'enabled' : 'keyword-only'
+  });
+});
+
+/* -------------------------------------------------------------
+   PARTIAL QUERY BOOSTER / SUGGESTIONS
+   Uses fuzzy matching on short/partial queries and hybrid search
+   on longer queries. Also rotates suggestions to avoid repeats.
+------------------------------------------------------------- */
+
 app.post('/suggest', async (req, res) => {
   try {
-    const raw = (req.body.q || '').toString();
-    const query = normalizeQuery(raw.trim());
-    const avoidSet = new Set(recentSuggestionPhrases.map(s => s.toLowerCase()));
+    const body = req.body || {};
+    const query = (body.query || '').trim();
+    const usedSuggestions = Array.isArray(body.usedSuggestions)
+      ? body.usedSuggestions
+      : [];
 
-    // Empty query: show defaults
+    const avoidSet = new Set(
+      [
+        ...usedSuggestions.map(s => String(s || '').toLowerCase().trim()),
+        ...recentSuggestionPhrases.map(s => String(s || '').toLowerCase().trim())
+      ].filter(Boolean)
+    );
+
+    // No query yet: surface default KB questions, avoiding recently used
     if (!query) {
       const defaultsRaw = (knowledgeBase.qaDatabase || []).map(entry => entry.question);
       let suggestions = dedupeAndTrim(defaultsRaw, 5, avoidSet);
@@ -657,27 +682,26 @@ app.post('/suggest', async (req, res) => {
       if (!suggestions.length) {
         suggestions = [
           "Ask about Kyle's experience in autonomous systems.",
-          "Ask for a STAR example about a project risk."
+          'Ask for a STAR example about a project risk.'
         ];
       }
+
       return res.json({ suggestions });
     }
 
-    // Partial booster
+    const q = query;
     const isPartial =
-      query.length >= 1 && (
-        query.length <= 20 ||
-        /\w$/.test(query)   // ends in an unfinished word
-      );
+      q.length > 1 &&
+      (q.length <= 20 || /\w$/.test(q)); // show suggestions early and refine as you type
 
     let hybrid;
 
     if (isPartial) {
-      const lowerQ = query.toLowerCase();
+      const lowerQ = q.toLowerCase();
 
       const fuzzy = (knowledgeBase.qaDatabase || [])
         .map(entry => {
-          const question = (entry.question || "").trim();
+          const question = (entry.question || '').trim();
           if (!question) return null;
 
           const qLower = question.toLowerCase();
@@ -689,7 +713,7 @@ app.post('/suggest', async (req, res) => {
           // Medium: question contains fragment anywhere
           if (qLower.includes(lowerQ)) score += 10;
 
-          // Weak: partial word match (prefix match on each word)
+          // Weak: partial word match (prefix on each word)
           const partialMatch = qLower.split(/\s+/).some(w => w.startsWith(lowerQ));
           if (partialMatch) score += 5;
 
@@ -702,11 +726,10 @@ app.post('/suggest', async (req, res) => {
         .slice(0, 8);
     } else {
       // Full hybrid search for complete queries
-      hybrid = await hybridSearchKnowledgeBase(query, 8);
+      hybrid = await hybridSearchKnowledgeBase(q, 8);
     }
 
-    // Now convert hybrid result to plain question list
-    const hybridQuestions = hybrid.map(item => item.question);
+    const hybridQuestions = (hybrid || []).map(item => item.question);
     let suggestions = dedupeAndTrim(hybridQuestions, 5, avoidSet);
 
     // If still nothing, fallback to defaults
@@ -718,7 +741,7 @@ app.post('/suggest', async (req, res) => {
     if (!suggestions.length) {
       suggestions = [
         "Ask about Kyle's experience in autonomous systems.",
-        "Ask for a STAR example about a project risk."
+        'Ask for a STAR example about a project risk.'
       ];
     }
 
@@ -777,14 +800,14 @@ app.post('/query', async (req, res) => {
     const behavioralOrPMCX = isBehavioralOrPMCXQuestion(lower);
 
     const intent = (() => {
-      if (hasTechnicalKeywords || looksLikeAcronym || (isConceptQuestion && !mentionsKyle)) return 'technical';
+      if (hasTechnicalKeywords || looksLikeAcronym || (isConceptQuestion && !mentionsKyle))
+        return 'technical';
       if (mentionsKyle || isInterviewy || behavioralOrPMCX) return 'kyle';
       return 'mixed';
     })();
 
-    if (behavioralOrPMCX) {
-      console.log('Behavioral or PM/CX scenario detected; bypassing direct KB matching.');
-    }
+    const isSTAR = detectSTARQuery(originalQuery);
+    const isMulti = detectMultiPartQuery(originalQuery);
 
     // ==================================================================
     // EASTER-EGG JOKE (kept simple; safe, isolated)
@@ -850,7 +873,11 @@ app.post('/query', async (req, res) => {
     }
 
     // Direct "about Kyle"
-    if (/\b(who is kyle|tell me about kyle|what does kyle do|kyle background|kyle experience)\b/i.test(lower)) {
+    if (
+      /\b(who is kyle|tell me about kyle|what does kyle do|kyle background|kyle experience)\b/i.test(
+        lower
+      )
+    ) {
       return res.json({
         answer: sanitizeOutput(
           'Kyle has experience in autonomous systems validation, field operations, perception testing, structured test execution, and large scale training data programs. He has collaborated across engineering, operations, and product teams to deliver predictable program outcomes. He also has experience in SaaS customer success, technical onboarding, enterprise client workflows, and the development of applied AI tools.'
@@ -998,28 +1025,60 @@ app.post('/query', async (req, res) => {
 
     // ==================================================================
     // HYBRID RETRIEVAL + LLM + SYNTHESIS FALLBACK
+    // (KB + behavior + LLM together)
     // ==================================================================
 
     let relevantQAs = [];
     let topScore = 0;
 
-    if (!behavioralOrPMCX && intent !== 'technical') {
+    if (intent !== 'technical') {
       try {
         relevantQAs = await hybridSearchKnowledgeBase(originalQuery, 6);
+
+        // If this is a behavioral / PM-CX style question, boost KB entries
+        // that are explicitly tagged as behavioral-like categories.
+        if (relevantQAs.length && behavioralOrPMCX) {
+          relevantQAs = relevantQAs
+            .map(qa => {
+              let extra = 0;
+              const cat = (qa.category || '').toLowerCase();
+              if (
+                cat.includes('behavior') ||
+                cat.includes('behaviour') ||
+                cat.includes('star') ||
+                cat.includes('story') ||
+                cat.includes('example')
+              ) {
+                extra += 0.25;
+              }
+              const ans = (qa.answer || '').toLowerCase();
+              if (
+                ans.includes('situation:') &&
+                ans.includes('task:') &&
+                ans.includes('action:') &&
+                ans.includes('result:')
+              ) {
+                extra += 0.1;
+              }
+              return { ...qa, score: qa.score + extra };
+            })
+            .sort((a, b) => b.score - a.score);
+        }
+
+        topScore = relevantQAs.length ? relevantQAs[0].score : 0;
       } catch (e) {
         console.warn('Hybrid search error, falling back to empty KB match set:', e.message || e);
         relevantQAs = [];
+        topScore = 0;
       }
 
       console.log(
         `Query: "${originalQuery.substring(0, 50)}${originalQuery.length > 50 ? '...' : ''}"`
       );
-      console.log(`Found ${relevantQAs.length} hybrid relevant Q&As`);
-
-      topScore = relevantQAs.length ? relevantQAs[0].score : 0;
+      console.log(`Found ${relevantQAs.length} hybrid relevant Q&As (topScore=${topScore})`);
     }
 
-    const STRONG_THRESHOLD = 0.9; // direct KB answer (only for Kyle/mixed)
+    const STRONG_THRESHOLD = 0.9; // direct KB answer
     const WEAK_THRESHOLD = 0.3; // low confidence (fallback trigger)
 
     const tokenCount = originalQuery.split(/\s+/).filter(Boolean).length;
@@ -1028,25 +1087,22 @@ app.post('/query', async (req, res) => {
 
     const hasAnyKB = knowledgeBase.qaDatabase && knowledgeBase.qaDatabase.length > 0;
     const weakOrNoMatch =
-      behavioralOrPMCX ||
-      intent === 'technical' ||
-      !relevantQAs.length ||
-      topScore < WEAK_THRESHOLD;
+      intent === 'technical' || !relevantQAs.length || topScore < WEAK_THRESHOLD;
 
     const fallbackWasUsed =
       hasAnyKB && weakOrNoMatch && isMeaningfulQuery && intent !== 'technical';
 
-    // 1) Strong direct KB hit: answer straight from KB (only when not behavioral/PM-CX and not technical)
-    if (!behavioralOrPMCX && intent !== 'technical' && relevantQAs.length && topScore >= STRONG_THRESHOLD) {
+    // 1) Strong direct KB hit: answer straight from KB for Kyle/mixed
+    if (intent !== 'technical' && relevantQAs.length && topScore >= STRONG_THRESHOLD) {
       console.log(`Strong KB hit. Score: ${topScore.toFixed(3)}`);
       return res.json({
         answer: sanitizeOutput(relevantQAs[0].answer)
       });
     }
 
-    // 2) Build context for LLM: either focused relevant entries or synthesized sample (only for Kyle/mixed)
+    // 2) Build context for LLM: either focused relevant entries or synthesized sample
     let contextText = '';
-    if (intent !== 'technical' && !behavioralOrPMCX) {
+    if (intent !== 'technical') {
       if (relevantQAs.length && topScore >= WEAK_THRESHOLD) {
         contextText = '\n\nRELEVANT BACKGROUND (PARAPHRASE ONLY):\n\n';
         relevantQAs.slice(0, 4).forEach((qa, idx) => {
@@ -1074,9 +1130,6 @@ app.post('/query', async (req, res) => {
         });
       }
     }
-
-    const isSTAR = detectSTARQuery(originalQuery);
-    const isMulti = detectMultiPartQuery(originalQuery);
 
     let userMessage = originalQuery;
 
@@ -1117,7 +1170,7 @@ Respond with:
         userMessage = `[AMBIGUOUS, SHORT QUERY]
 The user query was: "${originalQuery}".
 
-The question is not fully clear, and it does not strongly match existing Q&A entries. You must still answer in a professional, third person way about Kyle.
+The question is short and under specified, and it does not strongly match existing Q&A entries. You must still answer in a professional, third person way about Kyle.
 
 Begin your reply with: "The question is not fully clear, but based on Kyle's experience in ${topic}, he has..." and then continue with the closest useful context about Kyle that could reasonably match the query.
 
@@ -1137,7 +1190,7 @@ Answer using Situation, Task, Action, Result with labeled sections.`;
 ${originalQuery}
 
 Address each part separately with clear transitions.`;
-      } else if (fallbackWasUsed || behavioralOrPMCX) {
+      } else if (fallbackWasUsed) {
         userMessage = `[SYNTHESIZED FALLBACK]
 The direct user query was: "${originalQuery}".
 
@@ -1151,7 +1204,7 @@ User question: ${originalQuery}`;
 
     // ==================================================================
     // SYSTEM PROMPTS WITH USER ROLE CONTEXT
-    // ==================================================================
+    // ======================================================================
 
     const technicalSystemPrompt = `You are a precise technical explainer.
 
