@@ -1248,46 +1248,54 @@ if (
     const fallbackWasUsed =
       hasAnyKB && weakOrNoMatch && isMeaningfulQuery && intent !== 'technical';
 
-    // ----- DIRECT STRONG KB HIT (KYLE / MIXED) -----
+// ----- DIRECT STRONG KB HIT (KYLE / MIXED) -----
+// Do not short-circuit on KB hits anymore.
+// We always pass through LLM for full synthesis.
 
-    if (intent !== 'technical' && relevantQAs.length && topScore >= STRONG_THRESHOLD) {
-      console.log(`Strong KB hit. Score: ${topScore.toFixed(3)}`);
-      return res.json({
-        answer: sanitizeOutput(relevantQAs[0].answer)
-      });
+const hasStrongKBHit =
+  intent !== 'technical' &&
+  relevantQAs.length &&
+  topScore >= STRONG_THRESHOLD;
+
+
+// ----- BUILD CONTEXT FOR LLM (KB OR SYNTHESIZED SAMPLE) -----
+
+let contextText = '';
+
+if (intent !== 'technical') {
+  if (relevantQAs.length && topScore >= WEAK_THRESHOLD) {
+    // Strong or medium match: send multiple KB entries to LLM as context
+    const maxItems = hasStrongKBHit ? 5 : 4;
+
+    contextText = '\n\nRELEVANT BACKGROUND (PARAPHRASE ONLY):\n\n';
+    relevantQAs.slice(0, maxItems).forEach((qa, idx) => {
+      contextText += `${idx + 1}. Question: ${qa.question}\n   Answer: ${qa.answer}\n\n`;
+    });
+
+  } else if (fallbackWasUsed) {
+    // Weak or no match but meaningful question → synthesized sample
+    const total = knowledgeBase.qaDatabase.length;
+    const sampleSize = Math.min(10, total);
+    const step = Math.max(1, Math.floor(total / sampleSize));
+    const contextSample = [];
+
+    for (let i = 0; i < total && contextSample.length < sampleSize; i += step) {
+      contextSample.push(knowledgeBase.qaDatabase[i]);
     }
 
-    // ----- BUILD CONTEXT FOR LLM (KB OR SYNTHESIZED SAMPLE) -----
+    console.log(
+      `Using synthesized fallback sample of ${contextSample.length} KB entries (weak match; topScore=${topScore.toFixed(
+        3
+      )})`
+    );
 
-    let contextText = '';
-    if (intent !== 'technical') {
-      if (relevantQAs.length && topScore >= WEAK_THRESHOLD) {
-        contextText = '\n\nRELEVANT BACKGROUND (PARAPHRASE ONLY):\n\n';
-        relevantQAs.slice(0, 4).forEach((qa, idx) => {
-          contextText += `${idx + 1}. Question: ${qa.question}\n   Answer: ${qa.answer}\n\n`;
-        });
-      } else if (fallbackWasUsed) {
-        const total = knowledgeBase.qaDatabase.length;
-        const sampleSize = Math.min(10, total);
-        const step = Math.max(1, Math.floor(total / sampleSize));
-        const contextSample = [];
+    contextText = '\n\nRELEVANT BACKGROUND (SYNTHESIZED SAMPLE):\n\n';
+    contextSample.forEach((qa, idx) => {
+      contextText += `${idx + 1}. Question: ${qa.question}\n   Answer: ${qa.answer}\n\n`;
+    });
+  }
+}
 
-        for (let i = 0; i < total && contextSample.length < sampleSize; i += step) {
-          contextSample.push(knowledgeBase.qaDatabase[i]);
-        }
-
-        console.log(
-          `Using synthesized fallback sample of ${contextSample.length} KB entries (weak match; topScore=${topScore.toFixed(
-            3
-          )})`
-        );
-
-        contextText = '\n\nRELEVANT BACKGROUND (SYNTHESIZED SAMPLE):\n\n';
-        contextSample.forEach((qa, idx) => {
-          contextText += `${idx + 1}. Question: ${qa.question}\n   Answer: ${qa.answer}\n\n`;
-        });
-      }
-    }
 
     // ----- USER MESSAGE CONSTRUCTION -----
 
@@ -1583,13 +1591,16 @@ ${thoughtfulnessBooster}
     // First pass from model
     let answerRaw = await getLLMAnswer(userMessage);
 
-    // If model returned nothing, use safe fallback string
-    if (!answerRaw) {
-      answerRaw =
-        intent === 'technical'
-          ? 'Agent K did not receive a clear response from the model. Can you try rephrasing the technical question?'
-          : 'Agent K did not receive a clear response from the model. Can you try rephrasing the question?';
-    }
+   // If model returned nothing, fall back to a rich synthesized answer
+if (!answerRaw) {
+  if (intent === 'technical') {
+    answerRaw =
+      'Given the question, the most useful response is to outline a robust systems-oriented approach. Start by clarifying assumptions, define the failure modes or objectives, then design an architecture involving sensing, estimation, planning or control, and verification loops that can be tested and monitored. From there, layer in mitigation strategies, fallback behaviors, and interfaces so the system behaves predictably even under edge conditions.';
+  } else {
+    answerRaw =
+      "Kyle’s background spans autonomous systems validation, field operations, perception behavior analysis, scenario testing, and large-scale training data programs. He has led structured test plans, investigations into critical safety issues, and delivery of datasets that improved perception performance and expanded operating domains. He has also worked in SaaS customer success and technical onboarding, translating complex systems into workflows for enterprise clients, and he has built applied AI tools with Node.js, Express, APIs, and automation. When someone asks about his experience, the answer integrates these threads to show how he bridges engineering detail with reliable execution.";
+  }
+}
 
     // Second pass: anti-repetition compared to lastBotMessage (for all intents)
     if (lastBotMessage && answerRaw && isHighlySimilarAnswer(lastBotMessage, answerRaw)) {
