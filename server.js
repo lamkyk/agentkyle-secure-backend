@@ -919,27 +919,37 @@ app.post('/query', async (req, res) => {
       markSuggestionUsed(normalizedForSuggestion);
     }
 
-    // ----- INTENT + STAR DETECTION -----
+// ----- INTENT + STAR DETECTION -----
 
-    const { intent: resolvedIntent, star: isSTAR } = resolveIntent(originalQuery, lower);
-    let intent = resolvedIntent;
-    const isMulti = detectMultiPartQuery(originalQuery);
-    const behavioralOrPMCX = isBehavioralOrPMCXQuestion(lower);
+const { intent: resolvedIntent, star: isSTAR } = resolveIntent(originalQuery, lower);
+let intent = resolvedIntent;
+const isMulti = detectMultiPartQuery(originalQuery);
+const behavioralOrPMCX = isBehavioralOrPMCXQuestion(lower);
 
-    const isConceptQuestion =
-      /\b(what is|what's|define|definition of|explain|how does|difference between|compare|contrast)\b/i.test(
-        lower
-      );
+const isConceptQuestion =
+  /\b(what is|what's|define|definition of|explain|how does|difference between|compare|contrast)\b/i.test(
+    lower
+  );
 
-    // ----- REINFORCE KYLE MODE FOR EXPERIENCE QUESTIONS -----
-    // Prevent unintentional routing into technical mode.
-    if (
-      intent !== 'kyle' &&
-      /\b(experience with|background in|work with)\b/i.test(lower) &&
-      /\b(ai|artificial intelligence|ml|machine learning)\b/i.test(lower)
-    ) {
-      intent = 'kyle';
-    }
+// ===== UNIVERSAL EXPERIENCE / BACKGROUND OVERRIDE =====
+// Forces Kyle mode for ALL experience/background questions across ALL technical,
+// operational, and engineering domains (AI, AV, lidar, radar, sensors, data,
+// robotics, pipelines, testing, validation, ML, scripting, APIs, etc.)
+
+const experienceIntentRegex =
+  /\b(experience with|your experience|kyle'?s experience|background in|work with|what did kyle do|what has kyle done|skills in|involvement in|hands-on with|used in|worked on)\b/i;
+
+const techDomainRegex =
+  /\b(ai|artificial intelligence|machine learning|ml|llm|models?|agents?|data|datasets|training data|autonomous|av|autonomy|lidar|radar|camera|sensor|sensor fusion|perception|slam|mapping|localization|validation|testing|test plans|v&v|field testing|runtime|pipelines|retrieval|rag|embedding|vector|node|express|backend|apis?|scripting|robotics|control|planning)\b/i;
+
+// Trigger Kyle-mode if user is asking about Kyle’s experience across ANY of these domains
+if (
+  (experienceIntentRegex.test(lower) && techDomainRegex.test(lower)) ||
+  /\bkyle\b/.test(lower)
+) {
+  intent = 'kyle';
+}
+
 
     // ----- TECHNICAL OVERRIDE FOR EXTREME OR SPECULATIVE SCENARIOS -----
 
@@ -1459,6 +1469,94 @@ FINAL INSTRUCTIONS:
 
     const systemPrompt = intent === 'technical' ? technicalSystemPrompt : kyleSystemPrompt;
 
+    // ======================================================================
+// UNIVERSAL THOUGHTFULNESS BOOSTER (GUARANTEED FULL RESPONSE)
+// Forces Agent K to always produce a complete, structured, multi-paragraph
+// explanation even in cases where: 
+// - hybrid retrieval is weak
+// - intent is ambiguous
+// - technical model under-responds
+// - question is complex, multi-faceted, or novel
+// ======================================================================
+
+function buildThoughtfulnessBooster(originalQuery, intent, contextText, isSTAR, isMulti) {
+  let booster = '';
+
+  // Always include a fallback structure guarantee
+  booster += `
+Regardless of ambiguity or retrieval strength, your answer must:
+- Be detailed, structured, and multi-paragraph.
+- Contain clear explanations and reasoning.
+- Be grounded in Kyle’s background (if intent=kyle).
+- Be grounded in real engineering/system design (if intent=technical).
+- Address every part of the question, even if partially implied.
+- Never say you do not know.
+- Never ask the user to clarify; synthesize the best possible answer.
+`;
+
+  if (intent === 'technical') {
+    booster += `
+For technical questions:
+- Provide architecture-level reasoning.
+- Provide trade-offs, constraints, and system behavior.
+- Provide real-world applicability.
+- Demonstrate safety, scalability, and verification thinking.
+- If the question is highly novel, treat it as a design exercise and answer boldly.
+`;
+  } else {
+    booster += `
+For Kyle-related questions:
+- Tie the answer back to Kyle’s operational, technical, or program experience.
+- Use third person for Kyle.
+- Integrate relevant KB behaviors or background naturally.
+- Treat multi-part or vague questions as invitations to provide a comprehensive overview.
+`;
+  }
+
+  if (isSTAR) {
+    booster += `
+If the query is behavioral/STAR:
+- Force output into Situation, Task, Action, Result with labeled sections.
+- Add enough concrete detail to feel real and illustrative.
+`;
+  }
+
+  if (isMulti) {
+    booster += `
+Because the user asked a multi-part or complex question:
+- Break your answer into explicit numbered sections.
+- Address each component separately and completely.
+`;
+  }
+
+  // Add context if available
+  if (contextText && contextText.trim()) {
+    booster += `
+Background material (use only for inspiration, paraphrase): 
+${contextText}
+`;
+  }
+
+  return booster;
+}
+
+// Attach booster to userMessage
+const thoughtfulnessBooster = buildThoughtfulnessBooster(
+  originalQuery,
+  intent,
+  contextText,
+  isSTAR,
+  isMulti
+);
+
+userMessage = `
+${userMessage}
+
+THOUGHTFULNESS BOOSTER (MANDATORY REQUIREMENTS):
+${thoughtfulnessBooster}
+`;
+
+    
     // ----- LLM WRAPPER (ANTI-REPETITION AWARE) -----
 
     async function getLLMAnswer(userMsg) {
