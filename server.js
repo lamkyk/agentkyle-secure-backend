@@ -877,6 +877,19 @@ function resolveIntent_v5(originalQuery) {
 const { intent, star: isSTAR } = resolveIntent_v5(originalQuery);
 const isMulti = detectMultiPartQuery(originalQuery);
 
+// ==================================================================
+// TECHNICAL OVERRIDE FOR EXTREME / SPECULATIVE SYSTEM QUESTIONS
+// ==================================================================
+const catastrophicSignals = /\b(mass casualty|catastrophic|failure mode|single point of failure|safety critical|kill people|brain chip|neuralink|bio interface|quantum|solver|10m\+|fleetwide|verification loop|systems architecture)\b/i;
+
+const speculativeTechSignals = /\b(fuse|fusion with|integrate quantum|brain interface|neural control|general intelligence|superhuman|hypothetical system)\b/i;
+
+// If question is extremely technical AND future-system-oriented,
+// we override and force TECHNICAL mode
+if ( (catastrophicSignals.test(lower) || speculativeTechSignals.test(lower))
+     && detectTechnicalIntent_v5(lower) ) {
+    intent = 'technical';
+}
 
 
     // ==================================================================
