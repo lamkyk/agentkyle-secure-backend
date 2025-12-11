@@ -793,64 +793,90 @@ app.post('/query', async (req, res) => {
 // ==================================================================
 // INTENT ROUTING: KYLE vs TECHNICAL vs MIXED
 // ==================================================================
-const mentionsKyle = isAboutKyle || /\babout kyle\b/i.test(lower);
+/* ==================================================================
+   UNIVERSAL INTENT ENGINE (Final Stable Version)
+   ================================================================== */
 
-const isInterviewy =
-  /\b(tell me about yourself|strengths|weaknesses|greatest strength|greatest weakness|why do you want this role|why .*role|why .*company|why should we hire you|fit for this role|fit for the role|background for this role|walk me through your resume)\b/i.test(
-    lower
-  );
+function detectSTARQuery_v5(q) {
+  const t = q.toLowerCase();
+  return [
+    'tell me about a time',
+    'describe a time',
+    'give me an example',
+    'star example',
+    'challenge',
+    'overcame',
+    'difficult situation',
+    'accomplishment',
+    'achievement',
+    'led a project',
+    'managed a project',
+    'handled',
+    'resolved',
+    'improved',
+    'time you',
+    'time when',
+    'time kyle',
+    'situation where',
+    'walk me through',
+    'walk me thru',
+    'walk through',
+    'walk thru',
+    'walk me step by step'
+  ].some(x => t.includes(x));
+}
 
-const isConceptQuestion =
-  /\b(what is|what's|define|definition of|explain|how does|how do you handle|how does .* work|difference between|compare|contrast)\b/i.test(
-    lower
-  );
+function detectCareerWorkIntent_v5(lower) {
+  const keys = [
+    'experience', 'background', 'career', 'work history', 'role',
+    'responsibilities', 'scope', 'impact', 'strengths', 'weaknesses',
+    'achievements', 'accomplishments', 'wins', 'projects he worked on',
+    'projects he led', 'led', 'handled', 'managed', 'operated',
+    'testing work', 'validation work', 'field work', 'program work',
+    'customer work', 'data work', 'training data work',
+    'engineering experience', 'program experience', 'operations experience',
+    'professional experience', 'what did he do', 'what he did'
+  ];
+  return keys.some(k => lower.includes(k));
+}
 
-const hasTechnicalKeywords =
-  /\b(rl|reinforcement learning|policy gradient|q-learning|q learning|actor-critic|actor critic|bandit|multi-armed bandit|mdp|markov decision process|value function|advantage function|neural network|deep learning|machine learning|ml|supervised learning|unsupervised learning|self-supervised|transformer|cnn|rnn|lstm|gan|autonomous driving|av stack|planning|trajectory planning|path planning|control|controller|pid controller|pid loop|mpc|model predictive control|slam|localization|sensor fusion|kalman filter|ekf|ukf|bayes|bayesian|reward function|policy|trajectory|perception|object detection|lidar|lidar sensor|radar|camera model|occupancy grid|safety case|iso 26262|sim2real|simulation|differential flatness|flatness)\b/i.test(
-    lower
-  );
+function detectTechnicalIntent_v5(lower) {
+  const tech =
+    /\b(rl|reinforcement learning|policy gradient|q-learning|q learning|actor|critic|mdp|kalman|ekf|ukf|slam|transformer|cnn|rnn|lstm|gan|planning|trajectory|control|mpc|object detection|sensor fusion|occupancy|autonomous driving|simulation|iso 26262)\b/i;
+  const concept =
+    /\b(what is|what's|define|definition of|explain|how does|difference between|compare|contrast)\b/i;
+  return tech.test(lower) || concept.test(lower);
+}
 
-const looksLikeAcronym = /\b[A-Z]{2,6}\b/.test(q) && !mentionsKyle;
-const behavioralOrPMCX = isBehavioralOrPMCXQuestion(lower);
+function resolveIntent_v5(originalQuery) {
+  const lower = originalQuery.toLowerCase();
+  const mentionsKyle = /\bkyle\b/.test(lower);
+  const star = detectSTARQuery_v5(originalQuery);
+  const career = detectCareerWorkIntent_v5(lower);
+  const tech = detectTechnicalIntent_v5(lower);
 
-// UNIVERSAL CAREER / WORK / ROLE / BACKGROUND DETECTOR
-// This restores the earlier behavior across ALL professional questions.
-const careerWorkTriggers = [
-  'experience', 'background', 'career', 'work history', 'what did he do',
-  'what he did', 'role', 'responsibilities', 'scope', 'impact', 'strengths',
-  'weaknesses', 'achievements', 'accomplishments', 'wins', 'projects he worked on',
-  'projects he led', 'led', 'handled', 'managed', 'operated', 'testing work',
-  'validation work', 'field work', 'program work', 'customer work',
-  'data work', 'training data work', 'engineering experience',
-  'program experience', 'operations experience', 'professional experience'
-];
+  // STAR always wins → Kyle mode
+  if (star) return { intent: 'kyle', star };
 
-const hasCareerWorkSignal =
-  careerWorkTriggers.some(t => lower.includes(t));
-
-// FINAL INTENT ROUTING LOGIC (PATCHED)
-const intent = (() => {
-
-  // TECHNICAL BRANCH — but override to Kyle if it's actually a "work/role" question
-  if (hasTechnicalKeywords || looksLikeAcronym || (isConceptQuestion && !mentionsKyle)) {
-
-    // If user is actually asking about work/experience → force Kyle
-    if (hasCareerWorkSignal) return 'kyle';
-
-    return 'technical';
+  // Technical questions → TECH
+  // But override to Kyle if it's actually about his work or experience.
+  if (tech) {
+    if (career || mentionsKyle) return { intent: 'kyle', star };
+    return { intent: 'technical', star };
   }
 
-  // KYLE BRANCH
-  if (mentionsKyle || isInterviewy || behavioralOrPMCX || hasCareerWorkSignal) {
-    return 'kyle';
-  }
+  // Career / background / work / interview style → KYLE
+  if (career || mentionsKyle) return { intent: 'kyle', star };
 
-  // DEFAULT
-  return 'mixed';
-})();
+  // Everything else → mixed
+  return { intent: 'mixed', star };
+}
 
-const isSTAR = detectSTARQuery(originalQuery);
+/* Apply intent engine */
+
+const { intent, star: isSTAR } = resolveIntent_v5(originalQuery);
 const isMulti = detectMultiPartQuery(originalQuery);
+
 
 
     // ==================================================================
