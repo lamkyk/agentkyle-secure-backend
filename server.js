@@ -743,44 +743,15 @@ function resolveIntent(originalQuery, lower) {
 // even when career-language or Kyle keywords appear.
 //
 
-const challengeSignalRegex = /\b(
-  physics\ bomb|
-  holographic|
-  adversarial\ prank|
-  starship|
-  mars\ landing|
-  compute\ arbitrage|
-  1000x|
-  extinction\ filter|
-  north[-\s]?star\ metric|
-  moonshot|
-  architecture\ do\ you\ build|
-  how\ do\ you\ win|
-  build\ a\ system|
-  ultra\ reliable|
-  catastrophic|
-  failure\ mode|
-  adversarial|
-  unseen\ dust\ storm|
-  boulder\ field|
-  one\ shot|
-  impossible\ problem|
-  10b|
-  24\ months|
-  beat\ gpt|
-  beat\ claude|
-  beat\ grok|
-  runtime\ verification
-)\b/ix;
+const challengeSignalRegex = /\b(physics bomb|holographic|adversarial prank|starship|mars landing|compute arbitrage|1000x|extinction filter|north[-\s]?star metric|moonshot|architecture do you build|how do you win|build a system|ultra reliable|catastrophic|failure mode|adversarial|unseen dust storm|boulder field|one shot|impossible problem|10b|24 months|beat gpt|beat claude|beat grok|runtime verification)\b/i;
 
 function applyChallengeOverride(intent, lower) {
   if (challengeSignalRegex.test(lower)) {
-    return 'technical';
+    return "technical";
   }
   return intent;
 }
 
-// Apply override
 intent = applyChallengeOverride(intent, lower);
 
 
