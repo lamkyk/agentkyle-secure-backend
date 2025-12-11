@@ -776,38 +776,59 @@ app.post('/query', async (req, res) => {
       markSuggestionUsed(normalizedForSuggestion);
     }
 
-    // ==================================================================
-    // INTENT ROUTING: KYLE vs TECHNICAL vs MIXED
-    // ==================================================================
-    const mentionsKyle = isAboutKyle || /\babout kyle\b/i.test(lower);
+// ==================================================================
+// INTENT ROUTING: KYLE vs TECHNICAL vs MIXED
+// ==================================================================
+const mentionsKyle = isAboutKyle || /\babout kyle\b/i.test(lower);
 
-    const isInterviewy =
-      /\b(tell me about yourself|strengths|weaknesses|greatest strength|greatest weakness|why do you want this role|why .*role|why .*company|why should we hire you|fit for this role|fit for the role|background for this role|walk me through your resume)\b/i.test(
-        lower
-      );
+const isInterviewy =
+  /\b(tell me about yourself|strengths|weaknesses|greatest strength|greatest weakness|why do you want this role|why .*role|why .*company|why should we hire you|fit for this role|fit for the role|background for this role|walk me through your resume)\b/i.test(
+    lower
+  );
 
-    const isConceptQuestion =
-      /\b(what is|what's|define|definition of|explain|how does|how do you handle|how does .* work|difference between|compare|contrast)\b/i.test(
-        lower
-      );
+const isConceptQuestion =
+  /\b(what is|what's|define|definition of|explain|how does|how do you handle|how does .* work|difference between|compare|contrast)\b/i.test(
+    lower
+  );
 
-    const hasTechnicalKeywords =
-      /\b(rl|reinforcement learning|policy gradient|q-learning|q learning|actor-critic|actor critic|bandit|multi-armed bandit|mdp|markov decision process|value function|advantage function|neural network|deep learning|machine learning|ml|supervised learning|unsupervised learning|self-supervised|transformer|cnn|rnn|lstm|gan|autonomous driving|av stack|planning|trajectory planning|path planning|control|controller|pid controller|pid loop|mpc|model predictive control|slam|localization|sensor fusion|kalman filter|ekf|ukf|bayes|bayesian|reward function|policy|trajectory|perception|object detection|lidar|lidar sensor|radar|camera model|occupancy grid|safety case|iso 26262|sim2real|simulation|differential flatness|flatness)\b/i.test(
-        lower
-      );
+const hasTechnicalKeywords =
+  /\b(rl|reinforcement learning|policy gradient|q-learning|q learning|actor-critic|actor critic|bandit|multi-armed bandit|mdp|markov decision process|value function|advantage function|neural network|deep learning|machine learning|ml|supervised learning|unsupervised learning|self-supervised|transformer|cnn|rnn|lstm|gan|autonomous driving|av stack|planning|trajectory planning|path planning|control|controller|pid controller|pid loop|mpc|model predictive control|slam|localization|sensor fusion|kalman filter|ekf|ukf|bayes|bayesian|reward function|policy|trajectory|perception|object detection|lidar|lidar sensor|radar|camera model|occupancy grid|safety case|iso 26262|sim2real|simulation|differential flatness|flatness)\b/i.test(
+    lower
+  );
 
-    const looksLikeAcronym = /\b[A-Z]{2,6}\b/.test(q) && !mentionsKyle;
-    const behavioralOrPMCX = isBehavioralOrPMCXQuestion(lower);
+const looksLikeAcronym = /\b[A-Z]{2,6}\b/.test(q) && !mentionsKyle;
+const behavioralOrPMCX = isBehavioralOrPMCXQuestion(lower);
 
-    const intent = (() => {
-      if (hasTechnicalKeywords || looksLikeAcronym || (isConceptQuestion && !mentionsKyle))
-        return 'technical';
-      if (mentionsKyle || isInterviewy || behavioralOrPMCX) return 'kyle';
-      return 'mixed';
-    })();
+// NEW EXPERIENCE DETECTOR (forces Kyle-mode even inside technical questions)
+const experienceQuestion =
+  /\b(experience|background|career|work history|what does .* experience mean|what is .* experience|describe .* experience)\b/i.test(
+    lower
+  );
 
-    const isSTAR = detectSTARQuery(originalQuery);
-    const isMulti = detectMultiPartQuery(originalQuery);
+// FINAL INTENT ROUTER (PATCHED)
+const intent = (() => {
+
+  // TECHNICAL BRANCH (guarded by experience detector)
+  if (hasTechnicalKeywords || looksLikeAcronym || (isConceptQuestion && !mentionsKyle)) {
+
+    // If user asks "experience" → ALWAYS return Kyle
+    if (experienceQuestion) return 'kyle';
+
+    return 'technical';
+  }
+
+  // KYLE BRANCH
+  if (mentionsKyle || isInterviewy || behavioralOrPMCX || experienceQuestion) {
+    return 'kyle';
+  }
+
+  // DEFAULT
+  return 'mixed';
+})();
+
+const isSTAR = detectSTARQuery(originalQuery);
+const isMulti = detectMultiPartQuery(originalQuery);
+
 
     // ==================================================================
     // EASTER-EGG JOKE (kept simple; safe, isolated)
