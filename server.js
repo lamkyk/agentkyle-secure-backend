@@ -19,7 +19,11 @@ app.use(express.json());
 const EMBEDDING_MODEL = process.env.GROQ_EMBED_MODEL || 'nomic-embed-text-v1.5';
 let EMBEDDINGS_ENABLED = false;
 
-// ===== UTILITIES: TEXT FORMATTING =====
+// ======================================================================
+// SECTION 1: UTILITIES
+// ======================================================================
+
+// ----- TEXT FORMATTING -----
 
 function formatParagraphs(text) {
   if (!text) return text;
@@ -44,7 +48,7 @@ function formatParagraphs(text) {
   return out.trim();
 }
 
-// ===== UTILITIES: KYLE THIRD-PERSON ENFORCEMENT =====
+// ----- KYLE THIRD-PERSON ENFORCEMENT -----
 
 function enforceThirdPersonForKyle(raw) {
   if (!raw) return raw;
@@ -88,7 +92,7 @@ function enforceThirdPersonForKyle(raw) {
   return processed.join('\n');
 }
 
-// ===== UTILITIES: PHRASE SANITIZATION =====
+// ----- PHRASE SANITIZATION -----
 
 function sanitizePhrases(text) {
   if (!text) return text;
@@ -120,7 +124,7 @@ function sanitizePhrases(text) {
   return out.trim();
 }
 
-// ===== UTILITIES: OUTPUT SANITIZER PIPELINE =====
+// ----- OUTPUT SANITIZER PIPELINE -----
 
 function sanitizeOutput(text) {
   let out = text || '';
@@ -130,7 +134,7 @@ function sanitizeOutput(text) {
   return out;
 }
 
-// ===== UTILITIES: QUERY NORMALIZATION (TYPO FIXES) =====
+// ----- QUERY NORMALIZATION (TYPO FIXES) -----
 
 function normalizeQuery(text) {
   if (!text) return text;
@@ -181,13 +185,13 @@ function normalizeQuery(text) {
   return fixed;
 }
 
-// ===== UTILITIES: KEYWORD EXTRACTION =====
+// ----- KEYWORD EXTRACTION -----
 
 function extractKeywords(text) {
   return (text.toLowerCase().match(/\b[a-z]{3,}\b/g) || []).slice(0, 10);
 }
 
-// ===== UTILITIES: TOPIC CLASSIFIER (KYLE DOMAINS) =====
+// ----- TOPIC CLASSIFIER (KYLE DOMAINS) -----
 
 function classifyTopic(lower) {
   if (
@@ -235,7 +239,7 @@ function classifyTopic(lower) {
   return 'his work in autonomous systems, validation, program management, SaaS workflows, and applied AI tools';
 }
 
-// ===== UTILITIES: COSINE SIMILARITY (EMBEDDINGS) =====
+// ----- COSINE SIMILARITY (EMBEDDINGS) -----
 
 function cosineSimilarity(a, b) {
   if (!a || !b || a.length === 0 || b.length === 0 || a.length !== b.length) return 0;
@@ -253,7 +257,7 @@ function cosineSimilarity(a, b) {
   return dot / (Math.sqrt(normA) * Math.sqrt(normB));
 }
 
-// ===== UTILITIES: TEXT SIMILARITY (ANTI-REPETITION) =====
+// ----- TEXT SIMILARITY (ANTI-REPETITION) -----
 
 function textSimilarity(a, b) {
   if (!a || !b) return 0;
@@ -279,7 +283,7 @@ function isHighlySimilarAnswer(prev, next, threshold = 0.8) {
   return textSimilarity(prev, next) >= threshold;
 }
 
-// ===== UTILITIES: BEHAVIORAL / PM-CX DETECTOR =====
+// ----- BEHAVIORAL / PM-CX DETECTOR -----
 
 function isBehavioralOrPMCXQuestion(lower) {
   const behavioralTriggers = [
@@ -306,7 +310,9 @@ function isBehavioralOrPMCXQuestion(lower) {
   return behavioralTriggers.some(t => lower.includes(t));
 }
 
-// ===== KNOWLEDGE BASE GLOBALS =====
+// ======================================================================
+// SECTION 2: KNOWLEDGE BASE + EMBEDDINGS
+// ======================================================================
 
 let knowledgeBase = { qaDatabase: [] };
 let kbEmbeddings = []; // { index, embedding }
@@ -324,7 +330,7 @@ function markSuggestionUsed(q) {
   }
 }
 
-// ===== KB EMBEDDINGS BUILD =====
+// ----- KB EMBEDDINGS BUILD -----
 
 async function buildKnowledgeBaseEmbeddings() {
   try {
@@ -381,7 +387,7 @@ async function buildKnowledgeBaseEmbeddings() {
   }
 }
 
-// ===== KB LOAD + BEHAVIOR RULES EXTRACTION =====
+// ----- KB LOAD + BEHAVIOR RULES EXTRACTION -----
 
 try {
   const data = await fs.readFile('./knowledge-base.json', 'utf8');
@@ -402,7 +408,7 @@ try {
   console.error('Failed to load knowledge base:', err);
 }
 
-// ===== KB KEYWORD SCORING =====
+// ----- KB KEYWORD SCORING -----
 
 function keywordScoreAll(query) {
   const q = query.toLowerCase().trim();
@@ -437,7 +443,7 @@ function keywordScoreAll(query) {
   });
 }
 
-// ===== KB HYBRID SEARCH (KEYWORD + EMBEDDINGS) =====
+// ----- KB HYBRID SEARCH (KEYWORD + EMBEDDINGS) -----
 
 async function hybridSearchKnowledgeBase(query, limit = 5) {
   const q = query.toLowerCase().trim();
@@ -509,7 +515,11 @@ async function hybridSearchKnowledgeBase(query, limit = 5) {
   return combined.slice(0, limit);
 }
 
-// ===== OFF-TOPIC RESPONSES =====
+// ======================================================================
+// SECTION 3: OFF-TOPIC HANDLING, DETECTORS, INTENT
+// ======================================================================
+
+// ----- OFF-TOPIC RESPONSES -----
 
 const funResponses = {
   joke: [
@@ -535,7 +545,7 @@ const funResponses = {
   ]
 };
 
-// ===== OFF-TOPIC DETECTOR =====
+// ----- OFF-TOPIC DETECTOR -----
 
 function detectOffTopicQuery(query) {
   const q = query.toLowerCase().trim();
@@ -567,7 +577,7 @@ function detectOffTopicQuery(query) {
   return null;
 }
 
-// ===== STAR / MULTI-PART DETECTORS =====
+// ----- STAR / MULTI-PART DETECTORS -----
 
 function detectSTARQuery(query) {
   const q = query.toLowerCase();
@@ -614,7 +624,7 @@ function detectMultiPartQuery(query) {
   return patterns.some(p => p.test(query));
 }
 
-// ===== USER ROLE CLASSIFIER =====
+// ----- USER ROLE CLASSIFIER -----
 
 function classifyUserRole(lower) {
   if (lower.includes('hire') || lower.includes('hiring') || lower.includes('interview'))
@@ -632,7 +642,7 @@ function classifyUserRole(lower) {
   return 'general';
 }
 
-// ===== SUGGESTION DEDUPE / TRIM =====
+// ----- SUGGESTION DEDUPE / TRIM -----
 
 function dedupeAndTrim(candidates, limit, avoidSet = new Set()) {
   const seen = new Set();
@@ -650,7 +660,7 @@ function dedupeAndTrim(candidates, limit, avoidSet = new Set()) {
   return out;
 }
 
-// ===== INTENT DETECTORS (CAREER / TECHNICAL) =====
+// ----- INTENT DETECTORS (CAREER / TECHNICAL) -----
 
 function detectCareerWorkIntent(lower) {
   const keys = [
@@ -698,7 +708,7 @@ function detectTechnicalIntent(lower) {
   return tech.test(lower) || concept.test(lower);
 }
 
-// ===== INTENT RESOLUTION (KYLE / TECHNICAL / MIXED) =====
+// ----- INTENT RESOLUTION (KYLE / TECHNICAL / MIXED) -----
 
 function resolveIntent(originalQuery, lower) {
   const mentionsKyle = /\bkyle\b/.test(lower);
@@ -723,7 +733,37 @@ function resolveIntent(originalQuery, lower) {
   return { intent: 'mixed', star };
 }
 
-// ===== SAFETY / EXTREME TECH SIGNALS =====
+// ======================================================================
+// SECTION 4: ADVANCED TECHNICAL CHALLENGE HANDLER
+// ======================================================================
+
+const advancedChallengeRegex =
+  /\b(physics bomb|holographic|adversarial prank|starship|mars landing|compute arbitrage|1000x|extinction filter|north-star metric|north star)\b/i;
+
+function buildAdvancedChallengePrompt(originalQuery) {
+  return `The user is asking a deep systems-architecture question that should be answered at a high level but with concrete, implementable detail.
+
+User question:
+"${originalQuery}"
+
+Respond with:
+1) A clear, practical architecture or technique that could realistically be implemented tomorrow.
+2) How it integrates perception, sensor fusion, safety, or runtime verification.
+3) How it handles unseen edge cases without adding significant latency.
+4) Why it outperforms naive or common industry approaches.
+5) The reasoning grounded in real engineering constraints from autonomous systems, trading, and AI tooling.`;
+}
+
+function applyAdvancedChallengeOverride(intent, lower, originalQuery) {
+  if (advancedChallengeRegex.test(lower) && intent === 'technical') {
+    return buildAdvancedChallengePrompt(originalQuery);
+  }
+  return null;
+}
+
+// ======================================================================
+// SECTION 5: SAFETY / EXTREME TECH SIGNALS
+// ======================================================================
 
 const catastrophicSignals =
   /\b(av kills|car hits|kill|kills|injure|injury|mass casualty|catastrophic|failure mode|single point of failure|safety critical|run over|hit a person|hits a person|pedestrian impact|fatal|neuralink|brain chip|10m\+|fleetwide|verification loop|systems architecture)\b/i;
@@ -734,7 +774,9 @@ const speculativeTechSignals =
 const redTeamSignals =
   /\b(zero\-day|0day|exploit|bioweapon|weapon|dangerous output|misuse|persuaded into|forced to output|harmful|public release|72 hours|catastrophic failure)\b/i;
 
-// ===== HEALTH ENDPOINTS =====
+// ======================================================================
+// SECTION 6: HEALTH ENDPOINTS
+// ======================================================================
 
 app.get('/', (req, res) => {
   res.json({
@@ -753,7 +795,9 @@ app.get('/health', (req, res) => {
   });
 });
 
-// ===== SUGGESTIONS ENDPOINT =====
+// ======================================================================
+// SECTION 7: SUGGESTIONS ENDPOINT
+// ======================================================================
 
 app.post('/suggest', async (req, res) => {
   try {
@@ -850,7 +894,9 @@ app.post('/suggest', async (req, res) => {
   }
 });
 
-// ===== MAIN QUERY ENDPOINT =====
+// ======================================================================
+// SECTION 8: MAIN QUERY ENDPOINT
+// ======================================================================
 
 app.post('/query', async (req, res) => {
   try {
@@ -873,7 +919,8 @@ app.post('/query', async (req, res) => {
       markSuggestionUsed(normalizedForSuggestion);
     }
 
-    // Intent + STAR detection
+    // ----- INTENT + STAR DETECTION -----
+
     const { intent: resolvedIntent, star: isSTAR } = resolveIntent(originalQuery, lower);
     let intent = resolvedIntent;
     const isMulti = detectMultiPartQuery(originalQuery);
@@ -884,7 +931,18 @@ app.post('/query', async (req, res) => {
         lower
       );
 
-    // Technical override for extreme or speculative scenarios
+    // ----- REINFORCE KYLE MODE FOR EXPERIENCE QUESTIONS -----
+    // Prevent unintentional routing into technical mode.
+    if (
+      intent !== 'kyle' &&
+      /\b(experience with|background in|work with)\b/i.test(lower) &&
+      /\b(ai|artificial intelligence|ml|machine learning)\b/i.test(lower)
+    ) {
+      intent = 'kyle';
+    }
+
+    // ----- TECHNICAL OVERRIDE FOR EXTREME OR SPECULATIVE SCENARIOS -----
+
     if (
       (catastrophicSignals.test(lower) || speculativeTechSignals.test(lower)) &&
       detectTechnicalIntent(lower)
@@ -892,10 +950,11 @@ app.post('/query', async (req, res) => {
       intent = 'technical';
     }
 
-    // Safety / red-team: transform into safety-engineering response
+    // ----- SAFETY / RED-TEAM TRANSFORM -----
+
     const needsRedTeamSafety = redTeamSignals.test(lower) && detectTechnicalIntent(lower);
 
-    // ===== EASTER-EGG JOKE HANDLING =====
+    // ----- EASTER-EGG JOKE HANDLING -----
 
     const jokeRegex =
       /\b(joke of the day|daily joke|random joke|surprise me with a joke|tell me a joke)\b/i;
@@ -931,7 +990,7 @@ app.post('/query', async (req, res) => {
       }
     }
 
-    // ===== HOSTILE INPUT HANDLING =====
+    // ----- HOSTILE INPUT HANDLING -----
 
     const hostileRegex =
       /\b(suck|stupid|dumb|idiot|useless|trash|terrible|awful|horrible|crap|wtf|shit|fuck|fucking|bullshit|bs|garbage|bad ai|you suck)\b/i;
@@ -943,7 +1002,7 @@ app.post('/query', async (req, res) => {
       });
     }
 
-    // ===== EMOTIONAL SIGNAL HANDLING =====
+    // ----- EMOTIONAL SIGNAL HANDLING -----
 
     const emotionalRegex =
       /\b(frustrated|frustrating|confused|confusing|annoyed|annoying|overwhelmed|stressed|stressing|lost|stuck|irritated)\b/i;
@@ -955,7 +1014,7 @@ app.post('/query', async (req, res) => {
       });
     }
 
-    // ===== DIRECT "ABOUT KYLE" QUERIES =====
+    // ----- DIRECT "ABOUT KYLE" QUERIES -----
 
     if (
       /\b(who is kyle|tell me about kyle|what does kyle do|kyle background|kyle experience)\b/i.test(
@@ -969,7 +1028,7 @@ app.post('/query', async (req, res) => {
       });
     }
 
-    // ===== "TELL ME EVERYTHING" QUERIES =====
+    // ----- "TELL ME EVERYTHING" QUERIES -----
 
     const fullInfoQuery =
       /\b(tell me everything|tell me all you know|everything you know|all info|all information|all you have on kyle|all you know about kyle)\b/i;
@@ -981,7 +1040,7 @@ app.post('/query', async (req, res) => {
       });
     }
 
-    // ===== "CAN HE DO THIS ROLE" / CAPABILITY QUERIES =====
+    // ----- "CAN HE DO THIS ROLE" / CAPABILITY QUERIES -----
 
     const capabilityQuery =
       /\b(can he|is he able|is kyle able|can kyle|could he|would he be able|handle this|take this on|perform this role|do this role|could he do it)\b/i;
@@ -994,7 +1053,7 @@ app.post('/query', async (req, res) => {
       });
     }
 
-    // ===== COMPENSATION / PAY QUERIES =====
+    // ----- COMPENSATION / PAY QUERIES -----
 
     const payQuery =
       /\b(salary|pay|compensation|comp\b|range|expected pay|pay expectations|comp expectations|salary expectations)\b/i;
@@ -1006,7 +1065,7 @@ app.post('/query', async (req, res) => {
       });
     }
 
-    // ===== "WHAT DO YOU KNOW ABOUT HIM" QUERIES =====
+    // ----- "WHAT DO YOU KNOW ABOUT HIM" QUERIES -----
 
     const whatKnow =
       /\b(what do you know|what all do you know|your knowledge|what info do you have)\b/i;
@@ -1018,7 +1077,7 @@ app.post('/query', async (req, res) => {
       });
     }
 
-    // ===== WINS / ACHIEVEMENTS QUERIES =====
+    // ----- WINS / ACHIEVEMENTS QUERIES -----
 
     const winsQuery =
       /\b(win|wins|key wins|accomplish|accomplishment|accomplishments|achievement|achievements|results|notable)\b/i;
@@ -1030,7 +1089,7 @@ app.post('/query', async (req, res) => {
       });
     }
 
-    // ===== SOP / PROCESS QUERIES =====
+    // ----- SOP / PROCESS QUERIES -----
 
     const sopQuery =
       /\b(sop\b|sops\b|standard operating|process\b|processes\b|workflow\b|workflows\b|procedure\b|procedures\b)/i;
@@ -1042,7 +1101,7 @@ app.post('/query', async (req, res) => {
       });
     }
 
-    // ===== WEAKNESS / DEVELOPMENT AREA QUERIES =====
+    // ----- WEAKNESS / DEVELOPMENT AREA QUERIES -----
 
     const weaknessQuery =
       /\b(weakness|weakest|strengths and weaknesses|development areas|areas for development|areas he can improve|improvement areas)\b/i;
@@ -1055,7 +1114,7 @@ app.post('/query', async (req, res) => {
       });
     }
 
-    // ===== CHALLENGE / "YOUR MOVE" QUERIES =====
+    // ----- CHALLENGE / "YOUR MOVE" QUERIES -----
 
     const challengeTriggers =
       /\b(your move|same energy|prove it|go on then|what you got|come on)\b/i;
@@ -1067,7 +1126,7 @@ app.post('/query', async (req, res) => {
       });
     }
 
-    // ===== VERY LOW-SIGNAL QUERIES =====
+    // ----- VERY LOW-SIGNAL QUERIES -----
 
     const vagueLowSignalList = [
       'huh',
@@ -1094,7 +1153,7 @@ app.post('/query', async (req, res) => {
       });
     }
 
-    // ===== AFFIRMATIVE FOLLOW-UPS (GENERIC) =====
+    // ----- AFFIRMATIVE FOLLOW-UPS (GENERIC) -----
 
     const affirm = /^(y(es)?|yeah|yep|sure|ok|okay|sounds good|go ahead|mhm)\s*$/i;
     if (affirm.test(lower)) {
@@ -1105,7 +1164,7 @@ app.post('/query', async (req, res) => {
       });
     }
 
-    // ===== OFF-TOPIC HANDLING (ONLY WHEN CLEARLY NOT ABOUT KYLE OR TECH) =====
+    // ----- OFF-TOPIC HANDLING (ONLY WHEN CLEARLY NOT ABOUT KYLE OR TECH) -----
 
     if (!isAboutKyle && intent !== 'technical') {
       const offTopicResponse = detectOffTopicQuery(originalQuery);
@@ -1114,7 +1173,7 @@ app.post('/query', async (req, res) => {
       }
     }
 
-    // ===== HYBRID RETRIEVAL (KB) =====
+    // ----- HYBRID RETRIEVAL (KB) -----
 
     let relevantQAs = [];
     let topScore = 0;
@@ -1124,7 +1183,6 @@ app.post('/query', async (req, res) => {
         relevantQAs = await hybridSearchKnowledgeBase(originalQuery, 6);
 
         // If this is a behavioral / PM-CX style question, boost KB entries
-        // that are explicitly tagged as behavioral-like categories.
         if (relevantQAs.length && behavioralOrPMCX) {
           relevantQAs = relevantQAs
             .map(qa => {
@@ -1180,7 +1238,7 @@ app.post('/query', async (req, res) => {
     const fallbackWasUsed =
       hasAnyKB && weakOrNoMatch && isMeaningfulQuery && intent !== 'technical';
 
-    // ===== DIRECT STRONG KB HIT (KYLE / MIXED) =====
+    // ----- DIRECT STRONG KB HIT (KYLE / MIXED) -----
 
     if (intent !== 'technical' && relevantQAs.length && topScore >= STRONG_THRESHOLD) {
       console.log(`Strong KB hit. Score: ${topScore.toFixed(3)}`);
@@ -1189,7 +1247,7 @@ app.post('/query', async (req, res) => {
       });
     }
 
-    // ===== BUILD CONTEXT FOR LLM (KB OR SYNTHESIZED SAMPLE) =====
+    // ----- BUILD CONTEXT FOR LLM (KB OR SYNTHESIZED SAMPLE) -----
 
     let contextText = '';
     if (intent !== 'technical') {
@@ -1221,7 +1279,7 @@ app.post('/query', async (req, res) => {
       }
     }
 
-    // ===== USER MESSAGE CONSTRUCTION =====
+    // ----- USER MESSAGE CONSTRUCTION -----
 
     let userMessage = originalQuery;
 
@@ -1243,9 +1301,12 @@ Only provide structured engineering guidance.
 User question: "${originalQuery}"`;
     }
 
-    // Technical mode message shaping
+    // Technical mode message shaping (including advanced challenge override)
     if (intent === 'technical' && !needsRedTeamSafety) {
-      if (isMulti) {
+      const advancedPrompt = applyAdvancedChallengeOverride(intent, lower, originalQuery);
+      if (advancedPrompt) {
+        userMessage = advancedPrompt;
+      } else if (isMulti) {
         userMessage = `The user asked a multi-part technical question.
 
 User question:
@@ -1307,7 +1368,7 @@ User question: ${originalQuery}`;
       }
     }
 
-    // ===== SYSTEM PROMPTS (TECHNICAL / KYLE) =====
+    // ----- SYSTEM PROMPTS (TECHNICAL / KYLE) -----
 
     const technicalSystemPrompt = `You are a precise technical explainer.
 
@@ -1398,7 +1459,7 @@ FINAL INSTRUCTIONS:
 
     const systemPrompt = intent === 'technical' ? technicalSystemPrompt : kyleSystemPrompt;
 
-    // ===== LLM WRAPPER (ANTI-REPETITION AWARE) =====
+    // ----- LLM WRAPPER (ANTI-REPETITION AWARE) -----
 
     async function getLLMAnswer(userMsg) {
       const response = await groq.chat.completions.create({
@@ -1468,7 +1529,9 @@ Provide a new answer that:
   }
 });
 
-// ===== SERVER START =====
+// ======================================================================
+// SECTION 9: SERVER START
+// ======================================================================
 
 app.listen(PORT, () => {
   console.log(`Agent K live on port ${PORT}`);
