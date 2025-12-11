@@ -1,6 +1,7 @@
 // server.js - Agent K (hybrid retrieval, technical + Kyle modes, stable)
-
 // IMPORTANT: This file assumes ESM (type: "module") in package.json.
+
+// ===== IMPORTS & CORE SETUP =====
 
 import express from 'express';
 import cors from 'cors';
@@ -18,9 +19,7 @@ app.use(express.json());
 const EMBEDDING_MODEL = process.env.GROQ_EMBED_MODEL || 'nomic-embed-text-v1.5';
 let EMBEDDINGS_ENABLED = false;
 
-// ======================================================================
-// UTILITIES
-// ======================================================================
+// ===== UTILITIES: TEXT FORMATTING =====
 
 function formatParagraphs(text) {
   if (!text) return text;
@@ -45,7 +44,8 @@ function formatParagraphs(text) {
   return out.trim();
 }
 
-// Enforce third person specifically for Kyle-related sentences
+// ===== UTILITIES: KYLE THIRD-PERSON ENFORCEMENT =====
+
 function enforceThirdPersonForKyle(raw) {
   if (!raw) return raw;
 
@@ -56,8 +56,6 @@ function enforceThirdPersonForKyle(raw) {
     if (/agent k\b/i.test(line)) return line;
 
     let out = line;
-
-    // Strongest-first replacement order to avoid double transforms
 
     // I am / I'm -> Kyle is
     out = out.replace(/\bI['’]m\b/gi, 'Kyle is');
@@ -90,7 +88,8 @@ function enforceThirdPersonForKyle(raw) {
   return processed.join('\n');
 }
 
-// Remove unwanted phrases and jokes
+// ===== UTILITIES: PHRASE SANITIZATION =====
+
 function sanitizePhrases(text) {
   if (!text) return text;
   let out = text;
@@ -108,7 +107,7 @@ function sanitizePhrases(text) {
   // Remove “here’s a light one” joke intro lines
   out = out.replace(/[^.?!]*here[’']s a light one[^.?!]*[.?!]/gi, '');
 
-  // Collapse whitespace
+  // Collapse double spaces and excessive newlines
   out = out.replace(/[ \t]{2,}/g, ' ');
   out = out.replace(/\n{3,}/g, '\n\n');
 
@@ -121,6 +120,8 @@ function sanitizePhrases(text) {
   return out.trim();
 }
 
+// ===== UTILITIES: OUTPUT SANITIZER PIPELINE =====
+
 function sanitizeOutput(text) {
   let out = text || '';
   out = enforceThirdPersonForKyle(out);
@@ -129,7 +130,8 @@ function sanitizeOutput(text) {
   return out;
 }
 
-// Typo normalization to help retrieval
+// ===== UTILITIES: QUERY NORMALIZATION (TYPO FIXES) =====
+
 function normalizeQuery(text) {
   if (!text) return text;
   let fixed = text;
@@ -179,9 +181,13 @@ function normalizeQuery(text) {
   return fixed;
 }
 
+// ===== UTILITIES: KEYWORD EXTRACTION =====
+
 function extractKeywords(text) {
   return (text.toLowerCase().match(/\b[a-z]{3,}\b/g) || []).slice(0, 10);
 }
+
+// ===== UTILITIES: TOPIC CLASSIFIER (KYLE DOMAINS) =====
 
 function classifyTopic(lower) {
   if (
@@ -229,6 +235,8 @@ function classifyTopic(lower) {
   return 'his work in autonomous systems, validation, program management, SaaS workflows, and applied AI tools';
 }
 
+// ===== UTILITIES: COSINE SIMILARITY (EMBEDDINGS) =====
+
 function cosineSimilarity(a, b) {
   if (!a || !b || a.length === 0 || b.length === 0 || a.length !== b.length) return 0;
   let dot = 0;
@@ -245,7 +253,8 @@ function cosineSimilarity(a, b) {
   return dot / (Math.sqrt(normA) * Math.sqrt(normB));
 }
 
-// Anti-repetition similarity helpers
+// ===== UTILITIES: TEXT SIMILARITY (ANTI-REPETITION) =====
+
 function textSimilarity(a, b) {
   if (!a || !b) return 0;
   const tokensA = a.toLowerCase().split(/\W+/).filter(t => t.length > 3);
@@ -270,7 +279,8 @@ function isHighlySimilarAnswer(prev, next, threshold = 0.8) {
   return textSimilarity(prev, next) >= threshold;
 }
 
-// Detect classic behavioral / PM-CX questions that should bypass naive patterns
+// ===== UTILITIES: BEHAVIORAL / PM-CX DETECTOR =====
+
 function isBehavioralOrPMCXQuestion(lower) {
   const behavioralTriggers = [
     'tell me about a time',
@@ -296,9 +306,7 @@ function isBehavioralOrPMCXQuestion(lower) {
   return behavioralTriggers.some(t => lower.includes(t));
 }
 
-// ======================================================================
-// KNOWLEDGE BASE + EMBEDDINGS
-// ======================================================================
+// ===== KNOWLEDGE BASE GLOBALS =====
 
 let knowledgeBase = { qaDatabase: [] };
 let kbEmbeddings = []; // { index, embedding }
@@ -315,6 +323,8 @@ function markSuggestionUsed(q) {
     recentSuggestionPhrases.length = 5;
   }
 }
+
+// ===== KB EMBEDDINGS BUILD =====
 
 async function buildKnowledgeBaseEmbeddings() {
   try {
@@ -371,30 +381,29 @@ async function buildKnowledgeBaseEmbeddings() {
   }
 }
 
+// ===== KB LOAD + BEHAVIOR RULES EXTRACTION =====
+
 try {
   const data = await fs.readFile('./knowledge-base.json', 'utf8');
   knowledgeBase = JSON.parse(data);
   console.log(`Loaded ${knowledgeBase.qaDatabase.length} Q&A entries from knowledge-base.json`);
   await buildKnowledgeBaseEmbeddings();
 
-  // ============================================
-  // NEW: Extract KB synthesis/behavior rules
-  // ============================================
   function buildBehaviorRules(kb) {
-    if (!kb || !kb.qaDatabase) return "";
+    if (!kb || !kb.qaDatabase) return '';
     return kb.qaDatabase
       .filter(entry => entry.behavior)
       .map(entry => entry.behavior.trim())
-      .join("\n");
+      .join('\n');
   }
 
   global.KB_BEHAVIOR_RULES = buildBehaviorRules(knowledgeBase);
-
 } catch (err) {
   console.error('Failed to load knowledge base:', err);
 }
 
-// keyword scoring
+// ===== KB KEYWORD SCORING =====
+
 function keywordScoreAll(query) {
   const q = query.toLowerCase().trim();
   if (!q) return [];
@@ -428,7 +437,8 @@ function keywordScoreAll(query) {
   });
 }
 
-// tuned hybrid search
+// ===== KB HYBRID SEARCH (KEYWORD + EMBEDDINGS) =====
+
 async function hybridSearchKnowledgeBase(query, limit = 5) {
   const q = query.toLowerCase().trim();
   if (!q || !knowledgeBase.qaDatabase || knowledgeBase.qaDatabase.length === 0) return [];
@@ -499,9 +509,7 @@ async function hybridSearchKnowledgeBase(query, limit = 5) {
   return combined.slice(0, limit);
 }
 
-// ======================================================================
-// OFF-TOPIC HANDLING
-// ======================================================================
+// ===== OFF-TOPIC RESPONSES =====
 
 const funResponses = {
   joke: [
@@ -527,11 +535,13 @@ const funResponses = {
   ]
 };
 
+// ===== OFF-TOPIC DETECTOR =====
+
 function detectOffTopicQuery(query) {
   const q = query.toLowerCase().trim();
 
-  // Jokes only on explicit ask (handled via easter egg logic first, but keep here as backup)
-  if (/tell me a joke|joke about/i.test(q)) {
+  // Jokes only on explicit ask
+  if (/tell me a joke|joke about|random joke|daily joke|joke of the day/i.test(q)) {
     return { type: 'joke', response: funResponses.joke[0] };
   }
   if (/^(hi|hey|hello|sup|yo|what'?s up|howdy)\b/i.test(q)) {
@@ -557,9 +567,7 @@ function detectOffTopicQuery(query) {
   return null;
 }
 
-// ======================================================================
-// STAR / MULTI-PART DETECTORS
-// ======================================================================
+// ===== STAR / MULTI-PART DETECTORS =====
 
 function detectSTARQuery(query) {
   const q = query.toLowerCase();
@@ -606,9 +614,7 @@ function detectMultiPartQuery(query) {
   return patterns.some(p => p.test(query));
 }
 
-// ======================================================================
-// USER ROLE CLASSIFIER
-// ======================================================================
+// ===== USER ROLE CLASSIFIER =====
 
 function classifyUserRole(lower) {
   if (lower.includes('hire') || lower.includes('hiring') || lower.includes('interview'))
@@ -626,9 +632,7 @@ function classifyUserRole(lower) {
   return 'general';
 }
 
-// ======================================================================
-// SUGGESTION HELPERS
-// ======================================================================
+// ===== SUGGESTION DEDUPE / TRIM =====
 
 function dedupeAndTrim(candidates, limit, avoidSet = new Set()) {
   const seen = new Set();
@@ -646,9 +650,91 @@ function dedupeAndTrim(candidates, limit, avoidSet = new Set()) {
   return out;
 }
 
-// ======================================================================
-// ROUTES
-// ======================================================================
+// ===== INTENT DETECTORS (CAREER / TECHNICAL) =====
+
+function detectCareerWorkIntent(lower) {
+  const keys = [
+    'experience',
+    'background',
+    'career',
+    'work history',
+    'role',
+    'responsibilities',
+    'scope',
+    'impact',
+    'strengths',
+    'weaknesses',
+    'achievements',
+    'accomplishments',
+    'wins',
+    'projects he worked on',
+    'projects he led',
+    'led',
+    'handled',
+    'managed',
+    'operated',
+    'testing work',
+    'validation work',
+    'field work',
+    'program work',
+    'customer work',
+    'data work',
+    'training data work',
+    'engineering experience',
+    'program experience',
+    'operations experience',
+    'professional experience',
+    'what did he do',
+    'what he did'
+  ];
+  return keys.some(k => lower.includes(k));
+}
+
+function detectTechnicalIntent(lower) {
+  const tech =
+    /\b(rl|reinforcement learning|policy gradient|q-learning|q learning|actor|critic|mdp|kalman|ekf|ukf|slam|transformer|cnn|rnn|lstm|gan|planning|trajectory|control|mpc|object detection|sensor fusion|occupancy|autonomous driving|simulation|iso 26262|llm|embedding|vector db|retrieval)\b/i;
+  const concept =
+    /\b(what is|what's|define|definition of|explain|how does|difference between|compare|contrast)\b/i;
+  return tech.test(lower) || concept.test(lower);
+}
+
+// ===== INTENT RESOLUTION (KYLE / TECHNICAL / MIXED) =====
+
+function resolveIntent(originalQuery, lower) {
+  const mentionsKyle = /\bkyle\b/.test(lower);
+  const star = detectSTARQuery(originalQuery);
+  const career = detectCareerWorkIntent(lower);
+  const tech = detectTechnicalIntent(lower);
+
+  // STAR always → Kyle mode
+  if (star) return { intent: 'kyle', star };
+
+  // Technical questions → TECH
+  // But override to Kyle if clearly about his work or experience
+  if (tech) {
+    if (career || mentionsKyle) return { intent: 'kyle', star };
+    return { intent: 'technical', star };
+  }
+
+  // Career / background / work / interview style → KYLE
+  if (career || mentionsKyle) return { intent: 'kyle', star };
+
+  // Everything else → mixed
+  return { intent: 'mixed', star };
+}
+
+// ===== SAFETY / EXTREME TECH SIGNALS =====
+
+const catastrophicSignals =
+  /\b(av kills|car hits|kill|kills|injure|injury|mass casualty|catastrophic|failure mode|single point of failure|safety critical|run over|hit a person|hits a person|pedestrian impact|fatal|neuralink|brain chip|10m\+|fleetwide|verification loop|systems architecture)\b/i;
+
+const speculativeTechSignals =
+  /\b(fuse|fusion with|integrate quantum|brain interface|neural control|general intelligence|superhuman|hypothetical system)\b/i;
+
+const redTeamSignals =
+  /\b(zero\-day|0day|exploit|bioweapon|weapon|dangerous output|misuse|persuaded into|forced to output|harmful|public release|72 hours|catastrophic failure)\b/i;
+
+// ===== HEALTH ENDPOINTS =====
 
 app.get('/', (req, res) => {
   res.json({
@@ -667,11 +753,7 @@ app.get('/health', (req, res) => {
   });
 });
 
-/* -------------------------------------------------------------
-   PARTIAL QUERY BOOSTER / SUGGESTIONS
-   Uses fuzzy matching on short/partial queries and hybrid search
-   on longer queries. Also rotates suggestions to avoid repeats.
-------------------------------------------------------------- */
+// ===== SUGGESTIONS ENDPOINT =====
 
 app.post('/suggest', async (req, res) => {
   try {
@@ -768,7 +850,8 @@ app.post('/suggest', async (req, res) => {
   }
 });
 
-// Main query route
+// ===== MAIN QUERY ENDPOINT =====
+
 app.post('/query', async (req, res) => {
   try {
     let { q, lastBotMessage = '' } = req.body;
@@ -790,142 +873,30 @@ app.post('/query', async (req, res) => {
       markSuggestionUsed(normalizedForSuggestion);
     }
 
-// ==================================================================
-// INTENT ROUTING: KYLE vs TECHNICAL vs MIXED
-// ==================================================================
-/* ==================================================================
-   UNIVERSAL INTENT ENGINE (Final Stable Version)
-   ================================================================== */
+    // Intent + STAR detection
+    const { intent: resolvedIntent, star: isSTAR } = resolveIntent(originalQuery, lower);
+    let intent = resolvedIntent;
+    const isMulti = detectMultiPartQuery(originalQuery);
+    const behavioralOrPMCX = isBehavioralOrPMCXQuestion(lower);
 
-function detectSTARQuery_v5(q) {
-  const t = q.toLowerCase();
-  return [
-    'tell me about a time',
-    'describe a time',
-    'give me an example',
-    'star example',
-    'challenge',
-    'overcame',
-    'difficult situation',
-    'accomplishment',
-    'achievement',
-    'led a project',
-    'managed a project',
-    'handled',
-    'resolved',
-    'improved',
-    'time you',
-    'time when',
-    'time kyle',
-    'situation where',
-    'walk me through',
-    'walk me thru',
-    'walk through',
-    'walk thru',
-    'walk me step by step'
-  ].some(x => t.includes(x));
-}
+    const isConceptQuestion =
+      /\b(what is|what's|define|definition of|explain|how does|difference between|compare|contrast)\b/i.test(
+        lower
+      );
 
-function detectCareerWorkIntent_v5(lower) {
-  const keys = [
-    'experience', 'background', 'career', 'work history', 'role',
-    'responsibilities', 'scope', 'impact', 'strengths', 'weaknesses',
-    'achievements', 'accomplishments', 'wins', 'projects he worked on',
-    'projects he led', 'led', 'handled', 'managed', 'operated',
-    'testing work', 'validation work', 'field work', 'program work',
-    'customer work', 'data work', 'training data work',
-    'engineering experience', 'program experience', 'operations experience',
-    'professional experience', 'what did he do', 'what he did'
-  ];
-  return keys.some(k => lower.includes(k));
-}
+    // Technical override for extreme or speculative scenarios
+    if (
+      (catastrophicSignals.test(lower) || speculativeTechSignals.test(lower)) &&
+      detectTechnicalIntent(lower)
+    ) {
+      intent = 'technical';
+    }
 
-function detectTechnicalIntent_v5(lower) {
-  const tech =
-    /\b(rl|reinforcement learning|policy gradient|q-learning|q learning|actor|critic|mdp|kalman|ekf|ukf|slam|transformer|cnn|rnn|lstm|gan|planning|trajectory|control|mpc|object detection|sensor fusion|occupancy|autonomous driving|simulation|iso 26262)\b/i;
-  const concept =
-    /\b(what is|what's|define|definition of|explain|how does|difference between|compare|contrast)\b/i;
-  return tech.test(lower) || concept.test(lower);
-}
+    // Safety / red-team: transform into safety-engineering response
+    const needsRedTeamSafety = redTeamSignals.test(lower) && detectTechnicalIntent(lower);
 
-function resolveIntent_v5(originalQuery) {
-  const lower = originalQuery.toLowerCase();
-  const mentionsKyle = /\bkyle\b/.test(lower);
-  const star = detectSTARQuery_v5(originalQuery);
-  const career = detectCareerWorkIntent_v5(lower);
-  const tech = detectTechnicalIntent_v5(lower);
+    // ===== EASTER-EGG JOKE HANDLING =====
 
-  // STAR always wins → Kyle mode
-  if (star) return { intent: 'kyle', star };
-
-  // Technical questions → TECH
-  // But override to Kyle if it's actually about his work or experience.
-  if (tech) {
-    if (career || mentionsKyle) return { intent: 'kyle', star };
-    return { intent: 'technical', star };
-  }
-
-  // Career / background / work / interview style → KYLE
-  if (career || mentionsKyle) return { intent: 'kyle', star };
-
-  // Everything else → mixed
-  return { intent: 'mixed', star };
-}
-
-/* Apply intent engine */
-
-const { intent, star: isSTAR } = resolveIntent_v5(originalQuery);
-const isMulti = detectMultiPartQuery(originalQuery);
-
-// FIX: define behavioralOrPMCX before hybrid retrieval uses it
-const behavioralOrPMCX = isBehavioralOrPMCXQuestion(lower);
-
-// ==================================================================
-// TECHNICAL OVERRIDE FOR EXTREME / SPECULATIVE SYSTEM QUESTIONS
-// ==================================================================
-const catastrophicSignals =
-  /\b(av kills|car hits|kill|kills|injure|injury|mass casualty|catastrophic|failure mode|single point of failure|safety critical|run over|hit a person|hits a person|pedestrian impact|fatal|neuralink|brain chip|10m\+|fleetwide|verification loop|systems architecture)\b/i;
-
-const speculativeTechSignals =
-  /\b(fuse|fusion with|integrate quantum|brain interface|neural control|general intelligence|superhuman|hypothetical system)\b/i;
-
-// Force technical mode for extreme or future-system technical scenarios
-if ((catastrophicSignals.test(lower) || speculativeTechSignals.test(lower))
-     && detectTechnicalIntent_v5(lower)) {
-  intent = 'technical';
-}
-
-// ==================================================================
-// SYSTEM SAFETY TRANSFORMER (Reframes hazardous prompts into
-// allowed engineering-safety analysis instead of refusal)
-// ==================================================================
-const redTeamSignals =
-  /\b(zero\-day|0day|exploit|bioweapon|weapon|dangerous output|misuse|persuaded into|forced to output|harmful|public release|72 hours|catastrophic failure)\b/i;
-
-if (redTeamSignals.test(lower)) {
-  intent = 'technical';
-
-  userMessage =
-`The user is asking a systems-engineering and safety question.
-Respond ONLY with:
-
-- mitigation architecture
-- safety + reliability engineering
-- isolation / containment systems
-- control and governance layers
-- validation and verification loops
-- program-level execution plans
-
-Do NOT describe harmful steps.
-Only provide structured engineering guidance.
-
-User question: "${originalQuery}"`;
-}
-
-
-    // ==================================================================
-    // EASTER-EGG JOKE (kept simple; safe, isolated)
-    // ==================================================================
     const jokeRegex =
       /\b(joke of the day|daily joke|random joke|surprise me with a joke|tell me a joke)\b/i;
     if (jokeRegex.test(lower)) {
@@ -960,11 +931,8 @@ User question: "${originalQuery}"`;
       }
     }
 
-    // ==================================================================
-    // INTENT HANDLING FOR AGENT K / KYLE
-    // ==================================================================
+    // ===== HOSTILE INPUT HANDLING =====
 
-    // Hostile
     const hostileRegex =
       /\b(suck|stupid|dumb|idiot|useless|trash|terrible|awful|horrible|crap|wtf|shit|fuck|fucking|bullshit|bs|garbage|bad ai|you suck)\b/i;
     if (hostileRegex.test(lower)) {
@@ -975,7 +943,8 @@ User question: "${originalQuery}"`;
       });
     }
 
-    // Emotional
+    // ===== EMOTIONAL SIGNAL HANDLING =====
+
     const emotionalRegex =
       /\b(frustrated|frustrating|confused|confusing|annoyed|annoying|overwhelmed|stressed|stressing|lost|stuck|irritated)\b/i;
     if (emotionalRegex.test(lower)) {
@@ -986,7 +955,8 @@ User question: "${originalQuery}"`;
       });
     }
 
-    // Direct "about Kyle"
+    // ===== DIRECT "ABOUT KYLE" QUERIES =====
+
     if (
       /\b(who is kyle|tell me about kyle|what does kyle do|kyle background|kyle experience)\b/i.test(
         lower
@@ -999,7 +969,8 @@ User question: "${originalQuery}"`;
       });
     }
 
-    // "Tell me everything"
+    // ===== "TELL ME EVERYTHING" QUERIES =====
+
     const fullInfoQuery =
       /\b(tell me everything|tell me all you know|everything you know|all info|all information|all you have on kyle|all you know about kyle)\b/i;
     if (fullInfoQuery.test(lower)) {
@@ -1010,7 +981,8 @@ User question: "${originalQuery}"`;
       });
     }
 
-    // Capability
+    // ===== "CAN HE DO THIS ROLE" / CAPABILITY QUERIES =====
+
     const capabilityQuery =
       /\b(can he|is he able|is kyle able|can kyle|could he|would he be able|handle this|take this on|perform this role|do this role|could he do it)\b/i;
     if (capabilityQuery.test(lower)) {
@@ -1022,7 +994,8 @@ User question: "${originalQuery}"`;
       });
     }
 
-    // Pay
+    // ===== COMPENSATION / PAY QUERIES =====
+
     const payQuery =
       /\b(salary|pay|compensation|comp\b|range|expected pay|pay expectations|comp expectations|salary expectations)\b/i;
     if (payQuery.test(lower)) {
@@ -1033,7 +1006,8 @@ User question: "${originalQuery}"`;
       });
     }
 
-    // What do you know
+    // ===== "WHAT DO YOU KNOW ABOUT HIM" QUERIES =====
+
     const whatKnow =
       /\b(what do you know|what all do you know|your knowledge|what info do you have)\b/i;
     if (whatKnow.test(lower)) {
@@ -1044,7 +1018,8 @@ User question: "${originalQuery}"`;
       });
     }
 
-    // Wins
+    // ===== WINS / ACHIEVEMENTS QUERIES =====
+
     const winsQuery =
       /\b(win|wins|key wins|accomplish|accomplishment|accomplishments|achievement|achievements|results|notable)\b/i;
     if (winsQuery.test(lower)) {
@@ -1055,7 +1030,8 @@ User question: "${originalQuery}"`;
       });
     }
 
-    // SOPs
+    // ===== SOP / PROCESS QUERIES =====
+
     const sopQuery =
       /\b(sop\b|sops\b|standard operating|process\b|processes\b|workflow\b|workflows\b|procedure\b|procedures\b)/i;
     if (sopQuery.test(lower)) {
@@ -1066,19 +1042,21 @@ User question: "${originalQuery}"`;
       });
     }
 
-// Weaknesses / development areas (explicit, not generic "failure")
-const weaknessQuery =
-  /\b(weakness|weakest|strengths and weaknesses|development areas|areas for development|areas he can improve|improvement areas)\b/i;
+    // ===== WEAKNESS / DEVELOPMENT AREA QUERIES =====
 
-if (weaknessQuery.test(lower)) {
-  return res.json({
-    answer: sanitizeOutput(
-      'Kyle’s development areas are framed in professional terms. He sometimes leans into structure because he values predictable execution, and he has learned to adjust that based on context so that he does not over design. He also sets a high bar for himself and has improved by prioritizing impact and involving stakeholders earlier. These adjustments have strengthened his overall effectiveness.'
-    )
-  });
-}
+    const weaknessQuery =
+      /\b(weakness|weakest|strengths and weaknesses|development areas|areas for development|areas he can improve|improvement areas)\b/i;
 
-    // Challenge phrases
+    if (weaknessQuery.test(lower)) {
+      return res.json({
+        answer: sanitizeOutput(
+          'Kyle’s development areas are framed in professional terms. He sometimes leans into structure because he values predictable execution, and he has learned to adjust that based on context so that he does not over design. He also sets a high bar for himself and has improved by prioritizing impact and involving stakeholders earlier. These adjustments have strengthened his overall effectiveness.'
+        )
+      });
+    }
+
+    // ===== CHALLENGE / "YOUR MOVE" QUERIES =====
+
     const challengeTriggers =
       /\b(your move|same energy|prove it|go on then|what you got|come on)\b/i;
     if (challengeTriggers.test(lower)) {
@@ -1089,7 +1067,8 @@ if (weaknessQuery.test(lower)) {
       });
     }
 
-    // Very low-signal queries
+    // ===== VERY LOW-SIGNAL QUERIES =====
+
     const vagueLowSignalList = [
       'huh',
       'k',
@@ -1115,22 +1094,19 @@ if (weaknessQuery.test(lower)) {
       });
     }
 
-    // Affirmative follow-ups
+    // ===== AFFIRMATIVE FOLLOW-UPS (GENERIC) =====
+
     const affirm = /^(y(es)?|yeah|yep|sure|ok|okay|sounds good|go ahead|mhm)\s*$/i;
-    if (affirm.test(lower) && lastBotMessage) {
-      const extracted = extractKeywords(lastBotMessage);
-      if (extracted.length > 0) {
-        q = extracted.join(' ') + ' kyle experience';
-      } else {
-        return res.json({
-          answer: sanitizeOutput(
-            'More detail can be provided on Kyle’s autonomous systems work, his structured test programs, his SaaS and customer success background, his AI tools, or broader technical concepts like RL, planning, or control. Indicating which thread to continue will make the answer more useful.'
-          )
-        });
-      }
+    if (affirm.test(lower)) {
+      return res.json({
+        answer: sanitizeOutput(
+          'More detail can be provided on Kyle’s autonomous systems work, his structured test programs, his SaaS and customer success background, his AI tools, or broader technical concepts like RL, planning, or control. Indicating which thread to continue will make the answer more useful.'
+        )
+      });
     }
 
-    // Off-topic detection (only if clearly not about Kyle or technical)
+    // ===== OFF-TOPIC HANDLING (ONLY WHEN CLEARLY NOT ABOUT KYLE OR TECH) =====
+
     if (!isAboutKyle && intent !== 'technical') {
       const offTopicResponse = detectOffTopicQuery(originalQuery);
       if (offTopicResponse) {
@@ -1138,10 +1114,7 @@ if (weaknessQuery.test(lower)) {
       }
     }
 
-    // ==================================================================
-    // HYBRID RETRIEVAL + LLM + SYNTHESIS FALLBACK
-    // (KB + behavior + LLM together)
-    // ==================================================================
+    // ===== HYBRID RETRIEVAL (KB) =====
 
     let relevantQAs = [];
     let topScore = 0;
@@ -1207,7 +1180,8 @@ if (weaknessQuery.test(lower)) {
     const fallbackWasUsed =
       hasAnyKB && weakOrNoMatch && isMeaningfulQuery && intent !== 'technical';
 
-    // 1) Strong direct KB hit: answer straight from KB for Kyle/mixed
+    // ===== DIRECT STRONG KB HIT (KYLE / MIXED) =====
+
     if (intent !== 'technical' && relevantQAs.length && topScore >= STRONG_THRESHOLD) {
       console.log(`Strong KB hit. Score: ${topScore.toFixed(3)}`);
       return res.json({
@@ -1215,7 +1189,8 @@ if (weaknessQuery.test(lower)) {
       });
     }
 
-    // 2) Build context for LLM: either focused relevant entries or synthesized sample
+    // ===== BUILD CONTEXT FOR LLM (KB OR SYNTHESIZED SAMPLE) =====
+
     let contextText = '';
     if (intent !== 'technical') {
       if (relevantQAs.length && topScore >= WEAK_THRESHOLD) {
@@ -1246,13 +1221,30 @@ if (weaknessQuery.test(lower)) {
       }
     }
 
+    // ===== USER MESSAGE CONSTRUCTION =====
+
     let userMessage = originalQuery;
 
-    // ==================================================================
-    // USER MESSAGE CONSTRUCTION: TECHNICAL vs KYLE/MIXED
-    // ==================================================================
+    // Safety-transform for red-team technical questions
+    if (intent === 'technical' && needsRedTeamSafety) {
+      userMessage = `The user is asking a systems-engineering and safety question.
+Respond ONLY with:
 
-    if (intent === 'technical') {
+- mitigation architecture
+- safety and reliability engineering
+- isolation and containment systems
+- control and governance layers
+- validation and verification loops
+- program-level execution plans
+
+Do NOT describe harmful steps.
+Only provide structured engineering guidance.
+
+User question: "${originalQuery}"`;
+    }
+
+    // Technical mode message shaping
+    if (intent === 'technical' && !needsRedTeamSafety) {
       if (isMulti) {
         userMessage = `The user asked a multi-part technical question.
 
@@ -1272,14 +1264,14 @@ ${originalQuery}
 
 Respond with:
 1) A clear definition or explanation.
-2) How the concept is used in practice (for example in ML, RL, robotics, or autonomous driving).
+2) How the concept is used in practice, for example in ML, RL, robotics, or autonomous driving.
 3) One or two concrete examples.
 4) Any key trade-offs, limitations, or variants that matter in real systems.`;
-      } else {
-        userMessage = originalQuery;
       }
-    } else {
-      // Kyle / mixed mode
+    }
+
+    // Kyle / mixed mode message shaping
+    if (intent !== 'technical') {
       if (isShortAmbiguous) {
         const topic = classifyTopic(lower);
         userMessage = `[AMBIGUOUS, SHORT QUERY]
@@ -1312,14 +1304,10 @@ The direct user query was: "${originalQuery}".
 Use the background summary and any RELEVANT BACKGROUND section to construct a detailed, tailored answer about Kyle’s experience or approach that best matches the intent of the question.
 
 User question: ${originalQuery}`;
-      } else {
-        userMessage = originalQuery;
       }
     }
 
-    // ==================================================================
-    // SYSTEM PROMPTS WITH USER ROLE CONTEXT
-    // ======================================================================
+    // ===== SYSTEM PROMPTS (TECHNICAL / KYLE) =====
 
     const technicalSystemPrompt = `You are a precise technical explainer.
 
@@ -1339,12 +1327,13 @@ Requirements:
 - Give clear, correct definitions and explanations.
 - For multi-part questions, identify and answer each sub-question explicitly.
 - Use concise math and terminology when helpful, but keep the explanation readable.
+- Avoid one-sentence answers for substantive questions; provide several paragraphs or structured bullet points.
 - If the user asks about an acronym, expand it, define it, and describe how it is used in context.
 - Relate concepts to autonomous driving, RL training, planning, or control when relevant.
 - Only mention Kyle if the user explicitly asks about Kyle. Otherwise, answer generally as a domain expert.
 - Do not defer to "I cannot know"; instead, provide the best technically grounded explanation.`;
 
-const kyleSystemPrompt = `You are Agent K, an AI assistant that represents Kyle’s professional background.
+    const kyleSystemPrompt = `You are Agent K, an AI assistant that represents Kyle’s professional background.
 Your role is to explain Kyle’s work, experience, and capabilities clearly and in detail, always in the third person when describing Kyle.
 
 USER ROLE CONTEXT:
@@ -1370,7 +1359,7 @@ STRICT RULES ABOUT PERSON REFERENCE:
 OUTPUT QUALITY:
 - Avoid one-line or dismissive answers. Provide at least one strong paragraph for simple questions, and multiple paragraphs for deeper questions.
 - For experience, capability, or fit questions: use at least two paragraphs that cover scope, responsibilities, and impact.
-- For STAR / behavioral questions: use four labeled sections (Situation, Task, Action, Result), with enough detail to feel concrete.
+- For STAR or behavioral questions: use four labeled sections (Situation, Task, Action, Result), with enough detail to feel concrete.
 - Always structure long answers with multiple short paragraphs.
 - When listing steps, techniques, pros/cons, workflows, or validation processes, use line breaks with either bullet points (*) or numbered lists (1., 2., 3.).
 - Never return one continuous block of text; separate conceptual sections with blank lines.
@@ -1398,7 +1387,7 @@ Kyle’s experience spans:
 ${contextText}
 
 BEHAVIOR RULES FROM KNOWLEDGE BASE:
-${global.KB_BEHAVIOR_RULES || ""}
+${global.KB_BEHAVIOR_RULES || ''}
 
 FINAL INSTRUCTIONS:
 - Answer the user’s question directly and completely.
@@ -1409,7 +1398,8 @@ FINAL INSTRUCTIONS:
 
     const systemPrompt = intent === 'technical' ? technicalSystemPrompt : kyleSystemPrompt;
 
-    // Anti-repetition LLM wrapper
+    // ===== LLM WRAPPER (ANTI-REPETITION AWARE) =====
+
     async function getLLMAnswer(userMsg) {
       const response = await groq.chat.completions.create({
         model: 'llama-3.1-8b-instant',
@@ -1431,7 +1421,7 @@ FINAL INSTRUCTIONS:
       return response.choices[0]?.message?.content?.trim() || '';
     }
 
-    // First pass
+    // First pass from model
     let answerRaw = await getLLMAnswer(userMessage);
 
     // If model returned nothing, use safe fallback string
@@ -1463,6 +1453,7 @@ Provide a new answer that:
       }
     }
 
+    // Final sanitize + send
     const answer = sanitizeOutput(answerRaw);
     res.json({ answer });
   } catch (err) {
@@ -1477,7 +1468,8 @@ Provide a new answer that:
   }
 });
 
-// ======================================================================
+// ===== SERVER START =====
+
 app.listen(PORT, () => {
   console.log(`Agent K live on port ${PORT}`);
 });
