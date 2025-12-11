@@ -18,40 +18,70 @@ app.use(express.json());
 const EMBEDDING_MODEL = process.env.GROQ_EMBED_MODEL || 'nomic-embed-text-v1.5';
 let EMBEDDINGS_ENABLED = false;
 
-
 // ======================================================================
 // UTILITIES
 // ======================================================================
 
 function formatParagraphs(text) {
   if (!text) return text;
+
   let out = text;
 
+  // Normalize Windows line breaks
   out = out.replace(/\r\n/g, '\n');
+
+  // Ensure bullet points always start on new lines
   out = out.replace(/(\S)\s*[\*•]\s+/g, '$1\n* ');
+
+  // Ensure numbered lists start on new lines
   out = out.replace(/(\S)\s*(\d+)\.\s+/g, '$1\n$2. ');
+
+  // Add paragraph breaks after sentence endings when next sentence begins with capital letter
   out = out.replace(/([.?!])\s+(?=[A-Z])/g, '$1\n');
+
+  // Prevent triple or more line breaks
   out = out.replace(/\n{3,}/g, '\n\n');
 
   return out.trim();
 }
 
+// Enforce third person specifically for Kyle-related sentences
 function enforceThirdPersonForKyle(raw) {
   if (!raw) return raw;
+
   const lines = raw.split('\n');
 
   const processed = lines.map(line => {
+    // Do not rewrite if the sentence explicitly references Agent K
     if (/agent k\b/i.test(line)) return line;
 
     let out = line;
+
+    // Strongest-first replacement order to avoid double transforms
+
+    // I am / I'm -> Kyle is
     out = out.replace(/\bI['’]m\b/gi, 'Kyle is');
     out = out.replace(/\bI am\b/gi, 'Kyle is');
+
+    // I’d / I'd -> Kyle would
     out = out.replace(/\bI['’]d\b/gi, 'Kyle would');
+
+    // I’ll / I'll -> Kyle will
     out = out.replace(/\bI['’]ll\b/gi, 'Kyle will');
+
+    // I’ve / I've -> Kyle has
     out = out.replace(/\bI['’]ve\b/gi, 'Kyle has');
+
+    // My -> Kyle's
     out = out.replace(/\bMy\b/gi, "Kyle's");
+
+    // Me -> Kyle
     out = out.replace(/\bMe\b/gi, 'Kyle');
+
+    // I (standalone) -> Kyle
     out = out.replace(/\bI\b/g, 'Kyle');
+
+    // myself -> himself
     out = out.replace(/\bmyself\b/gi, 'himself');
 
     return out;
@@ -60,18 +90,29 @@ function enforceThirdPersonForKyle(raw) {
   return processed.join('\n');
 }
 
+// Remove unwanted phrases and jokes
 function sanitizePhrases(text) {
   if (!text) return text;
   let out = text;
 
+  // "Same energy. Your move." variants
   out = out.replace(/Same energy\.?\s*Your move\.?/gi, '');
+
+  // "I'm here! Try asking..." style lines
   out = out.replace(/I['’]m here[^.?!]*[.?!]/gi, '');
+
+  // Old buggy "Kyle is here!" style lines (remove entirely, no artifacts)
   out = out.replace(/Kyle is here[^.?!]*[.?!]/gi, '');
   out = out.replace(/Try asking something about Kyle[^.?!]*[.?!]/gi, '');
+
+  // Remove “here’s a light one” joke intro lines
   out = out.replace(/[^.?!]*here[’']s a light one[^.?!]*[.?!]/gi, '');
+
+  // Collapse whitespace
   out = out.replace(/[ \t]{2,}/g, ' ');
   out = out.replace(/\n{3,}/g, '\n\n');
 
+  // Fix possible "He is Agent K" artifact
   out = out.replace(
     /\bHe is Agent K[^.?!]*[.?!]?/gi,
     'Agent K is an AI assistant that represents Kyle’s professional experience.'
@@ -88,6 +129,7 @@ function sanitizeOutput(text) {
   return out;
 }
 
+// Typo normalization to help retrieval
 function normalizeQuery(text) {
   if (!text) return text;
   let fixed = text;
@@ -193,14 +235,17 @@ function cosineSimilarity(a, b) {
   let normA = 0;
   let normB = 0;
   for (let i = 0; i < a.length; i++) {
-    dot += a[i] * b[i];
-    normA += a[i] * a[i];
-    normB += b[i] * b[i];
+    const va = a[i];
+    const vb = b[i];
+    dot += va * vb;
+    normA += va * va;
+    normB += vb * vb;
   }
   if (!normA || !normB) return 0;
   return dot / (Math.sqrt(normA) * Math.sqrt(normB));
 }
 
+// Anti-repetition similarity helpers
 function textSimilarity(a, b) {
   if (!a || !b) return 0;
   const tokensA = a.toLowerCase().split(/\W+/).filter(t => t.length > 3);
@@ -225,8 +270,26 @@ function isHighlySimilarAnswer(prev, next, threshold = 0.8) {
   return textSimilarity(prev, next) >= threshold;
 }
 
+// Deduplicate and cap suggestions, avoid recently used
+function dedupeAndTrim(list, max, avoidSet = new Set()) {
+  const out = [];
+  const seen = new Set();
+  for (const raw of list) {
+    const t = (raw || '').trim();
+    if (!t) continue;
+    const key = t.toLowerCase();
+    if (avoidSet.has(key)) continue;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push(t);
+    if (out.length >= max) break;
+  }
+  return out;
+}
+
+// Detect classic behavioral / PM-CX questions that should bypass direct KB lookup
 function isBehavioralOrPMCXQuestion(lower) {
-  const triggers = [
+  const behavioralTriggers = [
     'tell me about a time',
     'describe a time',
     'give an example',
@@ -234,6 +297,9 @@ function isBehavioralOrPMCXQuestion(lower) {
     'walk me through',
     'how would you handle',
     'how would you deal with',
+    'how do you handle',
+    'how do you deal with',
+    'walk me through how you',
     'time you',
     'time when',
     'situation where',
@@ -243,48 +309,42 @@ function isBehavioralOrPMCXQuestion(lower) {
     'design a process',
     'how would you prioritize'
   ];
-  return triggers.some(t => lower.includes(t));
-}
 
-function dedupeAndTrim(arr, max, avoidSet = new Set()) {
-  const out = [];
-  for (const item of arr) {
-    const t = (item || '').trim();
-    if (!t) continue;
-    if (avoidSet.has(t.toLowerCase())) continue;
-    if (!out.includes(t)) out.push(t);
-    if (out.length >= max) break;
-  }
-  return out;
+  return behavioralTriggers.some(t => lower.includes(t));
 }
-
 
 // ======================================================================
-// KNOWLEDGE BASE LOAD + EMBEDDINGS
+// KNOWLEDGE BASE + EMBEDDINGS
 // ======================================================================
 
 let knowledgeBase = { qaDatabase: [] };
-let kbEmbeddings = [];
+let kbEmbeddings = []; // { index, embedding }
 
-try {
-  const data = await fs.readFile('./knowledge-base.json', 'utf8');
-  knowledgeBase = JSON.parse(data);
-  console.log(`Loaded ${knowledgeBase.qaDatabase.length} Q&A entries from knowledge-base.json`);
-} catch (err) {
-  console.error('Failed to load knowledge base:', err);
+// For suggestion rotation
+let recentSuggestionPhrases = []; // last few suggestion questions the user likely clicked
+
+function markSuggestionUsed(q) {
+  const t = (q || '').trim();
+  if (!t) return;
+  const lower = t.toLowerCase();
+  recentSuggestionPhrases = [t, ...recentSuggestionPhrases.filter(x => x.toLowerCase() !== lower)];
+  if (recentSuggestionPhrases.length > 5) {
+    recentSuggestionPhrases.length = 5;
+  }
 }
 
 async function buildKnowledgeBaseEmbeddings() {
   try {
+    // If Groq embeddings are not available at all, skip
     if (!groq.embeddings || typeof groq.embeddings.create !== 'function') {
       EMBEDDINGS_ENABLED = false;
-      console.warn('Groq embeddings API not available; using keyword-only.');
+      console.warn('Groq embeddings API not available; hybrid search will use keyword-only mode.');
       return;
     }
 
-    if (!knowledgeBase.qaDatabase.length) {
+    if (!knowledgeBase.qaDatabase || knowledgeBase.qaDatabase.length === 0) {
+      console.log('No KB entries, skipping embeddings');
       EMBEDDINGS_ENABLED = false;
-      console.log('No KB entries; skipping embeddings.');
       return;
     }
 
@@ -299,16 +359,16 @@ async function buildKnowledgeBaseEmbeddings() {
 
     for (let i = 0; i < inputs.length; i += batchSize) {
       const batch = inputs.slice(i, i + batchSize);
-      const emb = await groq.embeddings.create({
+      const embResp = await groq.embeddings.create({
         model: EMBEDDING_MODEL,
         input: batch
       });
 
-      if (emb && Array.isArray(emb.data)) {
-        emb.data.forEach((e, idx) => {
+      if (embResp && Array.isArray(embResp.data)) {
+        embResp.data.forEach((item, idx) => {
           kbEmbeddings.push({
             index: i + idx,
-            embedding: e.embedding
+            embedding: item.embedding
           });
         });
       }
@@ -316,33 +376,41 @@ async function buildKnowledgeBaseEmbeddings() {
 
     EMBEDDINGS_ENABLED = kbEmbeddings.length > 0;
     console.log(
-      `Built embeddings for ${kbEmbeddings.length} KB entries; embeddings enabled = ${EMBEDDINGS_ENABLED}`
+      `Built embeddings for ${kbEmbeddings.length} KB entries; EMBEDDINGS_ENABLED=${EMBEDDINGS_ENABLED}`
     );
   } catch (err) {
     EMBEDDINGS_ENABLED = false;
     kbEmbeddings = [];
-    console.warn('Embedding build failed; using keyword-only.', err.message);
+    console.warn(
+      'Failed to build KB embeddings; falling back to keyword-only search:',
+      err.message || err
+    );
   }
 }
 
-await buildKnowledgeBaseEmbeddings();
+try {
+  const data = await fs.readFile('./knowledge-base.json', 'utf8');
+  knowledgeBase = JSON.parse(data);
+  console.log(`Loaded ${knowledgeBase.qaDatabase.length} Q&A entries from knowledge-base.json`);
+  await buildKnowledgeBaseEmbeddings();
+} catch (err) {
+  console.error('Failed to load knowledge base:', err);
+}
 
-
-// ======================================================================
-// SIMPLE KEYWORD SCORER
-// ======================================================================
-
+// keyword scoring
 function keywordScoreAll(query) {
   const q = query.toLowerCase().trim();
   if (!q) return [];
 
-  return knowledgeBase.qaDatabase.map((qa, idx) => {
+  return (knowledgeBase.qaDatabase || []).map((qa, idx) => {
     const question = (qa.question || "").toLowerCase();
-    const answer = (qa.answer || "").toLowerCase();
+    const answer   = (qa.answer   || "").toLowerCase();
     const keywords = qa.keywords || [];
+
     let score = 0;
 
-    if (keywords.some(k => q.includes(String(k).toLowerCase()))) score += 25;
+    const keywordHit = keywords.some(k => q.includes(String(k).toLowerCase()));
+    if (keywordHit) score += 25;
 
     if (question.length >= 20) {
       if (q.includes(question.substring(0, 20))) score += 10;
@@ -359,68 +427,75 @@ function keywordScoreAll(query) {
       }
     });
 
-    return { ...qa, index: idx, score };
+    return { ...qa, score, index: idx };
   });
 }
 
 
-// ======================================================================
-// HYBRID SEARCH
-// ======================================================================
-
+// tuned hybrid search
 async function hybridSearchKnowledgeBase(query, limit = 5) {
   const q = query.toLowerCase().trim();
-  if (!q) return [];
+  if (!q || !knowledgeBase.qaDatabase || knowledgeBase.qaDatabase.length === 0) return [];
 
-  const keywordScored = keywordScoreAll(q);
-  const maxKW = keywordScored.reduce((m, i) => Math.max(m, i.score), 0);
+  const keywordScoredFull = keywordScoreAll(q);
+  const maxKeywordScore = keywordScoredFull.reduce(
+    (max, item) => Math.max(max, item.score),
+    0
+  );
 
-  if (!EMBEDDINGS_ENABLED || !kbEmbeddings.length) {
-    return keywordScored
-      .filter(k => k.score > 0)
+  // If embeddings are not enabled, just do keyword
+  if (!EMBEDDINGS_ENABLED || !kbEmbeddings || kbEmbeddings.length === 0) {
+    return keywordScoredFull
+      .filter(item => item.score > 0)
       .sort((a, b) => b.score - a.score)
       .slice(0, limit);
   }
 
-  let qembed = null;
+  let queryEmbedding = null;
   try {
-    const resp = await groq.embeddings.create({
+    const embResp = await groq.embeddings.create({
       model: EMBEDDING_MODEL,
       input: [query]
     });
-    qembed = resp.data?.[0]?.embedding || null;
-  } catch {
-    return keywordScored
-      .filter(k => k.score > 0)
+    if (embResp && Array.isArray(embResp.data) && embResp.data[0]) {
+      queryEmbedding = embResp.data[0].embedding;
+    }
+  } catch (err) {
+    console.warn(
+      'Error creating query embedding; falling back to keyword-only for this query:',
+      err.message || err
+    );
+  }
+
+  if (!queryEmbedding) {
+    return keywordScoredFull
+      .filter(item => item.score > 0)
       .sort((a, b) => b.score - a.score)
       .slice(0, limit);
   }
 
-  if (!qembed) {
-    return keywordScored
-      .filter(k => k.score > 0)
-      .sort((a, b) => b.score - a.score)
-      .slice(0, limit);
-  }
-
-  const embedScores = new Map();
+  const embeddingScores = new Map();
   kbEmbeddings.forEach(item => {
-    const sim = cosineSimilarity(qembed, item.embedding);
-    if (sim > 0) embedScores.set(item.index, sim);
+    const sim = cosineSimilarity(queryEmbedding, item.embedding);
+    if (sim > 0) embeddingScores.set(item.index, sim);
   });
 
   const combined = [];
-  const kwW = 0.35;
-  const embW = 0.65;
+  const keywordWeight = 0.35;
+  const embedWeight = 0.65;
 
-  for (let i = 0; i < knowledgeBase.qaDatabase.length; i++) {
-    const kw = keywordScored[i];
-    const kwNorm = maxKW > 0 ? kw.score / maxKW : 0;
-    const embScore = embedScores.get(i) || 0;
-    const finalScore = kwW * kwNorm + embW * embScore;
+  for (let idx = 0; idx < knowledgeBase.qaDatabase.length; idx++) {
+    const kwItem = keywordScoredFull[idx];
+    const kwScore = kwItem.score;
+    const kwNorm = maxKeywordScore > 0 ? kwScore / maxKeywordScore : 0;
+    const embSim = embeddingScores.get(idx) || 0;
+    const combinedScore = keywordWeight * kwNorm + embedWeight * embSim;
 
-    if (finalScore > 0) {
-      combined.push({ ...kw, score: finalScore });
+    if (combinedScore > 0) {
+      combined.push({
+        ...kwItem,
+        score: combinedScore
+      });
     }
   }
 
@@ -428,129 +503,67 @@ async function hybridSearchKnowledgeBase(query, limit = 5) {
   return combined.slice(0, limit);
 }
 
-
 // ======================================================================
-// ENDPOINT: HEALTH
-// ======================================================================
-
-app.get('/', (req, res) => {
-  res.json({
-    status: 'Agent K running',
-    entries: knowledgeBase.qaDatabase.length,
-    embeddings: EMBEDDINGS_ENABLED ? 'enabled' : 'keyword-only'
-  });
-});
-
-
-// ======================================================================
-// ENDPOINT: SUGGESTIONS (NEW, ONLY CHANGE IN THIS FILE)
+// OFF-TOPIC HANDLING
 // ======================================================================
 
-app.post('/suggest', async (req, res) => {
-  try {
-    const raw = req.body.q || '';
-    const clean = raw.trim();
-    const query = normalizeQuery(clean);
+const funResponses = {
+  joke: [
+    'Agent K can share a quick joke if asked, but the primary focus is explaining Kyle’s work and experience.'
+  ],
+  greeting: [
+    'Hello. Agent K can walk through Kyle’s background across autonomous systems, validation, structured testing, program execution, SaaS workflows, and applied AI tools. What would you like to explore?'
+  ],
+  thanks: [
+    'You are welcome. If there is more you would like to know about Kyle’s work, you can ask about specific domains or projects.'
+  ],
+  weather: [
+    'Agent K does not track live weather, but can explain how Kyle tested autonomous systems across rain, fog, night driving, and other conditions.'
+  ],
+  howAreYou: [
+    'Agent K is available to walk through Kyle’s experience. What would you like to focus on?'
+  ],
+  cooking: [
+    'Agent K does not handle recipes, but can describe how Kyle structures workflows, testing, and operations.'
+  ],
+  meaning: [
+    'That is broad. Within his work, Kyle tends to focus on practical impact, reliability, and clear operational execution.'
+  ]
+};
 
-    const avoid = new Set();
-
-    // CASE 1: blank → always return defaults
-    if (!query.length) {
-      const defaults = knowledgeBase.qaDatabase
-        .map(q => q.question)
-        .filter(Boolean)
-        .slice(0, 5);
-
-      return res.json({ suggestions: defaults });
-    }
-
-    // CASE 2: short (< 3 chars) → fuzzy partial match
-    if (query.length < 3) {
-      const qLower = query.toLowerCase();
-      const results = knowledgeBase.qaDatabase
-        .map(e => {
-          const q = e.question.toLowerCase();
-          let score = 0;
-          if (q.startsWith(qLower)) score += 20;
-          if (q.includes(qLower)) score += 10;
-          return { question: e.question, score };
-        })
-        .filter(r => r.score > 0)
-        .sort((a, b) => b.score - a.score)
-        .slice(0, 5)
-        .map(r => r.question);
-
-      if (!results.length) {
-        const defaults = knowledgeBase.qaDatabase
-          .map(q => q.question)
-          .slice(0, 5);
-        return res.json({ suggestions: defaults });
-      }
-
-      return res.json({ suggestions: results });
-    }
-
-    // CASE 3: full hybrid narrowing
-    const hybrid = await hybridSearchKnowledgeBase(query, 8);
-    const mapped = hybrid.map(h => h.question);
-    const deduped = dedupeAndTrim(mapped, 5, avoid);
-
-    if (deduped.length) {
-      return res.json({ suggestions: deduped });
-    }
-
-    // last fallback
-    const fallback = knowledgeBase.qaDatabase
-      .map(e => e.question)
-      .slice(0, 5);
-
-    return res.json({ suggestions: fallback });
-  } catch (err) {
-    console.error('Suggestion error:', err);
-    res.status(500).json({
-      suggestions: [
-        "Ask about Kyle's experience in autonomous systems.",
-        "Ask for a STAR example about a project risk."
-      ]
-    });
-  }
-});
-
-
-// ======================================================================
-// EVERYTHING BELOW IS 100% YOUR ORIGINAL LOGIC
-// NOTHING CHANGED
-// ======================================================================
-
-// Off-topic detector
 function detectOffTopicQuery(query) {
   const q = query.toLowerCase().trim();
 
+  // Jokes only on explicit ask (handled via easter egg logic first, but keep here as backup)
   if (/tell me a joke|joke about/i.test(q)) {
-    return { type: 'joke', response: 'Agent K can share a quick joke if asked, but the primary focus is explaining Kyle’s work and experience.' };
+    return { type: 'joke', response: funResponses.joke[0] };
   }
   if (/^(hi|hey|hello|sup|yo|what'?s up|howdy)\b/i.test(q)) {
-    return { type: 'greeting', response: 'Hello. Agent K can walk through Kyle’s background across autonomous systems, validation, structured testing, program execution, SaaS workflows, and applied AI tools. What would you like to explore?' };
+    return { type: 'greeting', response: funResponses.greeting[0] };
   }
   if (q.includes('thank')) {
-    return { type: 'thanks', response: 'You are welcome. If there is more you would like to know about Kyle’s work, you can ask about specific domains or projects.' };
-  }
-  const weather = /\b(weather|temperature|rain|snow|hot|cold|forecast)\b/i.test(q);
-  const testing = /\b(test|testing|scenario|weather tests)\b/i.test(q);
-  if (weather && !testing) {
-    return { type: 'weather', response: 'Agent K does not track live weather, but can explain how Kyle tested autonomous systems across rain, fog, night driving, and other conditions.' };
+    return { type: 'thanks', response: funResponses.thanks[0] };
   }
   if (/how are you|how'?re you|how r u/i.test(q)) {
-    return { type: 'howAreYou', response: 'Agent K is available to walk through Kyle’s experience. What would you like to focus on?' };
+    return { type: 'howAreYou', response: funResponses.howAreYou[0] };
   }
   if (q.includes('cook') || q.includes('recipe') || q.includes('food')) {
-    return { type: 'cooking', response: 'Agent K does not handle recipes, but can describe how Kyle structures workflows, testing, and operations.' };
+    return { type: 'cooking', response: funResponses.cooking[0] };
   }
   if (q.includes('meaning of life') || q.includes('purpose of life')) {
-    return { type: 'meaning', response: 'That is broad. Within his work, Kyle tends to focus on practical impact, reliability, and clear operational execution.' };
+    return { type: 'meaning', response: funResponses.meaning[0] };
+  }
+  const realWeather = /\b(weather|temperature|rain|snow|hot|cold|forecast)\b/i.test(q);
+  const aboutTesting = /\b(test|testing|scenario|weather tests)\b/i.test(q);
+  if (realWeather && !aboutTesting) {
+    return { type: 'weather', response: funResponses.weather[0] };
   }
   return null;
 }
+
+// ======================================================================
+// STAR / MULTI-PART DETECTORS
+// ======================================================================
 
 function detectSTARQuery(query) {
   const q = query.toLowerCase();
@@ -573,13 +586,17 @@ function detectSTARQuery(query) {
     'time when',
     'time kyle',
     'situation where',
-    'walk me through'
+    'walk me through',
+    'walk me thru',
+    'walk through',
+    'walk thru',
+    'walk me step by step'
   ];
   return triggers.some(t => q.includes(t));
 }
 
 function detectMultiPartQuery(query) {
-  const p = [
+  const patterns = [
     /\band\b.*\?/gi,
     /\bor\b.*\?/gi,
     /\?.*\?/,
@@ -590,18 +607,26 @@ function detectMultiPartQuery(query) {
     /why.*and.*how/gi,
     /how.*and.*what/gi
   ];
-  return p.some(x => x.test(query));
+  return patterns.some(p => p.test(query));
 }
+
+// ======================================================================
+// USER ROLE CLASSIFIER (NEW)
+// ======================================================================
 
 function classifyUserRole(lower) {
   if (lower.includes('hire') || lower.includes('hiring') || lower.includes('interview'))
     return 'hiring_manager';
+
   if (lower.includes('recruiter') || lower.includes('recruit') || lower.includes('screen'))
     return 'recruiter';
+
   if (lower.includes('engineer') || lower.includes('technical') || lower.includes('deep dive'))
     return 'engineer';
+
   if (lower.includes('product') || lower.includes('program') || lower.includes('roadmap'))
     return 'pm';
+
   return 'general';
 }
 
@@ -617,164 +642,87 @@ app.get('/', (req, res) => {
   });
 });
 
-// Suggestions
+// Suggestions route (fixed, uses existing partial booster logic, 1+ chars)
 app.post('/suggest', async (req, res) => {
   try {
-    const { q } = req.body;
-    const clean = q && q.trim();
-
-    const validSuggestion = str => {
-      if (!str) return false;
-      const t = String(str).trim();
-      if (t.length < 4) return false;
-      if (/^[\W_]+$/.test(t)) return false;
-
-      const lower = t.toLowerCase();
-
-      if (lower.includes('empty / punctuation only')) return false;
-      if (lower.includes('empty/punctuation only')) return false;
-      if (lower.includes('single phrase')) return false;
-      if (lower.includes('one phrase')) return false;
-      if (lower.includes('short phrase')) return false;
-      if (lower.includes('partial question')) return false;
-
-      if (lower.includes('one-word')) return false;
-      if (lower.includes('one word')) return false;
-      if (lower.includes('one-word replies')) return false;
-      if (lower.includes('one word replies')) return false;
-
-      // remove dating / personal life
-      if (
-        lower.includes('dating') ||
-        lower.includes('who is he dating') ||
-        lower.includes('girlfriend') ||
-        lower.includes('boyfriend') ||
-        lower.includes('relationship') ||
-        lower.includes('personal life')
-      )
-        return false;
-
-      if (lower.includes('ui-0') || lower.includes('ui-1') || lower.includes('ui-2') || lower.includes('ui-3'))
-        return false;
-
-      return true;
-    };
-
-    const dedupeAndTrim = (items, limit = 5, avoidSet = new Set()) => {
-      const primary = [];
-      const deferred = [];
-      const seen = new Set();
-
-      for (const raw of items) {
-        if (!raw) continue;
-        const t = String(raw).trim();
-        if (!validSuggestion(t)) continue;
-        const key = t.toLowerCase();
-        if (seen.has(key)) continue;
-        seen.add(key);
-
-        if (avoidSet.has(key)) deferred.push(t);
-        else primary.push(t);
-      }
-
-      const suggestions = [];
-      for (const s of primary) {
-        if (suggestions.length >= limit) break;
-        suggestions.push(s);
-      }
-      for (const s of deferred) {
-        if (suggestions.length >= limit) break;
-        suggestions.push(s);
-      }
-
-      return suggestions;
-    };
-
+    const raw = (req.body.q || '').toString();
+    const query = normalizeQuery(raw.trim());
     const avoidSet = new Set(recentSuggestionPhrases.map(s => s.toLowerCase()));
 
-    if (!clean) {
+    // Empty query: show defaults
+    if (!query) {
       const defaultsRaw = (knowledgeBase.qaDatabase || []).map(entry => entry.question);
       let suggestions = dedupeAndTrim(defaultsRaw, 5, avoidSet);
 
       if (!suggestions.length) {
         suggestions = [
           "Ask about Kyle's experience in autonomous systems.",
-          'Ask for a STAR example about a project risk.'
+          "Ask for a STAR example about a project risk."
         ];
       }
       return res.json({ suggestions });
     }
 
-const query = normalizeQuery(clean);
+    // Partial booster
+    const isPartial =
+      query.length >= 1 && (
+        query.length <= 20 ||
+        /\w$/.test(query)   // ends in an unfinished word
+      );
 
-/* -------------------------------------------------------------
-   PARTIAL QUERY BOOSTER (SAFER VERSION)
-   Ensures suggestions always show after 2+ chars, and refine as user types.
-   - Partial mode triggers when query < 20 chars OR ends mid-word.
-   - Uses graded fuzzy scoring so suggestions narrow as typing continues.
-   - No regression: hybrid still runs for completed queries.
-------------------------------------------------------------- */
+    let hybrid;
 
-const isPartial =
-  query.length > 2 && (
-    query.length <= 20 ||
-    /\w$/.test(query)   // ends in an unfinished word
-  );
+    if (isPartial) {
+      const lowerQ = query.toLowerCase();
 
-let hybrid;
+      const fuzzy = (knowledgeBase.qaDatabase || [])
+        .map(entry => {
+          const question = (entry.question || "").trim();
+          if (!question) return null;
 
-if (isPartial) {
-  // Graded fuzzy scoring: more characters = more specific narrowing
-  const lowerQ = query.toLowerCase();
+          const qLower = question.toLowerCase();
+          let score = 0;
 
-  const fuzzy = (knowledgeBase.qaDatabase || []).map(entry => {
-    const qLower = entry.question.toLowerCase();
+          // Strong: question starts with the typed fragment
+          if (qLower.startsWith(lowerQ)) score += 20;
 
-    // Scoring tiers for narrowing effect
-    let score = 0;
+          // Medium: question contains fragment anywhere
+          if (qLower.includes(lowerQ)) score += 10;
 
-    // Strong: question starts with the typed fragment
-    if (qLower.startsWith(lowerQ)) score += 20;
+          // Weak: partial word match (prefix match on each word)
+          const partialMatch = qLower.split(/\s+/).some(w => w.startsWith(lowerQ));
+          if (partialMatch) score += 5;
 
-    // Medium: question contains fragment anywhere
-    if (qLower.includes(lowerQ)) score += 10;
+          return { question, score };
+        })
+        .filter(item => item && item.score > 0);
 
-    // Weak: partial word match (prefix match on each word)
-    const partialMatch = qLower.split(/\s+/).some(w => w.startsWith(lowerQ));
-    if (partialMatch) score += 5;
+      hybrid = fuzzy
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 8);
+    } else {
+      // Full hybrid search for complete queries
+      hybrid = await hybridSearchKnowledgeBase(query, 8);
+    }
 
-    return { question: entry.question, score };
-  });
+    // Now convert hybrid result to plain question list
+    const hybridQuestions = hybrid.map(item => item.question);
+    let suggestions = dedupeAndTrim(hybridQuestions, 5, avoidSet);
 
-  hybrid = fuzzy
-    .filter(item => item.score > 0) // ensures narrowing
-    .sort((a, b) => b.score - a.score)
-    .slice(0, 8);
+    // If still nothing, fallback to defaults
+    if (!suggestions.length) {
+      const defaultsRaw = (knowledgeBase.qaDatabase || []).map(entry => entry.question);
+      suggestions = dedupeAndTrim(defaultsRaw, 5, avoidSet);
+    }
 
-} else {
-  // Full hybrid search for complete queries
-  hybrid = await hybridSearchKnowledgeBase(query, 8);
-}
+    if (!suggestions.length) {
+      suggestions = [
+        "Ask about Kyle's experience in autonomous systems.",
+        "Ask for a STAR example about a project risk."
+      ];
+    }
 
-// Now convert hybrid result to plain question list
-const hybridQuestions = hybrid.map(item => item.question);
-let suggestions = dedupeAndTrim(hybridQuestions, 5, avoidSet);
-
-// If still nothing, fallback to defaults
-if (!suggestions.length) {
-  const defaultsRaw = (knowledgeBase.qaDatabase || []).map(entry => entry.question);
-  suggestions = dedupeAndTrim(defaultsRaw, 5, avoidSet);
-}
-
-if (!suggestions.length) {
-  suggestions = [
-    "Ask about Kyle's experience in autonomous systems.",
-    "Ask for a STAR example about a project risk."
-  ];
-}
-
-return res.json({ suggestions });
-
+    return res.json({ suggestions });
   } catch (err) {
     console.error('Suggestion error:', err);
     res.status(500).json({
@@ -1169,7 +1117,7 @@ Respond with:
         userMessage = `[AMBIGUOUS, SHORT QUERY]
 The user query was: "${originalQuery}".
 
-The question is short and under specified, and it does not strongly match existing Q&A entries. You must still answer in a professional, third person way about Kyle.
+The question is not fully clear, and it does not strongly match existing Q&A entries. You must still answer in a professional, third person way about Kyle.
 
 Begin your reply with: "The question is not fully clear, but based on Kyle's experience in ${topic}, he has..." and then continue with the closest useful context about Kyle that could reasonably match the query.
 
