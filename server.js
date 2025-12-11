@@ -752,9 +752,6 @@ function applyChallengeOverride(intent, lower) {
   return intent;
 }
 
-intent = applyChallengeOverride(intent, lower);
-
-
 // ======================================================================
 // SECTION 4: ADVANCED TECHNICAL CHALLENGE HANDLER
 // ======================================================================
@@ -945,6 +942,8 @@ app.post('/query', async (req, res) => {
 
 const { intent: resolvedIntent, star: isSTAR } = resolveIntent(originalQuery, lower);
 let intent = resolvedIntent;
+intent = applyChallengeOverride(intent, lower);
+
 const isMulti = detectMultiPartQuery(originalQuery);
 const behavioralOrPMCX = isBehavioralOrPMCXQuestion(lower);
 
