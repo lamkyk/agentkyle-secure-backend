@@ -799,26 +799,35 @@ const hasTechnicalKeywords =
 const looksLikeAcronym = /\b[A-Z]{2,6}\b/.test(q) && !mentionsKyle;
 const behavioralOrPMCX = isBehavioralOrPMCXQuestion(lower);
 
-// NEW EXPERIENCE DETECTOR (forces Kyle-mode even inside technical questions)
-const experienceQuestion =
-  /\b(experience|background|career|work history|what does .* experience mean|what is .* experience|describe .* experience)\b/i.test(
-    lower
-  );
+// UNIVERSAL CAREER / WORK / ROLE / BACKGROUND DETECTOR
+// This restores the earlier behavior across ALL professional questions.
+const careerWorkTriggers = [
+  'experience', 'background', 'career', 'work history', 'what did he do',
+  'what he did', 'role', 'responsibilities', 'scope', 'impact', 'strengths',
+  'weaknesses', 'achievements', 'accomplishments', 'wins', 'projects he worked on',
+  'projects he led', 'led', 'handled', 'managed', 'operated', 'testing work',
+  'validation work', 'field work', 'program work', 'customer work',
+  'data work', 'training data work', 'engineering experience',
+  'program experience', 'operations experience', 'professional experience'
+];
 
-// FINAL INTENT ROUTER (PATCHED)
+const hasCareerWorkSignal =
+  careerWorkTriggers.some(t => lower.includes(t));
+
+// FINAL INTENT ROUTING LOGIC (PATCHED)
 const intent = (() => {
 
-  // TECHNICAL BRANCH (guarded by experience detector)
+  // TECHNICAL BRANCH — but override to Kyle if it's actually a "work/role" question
   if (hasTechnicalKeywords || looksLikeAcronym || (isConceptQuestion && !mentionsKyle)) {
 
-    // If user asks "experience" → ALWAYS return Kyle
-    if (experienceQuestion) return 'kyle';
+    // If user is actually asking about work/experience → force Kyle
+    if (hasCareerWorkSignal) return 'kyle';
 
     return 'technical';
   }
 
   // KYLE BRANCH
-  if (mentionsKyle || isInterviewy || behavioralOrPMCX || experienceQuestion) {
+  if (mentionsKyle || isInterviewy || behavioralOrPMCX || hasCareerWorkSignal) {
     return 'kyle';
   }
 
