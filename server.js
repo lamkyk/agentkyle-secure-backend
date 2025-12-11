@@ -877,6 +877,9 @@ function resolveIntent_v5(originalQuery) {
 const { intent, star: isSTAR } = resolveIntent_v5(originalQuery);
 const isMulti = detectMultiPartQuery(originalQuery);
 
+// FIX: define behavioralOrPMCX before hybrid retrieval uses it
+const behavioralOrPMCX = isBehavioralOrPMCXQuestion(lower);
+
 // ==================================================================
 // TECHNICAL OVERRIDE FOR EXTREME / SPECULATIVE SYSTEM QUESTIONS
 // ==================================================================
