@@ -1038,16 +1038,17 @@ if ( (catastrophicSignals.test(lower) || speculativeTechSignals.test(lower))
       });
     }
 
-    // Weaknesses
-    const weaknessQuery =
-      /\b(weak|weakness|weakest|failure|failures|mistake|mistakes|shortcoming|shortcomings)\b/i;
-    if (weaknessQuery.test(lower)) {
-      return res.json({
-        answer: sanitizeOutput(
-          'Kyle’s development areas are framed in professional terms. He sometimes leans into structure because he values predictable execution, and he has learned to adjust that based on context so that he does not over design. He also sets a high bar for himself and has improved by prioritizing impact and involving stakeholders earlier. These adjustments have strengthened his overall effectiveness.'
-        )
-      });
-    }
+// Weaknesses / development areas (explicit, not generic "failure")
+const weaknessQuery =
+  /\b(weakness|weakest|strengths and weaknesses|development areas|areas for development|areas he can improve|improvement areas)\b/i;
+
+if (weaknessQuery.test(lower)) {
+  return res.json({
+    answer: sanitizeOutput(
+      'Kyle’s development areas are framed in professional terms. He sometimes leans into structure because he values predictable execution, and he has learned to adjust that based on context so that he does not over design. He also sets a high bar for himself and has improved by prioritizing impact and involving stakeholders earlier. These adjustments have strengthened his overall effectiveness.'
+    )
+  });
+}
 
     // Challenge phrases
     const challengeTriggers =
