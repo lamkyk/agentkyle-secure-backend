@@ -883,15 +883,43 @@ const behavioralOrPMCX = isBehavioralOrPMCXQuestion(lower);
 // ==================================================================
 // TECHNICAL OVERRIDE FOR EXTREME / SPECULATIVE SYSTEM QUESTIONS
 // ==================================================================
-const catastrophicSignals = /\b(mass casualty|catastrophic|failure mode|single point of failure|safety critical|kill people|brain chip|neuralink|bio interface|quantum|solver|10m\+|fleetwide|verification loop|systems architecture)\b/i;
+const catastrophicSignals =
+  /\b(av kills|car hits|kill|kills|injure|injury|mass casualty|catastrophic|failure mode|single point of failure|safety critical|run over|hit a person|hits a person|pedestrian impact|fatal|neuralink|brain chip|10m\+|fleetwide|verification loop|systems architecture)\b/i;
 
-const speculativeTechSignals = /\b(fuse|fusion with|integrate quantum|brain interface|neural control|general intelligence|superhuman|hypothetical system)\b/i;
+const speculativeTechSignals =
+  /\b(fuse|fusion with|integrate quantum|brain interface|neural control|general intelligence|superhuman|hypothetical system)\b/i;
 
-// If question is extremely technical AND future-system-oriented,
-// we override and force TECHNICAL mode
-if ( (catastrophicSignals.test(lower) || speculativeTechSignals.test(lower))
-     && detectTechnicalIntent_v5(lower) ) {
-    intent = 'technical';
+// Force technical mode for extreme or future-system technical scenarios
+if ((catastrophicSignals.test(lower) || speculativeTechSignals.test(lower))
+     && detectTechnicalIntent_v5(lower)) {
+  intent = 'technical';
+}
+
+// ==================================================================
+// SYSTEM SAFETY TRANSFORMER (Reframes hazardous prompts into
+// allowed engineering-safety analysis instead of refusal)
+// ==================================================================
+const redTeamSignals =
+  /\b(zero\-day|0day|exploit|bioweapon|weapon|dangerous output|misuse|persuaded into|forced to output|harmful|public release|72 hours|catastrophic failure)\b/i;
+
+if (redTeamSignals.test(lower)) {
+  intent = 'technical';
+
+  userMessage =
+`The user is asking a systems-engineering and safety question.
+Respond ONLY with:
+
+- mitigation architecture
+- safety + reliability engineering
+- isolation / containment systems
+- control and governance layers
+- validation and verification loops
+- program-level execution plans
+
+Do NOT describe harmful steps.
+Only provide structured engineering guidance.
+
+User question: "${originalQuery}"`;
 }
 
 
