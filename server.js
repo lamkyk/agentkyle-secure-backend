@@ -15,7 +15,7 @@ const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 // === EMAIL ALERT SETUP ===
 // The agent will send usage alerts to this email via FormSubmit.co
 // No account or extra setup required.
-const ALERT_EMAIL = 'lamkyk@yahoo.com';
+const ALERT_EMAIL = 'lamkyk@hotmail.com';
 
 app.use(cors());
 app.use(express.json());
