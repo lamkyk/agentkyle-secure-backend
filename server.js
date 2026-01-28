@@ -41,6 +41,7 @@ app.use((req, res, next) => {
           },
           body: JSON.stringify({
             _subject: `Agent K Alert: New User Detected`, // Subject line
+            _captcha: "false",
             User_IP: userIP,
             Query: query,
             Time: new Date().toLocaleString()
