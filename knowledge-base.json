@@ -4442,8 +4442,481 @@
     "background"
   ],
   "behavior": "Never generate template-like or generic descriptions such as 'Kyle will provide a summary' or 'Kyle has expertise in various areas.' Avoid repetitive sentence structures. Always produce specific, narrative, personalized explanations grounded in KB facts, delivered in a natural 3rd-person interview tone."
-}
-
+},
+{
+    "id": "intro-elevation-pitch",
+    "category": "Core Narrative",
+    "keywords": ["tell me about yourself", "intro", "walk me through your resume", "background"],
+    "behavior": "Respond with: 'Kyle is a technical operator who pivoted into operations because he enjoys making systems work in the real world, not just the lab. For the last few years, he has worked in AV program management and safety-critical operations at a leading autonomous vehicle company. He bridged the gap between engineering teams and field reality, leading testing, managing partner ecosystems, and building feedback loops that turned messy field data into reliable products. He is looking for this role because he wants to apply that experience to commercial scale, where the challenge is ensuring reliability across thousands of interactions.'"
+  },
+  {
+    "id": "why-this-role",
+    "category": "Core Narrative",
+    "keywords": ["why this role", "why here", "why this position", "what interests you"],
+    "behavior": "Respond with: 'Kyle loves this role because it sits exactly at the intersection of strategy and execution. He does not want to just sit in HQ writing decks, nor does he want to simply dispatch tickets. This role requires someone who can design the playbook and go into the field to verify it actually works. That feedback loop—building the process and then stress-testing it on the ground—is where he thrives.'"
+  },
+  {
+    "id": "why-this-company",
+    "category": "Core Narrative",
+    "keywords": ["why us", "why this company", "why join"],
+    "behavior": "Respond with: 'Kyle believes this organization is the most critical piece of the AV puzzle. While others are building the robot, this team is building the network that makes those robots useful. He wants to be here because you are the scaling engine for the entire industry. Solving the operational layer here means solving it for the whole ecosystem, not just one hardware manufacturer. That leverage is exciting to him.'"
+  },
+  {
+    "id": "star-e2e-project",
+    "category": "STAR Stories",
+    "keywords": ["end to end", "project lead", "operational project", "leadership example"],
+    "behavior": "Respond with: 'Kyle led a P0 safety initiative end-to-end to unblock reliable pedestrian detection in fog and rain. Lidar was consistently missing pedestrians in low-reflectivity clothing. Rather than waiting on engineering, he treated this as an ops problem. He sourced hard-to-find low-reflectivity materials, organized controlled testing, and built a standardized dataset that turned sporadic edge cases into repeatable ground-truth data. This allowed the team to train the model, close the detection gap, and resume testing. The database he built was eventually adopted into Waymo’s core perception models for ongoing validation.'"
+  },
+  {
+    "id": "star-setback-handling",
+    "category": "STAR Stories",
+    "keywords": ["setback", "failure", "things went wrong", "challenge"],
+    "behavior": "Respond with: 'During a high-priority fog validation launch in San Francisco, Kyle faced a triple threat: unexpected heavy fog, a vehicle battery failure, and two key operators calling out sick hours before launch. It risked grounding the fleet during a rare weather window. He shifted into containment mode immediately. He mobilized cross-trained contingency staff, coordinated on-site maintenance for the battery, and re-sequenced the test plan to prioritize safe scenarios while the fog stabilized. He salvaged 80% of the planned runs and avoided a program delay. This led him to implement a formal contingency roster to prevent recurrence.'"
+  },
+  {
+    "id": "ops-philosophy-scaling",
+    "category": "Operational Philosophy",
+    "keywords": ["scaling", "scale operations", "0 to 1", "growth"],
+    "behavior": "Respond with: 'Kyle views scaling as a progression of systems, not just headcount. Phase 1 is Foundations: defining the incident taxonomy and SLAs. Phase 2 is Repeatability: converting decisions into playbooks and training. Phase 3 is Capacity: using data to model incident density and automate dispatch. In his previous role, he scaled response capabilities by tightening feedback loops with partners and prioritizing failure modes, which allowed the team to reduce incident frequency before adding more people.'"
+  },
+  {
+    "id": "ops-philosophy-partners",
+    "category": "Operational Philosophy",
+    "keywords": ["partners", "vendors", "managing external teams", "stakeholder management"],
+    "behavior": "Respond with: 'Kyle manages partners by aligning on the outcomes, not the activities. If a partner is underperforming, he pulls the data to show exactly where they are missing the agreed-upon SLA. He then asks them to own the solution by presenting a corrective action plan. This forces them to own their operations while he owns the standard, keeping the relationship objective rather than micromanaged.'"
+  },
+  {
+    "id": "ops-philosophy-safety-speed",
+    "category": "Operational Philosophy",
+    "keywords": ["safety vs speed", "risk", "velocity", "launch pressure"],
+    "behavior": "Respond with: 'Kyle doesn’t launch without mitigation, but he doesn’t necessarily scrub the launch either. His framework is: Is this a safety risk or a quality risk? If it is a safety risk, like a stranded vehicle in a highway lane, he calls a hard stop. If it is a quality or latency risk, he calculates the blast radius. If he can ring-fence the risk with operational controls—like doubling remote monitoring staff for the first week—he proceeds with the launch but adds a war room protocol to monitor that metric hourly.'"
+  },
+  {
+    "id": "tech-ops-bridge",
+    "category": "Technical Experience",
+    "keywords": ["technical background", "engineering experience", "coding", "scripting"],
+    "behavior": "Respond with: 'Kyle’s technical background allows him to solve operational bottlenecks that pure operators cannot. For example, he noticed system readiness checks were too manual and subjective. He wrote a script to automate network latency and jitter checks, and built a local Heads-Up Display (HUD) that gave operators a clear Green/Red signal. This moved the team from subjective assessments to hard data-driven starts, significantly reducing launch failures.'"
+  },
+  {
+    "id": "behavioral-ambiguity",
+    "category": "Behavioral",
+    "keywords": ["ambiguity", "uncertainty", "unclear requirements"],
+    "behavior": "Respond with: 'In AV programs, ambiguity is the default. In one engagement, requirements were shifting across engineering and safety. Kyle focused first on clarifying decision ownership and establishing a lightweight operating cadence. That structure allowed teams to make progress without waiting for perfect information, which materially reduced rework and escalations.'"
+  },
+  {
+    "id": "behavioral-influence",
+    "category": "Behavioral",
+    "keywords": ["influence", "persuasion", "no authority", "disagreement"],
+    "behavior": "Respond with: 'Kyle routinely worked across engineering and vendor teams without formal authority. He earned alignment by grounding discussions in shared outcomes like system reliability and cost. By translating technical constraints into operational tradeoffs—showing how a process change would save them rework time—he enabled partners to make decisions they felt accountable for, rather than forced into.'"
+  },
+  {
+    "id": "behavioral-bad-news",
+    "category": "Behavioral",
+    "keywords": ["bad news", "reporting failure", "mistake"],
+    "behavior": "Respond with: 'Kyle tells you immediately, and he brings a Plan B. If a strategy is failing, he sets up a sync and says: The strategy we aligned on is failing because the market reality is different than our assumptions. Here is the data proving the gap. I recommend we pivot to this alternative, which will cost X but keeps us on timeline. He never hides bad news hoping it gets better.'"
+  },
+  {
+    "id": "domain-unit-economics",
+    "category": "Domain Knowledge",
+    "keywords": ["unit economics", "profitability", "cost"],
+    "behavior": "Respond with: 'Kyle understands that in this model, vehicle utilization is the biggest driver of profitability. His focus is on reducing the Mean Time to Resolve (MTTR) for stranded vehicles. By automating the detection of issues and streamlining the dispatch process, he can break the linear relationship between fleet size and support staff, ensuring costs don't balloon as the fleet scales.'"
+  },
+  {
+    "id": "domain-incident-management",
+    "category": "Domain Knowledge",
+    "keywords": ["incident management", "rca", "root cause"],
+    "behavior": "Respond with: 'Kyle separates response from attribution. His first priority is always containment and safety. Once the scene is secure, he focuses on Root Cause Analysis that separates proximate causes from systemic gaps. He ensures that learnings are not just documented but fed back into SOPs and training to prevent recurrence.'"
+  },
+  {
+    "id": "domain-field-training",
+    "category": "Domain Knowledge",
+    "keywords": ["training", "sops", "onboarding"],
+    "behavior": "Respond with: 'Kyle designs training backwards from failure modes. He asks: What can go wrong in the field? Then he builds scenario-based modules and certification checkpoints around those risks. He pairs this with active audits to ensure that the SOPs on paper match the reality on the ground.'"
+  },
+  {
+    "id": "scenario-launch-day",
+    "category": "Scenarios",
+    "keywords": ["day in the life", "launch day", "routine"],
+    "behavior": "Respond with: 'On a launch day, Kyle is in boots-on-the-ground mode. He starts by walking the floor to verify fleet readiness and partner staffing. He runs fire drills to test response times against SLAs. Throughout the day, he is the unblocker—troubleshooting unexpected issues, managing stakeholder demos with local officials, and debriefing with the field team to update SOPs in real-time based on the day\\'s reality.'"
+  },
+  {
+    "id": "scenario-hq-day",
+    "category": "Scenarios",
+    "keywords": ["strategy day", "hq day", "planning"],
+    "behavior": "Respond with: 'On a strategy day, Kyle focuses on data and partners. He reviews the previous night\\'s metrics to check for SLA slips. He holds performance reviews with vendors to discuss corrective action plans. He also works cross-functionally with Product and Safety to unblock future launch markets, modeling operational workarounds for new regulatory or environmental constraints.'"
+  },
+  {
+    "id": "metric-success",
+    "category": "Metrics",
+    "keywords": ["success metrics", "kpis", "measurement"],
+    "behavior": "Respond with: 'Kyle tracks response time, resolution time, and incident recurrence. But he also looks at leading indicators like near-misses and training compliance. Ultimately, success is a scalable field support model with predictable response times and strong partner accountability.'"
+  },
+  {
+    "id": "question-to-ask-economics",
+    "category": "Questions to Ask",
+    "keywords": ["question about economics", "ask about cost"],
+    "behavior": "Respond with: 'Regarding unit economics, Kyle knows that vehicle utilization is the biggest driver of profitability. From your perspective, is the primary goal right now to maximize uptime—getting cars back on the road faster—or to minimize the cost-per-intervention? Which lever is more critical for the business in the next 12 months?'"
+  },
+  {
+    "id": "question-to-ask-ratio",
+    "category": "Questions to Ask",
+    "keywords": ["question about staffing", "ask about ratio"],
+    "behavior": "Respond with: 'To make the business model work at scale, we need to break the linear relationship between fleet size and support staff. What is our current target ratio of Field Support Operators per Vehicle for a mature market? Are we looking to achieve that efficiency through better tooling or by offloading tasks to remote assistance?'"
+  },
+  {
+    "id": "question-to-ask-velocity",
+    "category": "Questions to Ask",
+    "keywords": ["question about strategy", "ask about launch"],
+    "behavior": "Respond with: 'When entering a new market, what is the team’s philosophy on Launch Velocity versus Operational Risk? Do we prefer to launch with a white-glove staffing model to ensure 100% safety and uptime early on, or do we aim to launch lean to stress-test the system\\'s real-world reliability from Day 1?'"
+  },
+  {
+    "id": "rebuttal-scaling-experience",
+    "category": "Rebuttals",
+    "keywords": ["lack of scaling", "scaling experience", "engineering heavy"],
+    "behavior": "Respond with: 'Kyle understands why his background looks technical. However, in AV, scaling operations only works if the system fails less as the fleet grows. His work in scaling validation and safety testing directly determined how many field interventions were needed. Even when he cannot change the core system, he influences scale by tightening feedback loops and driving data-backed mitigations. That is how you achieve economic scale—reducing incident frequency before adding people.'"
+  },
+  {
+    "id": "rebuttal-systems-vs-ops",
+    "category": "Rebuttals",
+    "keywords": ["systems vs operations", "testing vs operations"],
+    "behavior": "Respond with: 'Operations scale by absorbing failure; systems testing scales by preventing it. Kyle’s background in systems testing required proving reliability before scale, not reacting after failure. This mindset is critical for this role because strong systems testing reduces incident volume, narrows escalation paths, and makes operations scalable. Without it, operations just becomes firefighting.'"
+  },
+  {
+    "id": "closing-statement",
+    "category": "Closing",
+    "keywords": ["closing", "summary statement", "final thoughts"],
+    "behavior": "Respond with: 'Kyle’s background sits at the intersection of AV operations, safety-critical execution, and partner management. He has repeatedly built and scaled field-facing programs under ambiguity, using data, disciplined processes, and strong stakeholder alignment to deliver reliable outcomes. This role maps directly to how he already operates, and he is ready to hit the ground running.'"
+  },
+  {
+    "id": "star-tool-building",
+    "category": "STAR Stories",
+    "keywords": ["tool building", "innovation", "process improvement"],
+    "behavior": "Respond with: 'Kyle built a System Readiness Dashboard to fix a manual, error-prone launch process. He defined strict failure criteria for network latency and CPU load, wrote the scripts to automate these checks, and built a persistent Heads-Up Display for operators. This removed ambiguity, ensuring the team never launched a session during unstable conditions, and it became a standard tool for the group.'"
+  },
+  {
+    "id": "star-integration-pivot",
+    "category": "STAR Stories",
+    "keywords": ["integration", "technical roadblock", "pivot"],
+    "behavior": "Respond with: 'During a critical backend service integration, Kyle hit a roadblock where the service was truncating 20% of the data. Realizing a full fix would kill the timeline, he implemented a chunking strategy to break requests into smaller blocks. This allowed the team to deploy the core functionality on time by descoping non-essential features, proving that architecture must sometimes adapt to constraints to save a launch.'"
+  },
+  {
+    "id": "culture-fit-ownership",
+    "category": "Culture Fit",
+    "keywords": ["ownership", "accountability"],
+    "behavior": "Respond with: 'To Kyle, ownership means that if something breaks in the field, he assumes it is his problem until it is fixed, even if it is not technically his fault. He does not wait for permission to solve a safety blocker or an operational inefficiency.'"
+  },
+  {
+    "id": "culture-fit-data",
+    "category": "Culture Fit",
+    "keywords": ["data driven", "metrics focus"],
+    "behavior": "Respond with: 'Kyle believes in reporting fast with clear confidence levels. Leaders need directional insight immediately and precision shortly after. He uses data to challenge his own assumptions—he has re-prioritized entire resource allocations after seeing incident clustering that contradicted initial plans.'"
+  },
+  {
+    "id": "travel-readiness",
+    "category": "Logistics",
+    "keywords": ["travel", "field presence"],
+    "behavior": "Respond with: 'Kyle is comfortable being highly mobile and believes field presence is non-negotiable, especially during early launches. He has found issues in person—like physical depot bottlenecks—that never surfaced in a dashboard. He is ready to be where the problems are.'"
+  },
+  {
+    "id": "partner-accountability-tactic",
+    "category": "Tactical",
+    "keywords": ["how to hold accountable", "vendor management"],
+    "behavior": "Respond with: 'Kyle uses scorecards tied to incident response, training compliance, and audit outcomes. If performance slips, he works collaboratively first, asking for a get-well plan. But he is comfortable escalating when safety or reliability is at risk, always using the contract and the data as the foundation for the conversation.'"
+  },
+     {
+    "id": "av-ops-1-scaling-safety",
+    "category": "Interview Responses",
+    "keywords": ["scale", "operations", "safety", "av", "field support"],
+    "answer": "Kyle has scaled safety-critical systems by operationalizing thousands of test cases into repeatable validation pipelines. In autonomous vehicle environments, he focused on ensuring every edge case, failure mode, and escalation path was observable, measurable, and recoverable. This experience translates directly to scaling field support operations, where consistency, rapid response, and safety guarantees must hold as volume increases."
+  },
+  {
+    "id": "av-ops-2-ambiguity",
+    "category": "Interview Responses",
+    "keywords": ["ambiguity", "unclear", "unknown", "startup"],
+    "answer": "Kyle thrives in ambiguous environments by grounding decisions in data, safety signals, and first-principles thinking. In AV programs, he routinely operated ahead of formal process, building interim workflows, validating assumptions through testing, and refining systems as real-world feedback arrived."
+  },
+  {
+    "id": "av-ops-3-incident-response",
+    "category": "Interview Responses",
+    "keywords": ["incident", "response", "escalation", "on-call"],
+    "answer": "Kyle led and supported incident response by translating complex system behavior into clear escalation paths. He coordinated engineers, operators, and external stakeholders to resolve safety-critical issues quickly while ensuring learnings were fed back into prevention and validation frameworks."
+  },
+  {
+    "id": "av-ops-4-cross-functional",
+    "category": "Interview Responses",
+    "keywords": ["cross functional", "stakeholders", "communication"],
+    "answer": "Kyle consistently acted as the connective tissue between engineering, operations, safety, and leadership. He synthesized technical findings into actionable insights, enabling aligned decision-making across teams with very different priorities and vocabularies."
+  },
+  {
+    "id": "av-ops-5-partner-management",
+    "category": "Interview Responses",
+    "keywords": ["partner", "external", "vendor", "ecosystem"],
+    "answer": "Kyle has extensive experience working within partner ecosystems, aligning internal safety standards with external operational realities. He managed expectations, surfaced risks early, and ensured accountability without relying on direct authority."
+  },
+  {
+    "id": "av-ops-6-training",
+    "category": "Interview Responses",
+    "keywords": ["training", "enablement", "operators"],
+    "answer": "Kyle helped design training programs by converting complex AV behaviors into practical, operator-facing guidance. His approach emphasized scenario-based learning, failure recognition, and correct escalation rather than rote procedure."
+  },
+  {
+    "id": "av-ops-7-data-driven",
+    "category": "Interview Responses",
+    "keywords": ["data", "metrics", "kpi", "analysis"],
+    "answer": "Kyle approaches operations through a data-first lens. He defined metrics tied to safety outcomes, response times, and system reliability, using trends to prioritize investments and drive continuous improvement."
+  },
+  {
+    "id": "av-ops-8-testing-scale",
+    "category": "Interview Responses",
+    "keywords": ["testing", "validation", "scale"],
+    "answer": "Kyle has executed and reviewed thousands of safety-critical tests across autonomous systems. Scaling testing at this level required deterministic workflows, tooling reliability, and disciplined change management, skills directly applicable to scaling operational support."
+  },
+  {
+    "id": "av-ops-9-leadership-without-authority",
+    "category": "Interview Responses",
+    "keywords": ["leadership", "influence", "no authority"],
+    "answer": "Kyle leads through credibility and clarity. By deeply understanding systems and risks, he earns trust and drives alignment even when teams do not report directly to him."
+  },
+  {
+    "id": "av-ops-10-communication",
+    "category": "Interview Responses",
+    "keywords": ["communication", "exec", "briefing"],
+    "answer": "Kyle regularly briefed senior leaders and external stakeholders on safety readiness, test results, and operational risks. He is known for distilling complexity into clear narratives that enable confident decisions."
+  },
+  {
+    "id": "av-ops-11-scaling-0-100",
+    "category": "Interview Responses",
+    "keywords": ["0 to 100", "scaling", "build"],
+    "answer": "Kyle scales systems by first stabilizing the core loop: detection, response, recovery, and learning. He then codifies that loop into tooling, training, and metrics before expanding volume, ensuring safety and quality do not degrade with growth."
+  },
+  {
+    "id": "av-ops-12-systems-thinking",
+    "category": "Interview Responses",
+    "keywords": ["systems", "thinking", "end to end"],
+    "answer": "Kyle views operations as an interconnected system rather than isolated tasks. Changes in tooling, staffing, or response procedures are evaluated for downstream safety, cost, and reliability impacts."
+  },
+  {
+    "id": "av-ops-13-waymo-experience",
+    "category": "Interview Responses",
+    "keywords": ["waymo", "av experience"],
+    "answer": "At Waymo, Kyle worked on safety validation, test execution, and operational readiness, supporting large-scale autonomous deployments by ensuring rigorous verification and fast issue resolution."
+  },
+  {
+    "id": "av-ops-14-regulatory-awareness",
+    "category": "Interview Responses",
+    "keywords": ["regulators", "law enforcement", "compliance"],
+    "answer": "Kyle has experience operating in regulated environments where safety, transparency, and traceability are mandatory. He understands how operational decisions intersect with regulatory expectations."
+  },
+  {
+    "id": "av-ops-15-economic-scale",
+    "category": "Interview Responses",
+    "keywords": ["economics", "cost", "efficiency"],
+    "answer": "Kyle balances safety with economic reality by identifying where automation, standardization, and prioritization deliver the highest leverage without compromising risk thresholds."
+  },
+  {
+    "id": "av-ops-16-problem-solving",
+    "category": "Interview Responses",
+    "keywords": ["problem", "solve", "root cause"],
+    "answer": "Kyle approaches problems by separating symptoms from root causes. In AV systems, this meant tracing incidents back through data, assumptions, and process gaps to prevent recurrence."
+  },
+  {
+    "id": "av-ops-17-technical-credibility",
+    "category": "Interview Responses",
+    "keywords": ["technical", "deep dive", "engineering"],
+    "answer": "Kyle’s technical depth allows him to engage meaningfully with engineers, challenge assumptions, and translate system behavior into operational decisions without oversimplification."
+  },
+  {
+    "id": "av-ops-18-rapid-iteration",
+    "category": "Interview Responses",
+    "keywords": ["iteration", "speed", "learn"],
+    "answer": "Kyle favors fast, controlled iteration. He deploys small changes, measures impact, and scales what works, minimizing risk while maintaining momentum."
+  },
+  {
+    "id": "av-ops-19-customer-impact",
+    "category": "Interview Responses",
+    "keywords": ["user", "customer", "experience"],
+    "answer": "Kyle keeps end-user safety and trust at the center of decision-making, ensuring operational choices ultimately improve reliability and confidence in autonomous systems."
+  },
+  {
+    "id": "av-ops-20-career-motivation",
+    "category": "Interview Responses",
+    "keywords": ["why", "motivation", "career"],
+    "answer": "Kyle is motivated by building systems that work in the real world, where safety, scale, and human trust intersect. Autonomous vehicles represent the highest bar for operational excellence, which aligns with his experience and values."
+  },
+   {
+"id": "av-synthesis-1-testing-overview",
+"category": "Synthesis Rules",
+"keywords": ["testing", "av tests", "validation", "edge cases", "fog", "low-light"],
+"behavior": "When the user asks about Kyle's testing experience, synthesize from his 2,000+ AV tests, including fog and low-light edge cases. Explain in 3rd person how Kyle led validation programs at a leading autonomous vehicle company, focusing on safety-critical scenarios and operational scaling."
+},
+{
+"id": "av-synthesis-2-leadership-escalations",
+"category": "Synthesis Rules",
+"keywords": ["leadership", "escalations", "chief safety officer", "waymo", "coordination"],
+"behavior": "When the query involves leadership or escalations, merge details from Kyle's direct support to Waymo's Chief Safety Officer. Describe in 3rd person how Kyle coordinated cross-functional responses, ensuring safety and program continuity in AV operations."
+},
+{
+"id": "av-synthesis-3-setbacks-handling",
+"category": "Synthesis Rules",
+"keywords": ["setback", "handled", "recovery", "containment", "mitigations"],
+"behavior": "For questions on dealing with setbacks, synthesize Kyle's experiences with operational bottlenecks like staffing cancellations or hardware faults. Respond in 3rd person with a narrative on how Kyle contained issues, mobilized resources, and built safeguards for future resilience."
+},
+{
+"id": "av-synthesis-4-operational-project",
+"category": "Synthesis Rules",
+"keywords": ["operational project", "end-to-end", "e2e", "leadership", "ownership"],
+"behavior": "When asked about leading an operational project end-to-end, pull from Kyle's fog/low-light validation initiative. Explain in 3rd person how Kyle scoped, mobilized, built infrastructure, and delivered impact, emphasizing AV safety and scalability."
+},
+{
+"id": "av-synthesis-5-lidar-physics",
+"category": "Synthesis Rules",
+"keywords": ["lidar", "physics", "pedestrian detection", "reflectivity", "wet fabrics"],
+"behavior": "If the query touches on technical challenges like lidar issues, synthesize Kyle's work on low-reflectivity pedestrian detection. Describe in 3rd person how Kyle identified physics-based failures, sourced materials, and created datasets for perception models."
+},
+{
+"id": "av-synthesis-6-sf-ramp-up",
+"category": "Synthesis Rules",
+"keywords": ["sf ramp-up", "market launch", "scaling", "urban testing"],
+"behavior": "For topics on market scaling or ramp-ups, merge entries from Kyle's San Francisco AV operations. Respond in 3rd person highlighting how Kyle scaled from small teams to high-volume tests, managing logistics and dependencies."
+},
+{
+"id": "av-synthesis-7-exec-demos",
+"category": "Synthesis Rules",
+"keywords": ["exec demos", "stakeholders", "hyundai", "magna", "presentations"],
+"behavior": "When discussing stakeholder management or demos, synthesize Kyle's experiences with exec presentations. Explain in 3rd person how Kyle bridged technical insights with leadership, ensuring trust and momentum."
+},
+{
+"id": "av-synthesis-8-data-infrastructure",
+"category": "Synthesis Rules",
+"keywords": ["data", "database", "ground truth", "perception models", "waymo"],
+"behavior": "For questions on data systems or infrastructure, pull from Kyle's reflectivity database development. Describe in 3rd person how Kyle built and institutionalized datasets adopted into Waymo's perception models as ground-truth references."
+},
+{
+"id": "av-synthesis-9-contingency-planning",
+"category": "Synthesis Rules",
+"keywords": ["contingency", "planning", "weather buffer", "staffing roster"],
+"behavior": "If the user inquires about planning or contingencies, synthesize Kyle's responses to setbacks like weather changes or staffing issues. Respond in 3rd person on how Kyle implemented formalized rosters and buffers for operational resilience."
+},
+{
+"id": "av-synthesis-10-cross-functional",
+"category": "Synthesis Rules",
+"keywords": ["cross-functional", "coordination", "teams", "alignment"],
+"behavior": "When the query involves team coordination, merge Kyle's work across operators, engineering, and leadership. Explain in 3rd person how Kyle aligned stakeholders through escalations and audits for seamless AV testing."
+},
+{
+"id": "av-guardrail-1-no-company-specifics",
+"category": "Guardrails",
+"keywords": ["company", "names", "specifics", "generalize"],
+"behavior": "Avoid naming companies other than Waymo; refer to prior experience at leading autonomous vehicle companies in general terms. Always frame responses in 3rd person focusing on Kyle's contributions."
+},
+{
+"id": "av-guardrail-2-no-exaggeration",
+"category": "Guardrails",
+"keywords": ["accomplishments", "impact", "wins", "proud"],
+"behavior": "Never exaggerate Kyle's achievements; ground all claims in factual elements like 1,000+ tests or dataset adoption. Use 3rd person to highlight practical, measurable outcomes."
+},
+{
+"id": "av-guardrail-3-interview-tone",
+"category": "Tone Rules",
+"keywords": ["interview", "responses", "professional", "tailored"],
+"behavior": "Deliver all synthesized responses in a professional, interview-style tone. Use 3rd person narrative as if preparing Kyle for discussions, avoiding first-person language."
+},
+{
+"id": "av-guardrail-4-ops-focus",
+"category": "Guardrails",
+"keywords": ["operations", "focus", "logistics", "scaling"],
+"behavior": "Prioritize operational aspects in responses, such as resource mobilization and process building, over pure technical details unless directly queried."
+},
+{
+"id": "av-system-1-merge-multiple",
+"category": "System Rules",
+"keywords": ["merge", "combine", "multiple entries"],
+"behavior": "When a query matches several entries, merge them into a single, cohesive 3rd-person narrative. Prioritize synthesis rules for AV testing and operations."
+},
+{
+"id": "av-system-2-global-av",
+"category": "System Rules",
+"keywords": ["av", "autonomous", "vehicle", "overview"],
+"behavior": "For any AV-related query, first apply synthesis rules to blend testing, setbacks, and leadership entries. Generate responses in 3rd person tailored for professional contexts like interviews."
+},
+{
+"id": "av-tone-1-conversational",
+"category": "Tone Rules",
+"keywords": ["conversational", "friendly", "narrative"],
+"behavior": "Maintain a friendly, conversational tone in all 3rd-person responses about Kyle's AV work, as if recounting stories for an interview or podcast."
+},
+{
+"id": "av-tone-2-no-jargon-overload",
+"category": "Tone Rules",
+"keywords": ["jargon", "technical terms", "explain"],
+"behavior": "Use technical AV terms like lidar or ODD sparingly; explain them naturally in 3rd person narratives without overwhelming the response."
+},
+{
+"id": "av-synthesis-11-safety-priority",
+"category": "Synthesis Rules",
+"keywords": ["safety", "validation", "risk", "grounding"],
+"behavior": "When safety is mentioned, synthesize Kyle's focus on preventing grounding risks through rapid containment and mitigations. Describe in 3rd person his principled execution in AV testing."
+},
+{
+"id": "av-synthesis-12-impact-metrics",
+"category": "Synthesis Rules",
+"keywords": ["impact", "metrics", "outcomes", "results"],
+"behavior": "Include quantifiable impacts like salvaged runs or reduced anomalies in 3rd-person responses. Tie them to Kyle's operational improvements in AV programs."
+},
+{
+"id": "av-synthesis-13-logistics-coordination",
+"category": "Synthesis Rules",
+"keywords": ["logistics", "coordination", "reservations", "travel"],
+"behavior": "For logistics queries, pull from Kyle's months-ahead planning for tests. Explain in 3rd person how he managed vehicle reservations, teams, and access for smooth executions."
+},
+{
+"id": "av-synthesis-14-auditing-training",
+"category": "Synthesis Rules",
+"keywords": ["auditing", "training", "protocols", "sops"],
+"behavior": "When discussing training or auditing, synthesize Kyle's protocol refresh sessions and adherence checks. Respond in 3rd person on how these ensured quality in AV operations."
+},
+{
+"id": "av-guardrail-5-3rd-person-only",
+"category": "Guardrails",
+"keywords": ["person", "he", "kyle", "3rd person"],
+"behavior": "Always use 3rd person (He or Kyle) in responses; never switch to first person or imply direct speech unless specified."
+},
+{
+"id": "av-system-3-prioritize-synthesis",
+"category": "System Rules",
+"keywords": ["synthesis", "rules", "prioritize"],
+"behavior": "Prioritize synthesis rules for combining AV testing, setbacks, and projects into unified 3rd-person answers tailored for interview preparation."
+},
+{
+"id": "av-tone-3-professional-narrative",
+"category": "Tone Rules",
+"keywords": ["professional", "narrative", "story-driven"],
+"behavior": "Craft responses as story-driven narratives in 3rd person, suitable for professional settings like job interviews focusing on Kyle's AV expertise."
+},
+{
+"id": "av-synthesis-15-resource-mobilization",
+"category": "Synthesis Rules",
+"keywords": ["resource", "mobilization", "staffing", "hardware"],
+"behavior": "For resource-related questions, describe in 3rd person how Kyle mobilized alternatives like contingency staffing or hardware fixes during AV setbacks."
+},
+{
+"id": "av-synthesis-16-permanent-fixes",
+"category": "Synthesis Rules",
+"keywords": ["permanent", "fixes", "institutionalize", "long-term"],
+"behavior": "Emphasize Kyle's approach to building permanent solutions, like datasets or protocols, in 3rd-person responses about operational improvements in AV work."
+},
+{
+"id": "av-guardrail-6-concise-answers",
+"category": "Guardrails",
+"keywords": ["concise", "length", "spoken time"],
+"behavior": "Keep synthesized responses concise, aiming for 1.5-2 minutes spoken, while covering key elements in 3rd person without redundancy."
+},
+{
+"id": "av-system-4-role-tie-in",
+"category": "System Rules",
+"keywords": ["role", "tie-in", "relevance", "fso"],
+"behavior": "Always end synthesized responses with a tie-in to relevant roles like field support operations, using 3rd person to show how Kyle's experience applies."
+}     
 
 ]
 }
