@@ -1,4 +1,4 @@
-// server.js - Agent K (hybrid retrieval, technical + Kyle modes, stable)
+// server.js - Agent K (Strict Rate Limit Safe Version)
 // IMPORTANT: This file assumes ESM (type: "module") in package.json.
 
 // ===== IMPORTS & CORE SETUP =====
@@ -397,10 +397,12 @@ try {
 
   function buildBehaviorRules(kb) {
     if (!kb || !kb.qaDatabase) return '';
-    return kb.qaDatabase
+    const raw = kb.qaDatabase
       .filter(entry => entry.behavior)
       .map(entry => entry.behavior.trim())
       .join('\n');
+    // Safety cap: ensure behavior rules don't eat entire token budget
+    return raw.slice(0, 1000);
   }
 
   global.KB_BEHAVIOR_RULES = buildBehaviorRules(knowledgeBase);
@@ -1212,7 +1214,7 @@ if (
 
     if (intent !== 'technical') {
       try {
-        relevantQAs = await hybridSearchKnowledgeBase(originalQuery, 4);
+        relevantQAs = await hybridSearchKnowledgeBase(originalQuery, 3); // Reduced from 4 to 3
 
         // If this is a behavioral / PM-CX style question, boost KB entries
         if (relevantQAs.length && behavioralOrPMCX) {
@@ -1287,7 +1289,7 @@ let contextText = '';
 if (intent !== 'technical') {
   if (relevantQAs.length && topScore >= WEAK_THRESHOLD) {
     // Strong or medium match: send multiple KB entries to LLM as context
-    const maxItems = hasStrongKBHit ? 3 : 2;
+    const maxItems = 2; // Strict limit to prevent rate limit spikes
 
     contextText = '\n\nRELEVANT BACKGROUND (PARAPHRASE ONLY):\n\n';
     relevantQAs.slice(0, maxItems).forEach((qa, idx) => {
@@ -1316,6 +1318,12 @@ if (intent !== 'technical') {
       contextText += `${idx + 1}. Question: ${qa.question}\n   Answer: ${qa.answer}\n\n`;
     });
   }
+}
+
+// *** SAFETY CAP ***
+// Hard truncate context to ~6000 chars (~1500 tokens) to guarantee we never hit 6000 TPM limit
+if (contextText.length > 6000) {
+  contextText = contextText.substring(0, 6000) + "\n... [truncated for length]";
 }
 
 
