@@ -1,4 +1,4 @@
-// server.js - Agent K (Strict Rate Limit Safe Version)
+// server.js - Agent K (Strict Rate Limit Safe + Smarter Off-Topic Logic)
 // IMPORTANT: This file assumes ESM (type: "module") in package.json.
 
 // ===== IMPORTS & CORE SETUP =====
@@ -571,8 +571,11 @@ function detectOffTopicQuery(query) {
   if (q.includes('meaning of life') || q.includes('purpose of life')) {
     return { type: 'meaning', response: funResponses.meaning[0] };
   }
+  
+  // FIX: Smarter weather detection that ignores technical terms
   const realWeather = /\b(weather|temperature|rain|snow|hot|cold|forecast)\b/i.test(q);
-  const aboutTesting = /\b(test|testing|scenario|weather tests)\b/i.test(q);
+  const aboutTesting = /\b(test|testing|scenario|weather tests|validation|validating|verify|verification|edge case|edge cases|simulation|sim|sensor|lidar|radar|camera|perception|autonomous|drive|driving)\b/i.test(q);
+  
   if (realWeather && !aboutTesting) {
     return { type: 'weather', response: funResponses.weather[0] };
   }
