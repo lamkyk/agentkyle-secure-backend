@@ -1558,14 +1558,6 @@ Because the user asked a multi-part or complex question:
 `;
   }
 
-  // Add context if available
-  if (contextText && contextText.trim()) {
-    booster += `
-Background material (use only for inspiration, paraphrase): 
-${contextText}
-`;
-  }
-
   return booster;
 }
 
