@@ -584,6 +584,7 @@ function detectSTARQuery(query) {
   const triggers = [
     'tell me about a time',
     'describe a time',
+    'give an example',
     'give me an example',
     'star example',
     'challenge',
@@ -1211,7 +1212,7 @@ if (
 
     if (intent !== 'technical') {
       try {
-        relevantQAs = await hybridSearchKnowledgeBase(originalQuery, 6);
+        relevantQAs = await hybridSearchKnowledgeBase(originalQuery, 4);
 
         // If this is a behavioral / PM-CX style question, boost KB entries
         if (relevantQAs.length && behavioralOrPMCX) {
@@ -1286,7 +1287,7 @@ let contextText = '';
 if (intent !== 'technical') {
   if (relevantQAs.length && topScore >= WEAK_THRESHOLD) {
     // Strong or medium match: send multiple KB entries to LLM as context
-    const maxItems = hasStrongKBHit ? 5 : 4;
+    const maxItems = hasStrongKBHit ? 3 : 2;
 
     contextText = '\n\nRELEVANT BACKGROUND (PARAPHRASE ONLY):\n\n';
     relevantQAs.slice(0, maxItems).forEach((qa, idx) => {
@@ -1296,7 +1297,7 @@ if (intent !== 'technical') {
   } else if (fallbackWasUsed) {
     // Weak or no match but meaningful question → synthesized sample
     const total = knowledgeBase.qaDatabase.length;
-    const sampleSize = Math.min(10, total);
+    const sampleSize = Math.min(3, total);
     const step = Math.max(1, Math.floor(total / sampleSize));
     const contextSample = [];
 
